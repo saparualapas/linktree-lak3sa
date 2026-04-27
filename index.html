@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LinkSpace</title>
+<title>Lak3saLink — Lapas Saparua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -164,49 +164,67 @@ body::after{
 .pubname{font-size:1.85rem;font-weight:800;background:linear-gradient(135deg,#fff 0%,rgba(124,190,255,.88) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
 
 /* ══════════════════════════════════════════
-   MOBILE — PERBAIKAN TOTAL SIDEBAR
-   Kunci: sidebar z-index LEBIH TINGGI dari overlay,
-   overlay z-index LEBIH TINGGI dari konten admin,
-   dan TIDAK ADA elemen fixed lain yang menghalangi.
+   OVERLAY SIDEBAR MOBILE
 ══════════════════════════════════════════ */
-
-/* Overlay di belakang sidebar */
 #sb-ov{
   display:none;
   position:fixed;inset:0;
-  /* z-index 98: di atas konten (1), di bawah sidebar (99) */
   z-index:98;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   cursor:pointer;
-  /* PENTING: pointer-events aktif hanya saat show */
   pointer-events:none;
 }
-#sb-ov.show{display:block;pointer-events:auto}
+#sb-ov.show{display:block;pointer-events:all}
 
+/* ══════════════════════════════════════════
+   SIDEBAR — Desktop: sticky normal
+   Mobile: hidden, slide in sebagai drawer
+══════════════════════════════════════════ */
+
+/* DESKTOP: sidebar tampil normal */
+@media(min-width:769px){
+  .sidebar{
+    display:flex;
+    position:sticky;
+    top:0;
+    width:224px;
+    height:100vh;
+    z-index:1;
+    flex-shrink:0;
+  }
+  #hbtn{display:none !important}
+  #closesb{display:none !important}
+  #sb-ov{display:none !important}
+}
+
+/* MOBILE: sidebar jadi drawer overlay */
 @media(max-width:768px){
   #admin-view.active{flex-direction:column}
 
+  /* Sidebar tersembunyi di luar layar */
   .sidebar{
-    /* Sembunyikan di desktop flow, muncul sebagai overlay di mobile */
-    display:none !important;
+    display:flex !important;   /* selalu flex agar isi bisa di-render */
+    flex-direction:column;
     position:fixed;
     top:0;left:0;bottom:0;
     width:260px;height:100vh;
-    /* z-index 99: di atas overlay (98), di bawah modal (200) */
-    z-index:99;
-    background:#050d1e;
+    z-index:999;               /* tertinggi, di atas segalanya */
+    background:#040c1c;
     border-right:1px solid rgba(255,255,255,.08);
-    box-shadow:8px 0 40px rgba(0,0,0,.8);
+    box-shadow:10px 0 50px rgba(0,0,0,.9);
     overflow-y:auto;overflow-x:hidden;
-    flex-direction:column;
-    /* Mulai di luar layar kiri */
-    transform:translateX(-100%);
-    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    /* Mulai tersembunyi di kiri */
+    transform:translateX(-110%);
+    visibility:hidden;
+    transition:transform .3s cubic-bezier(.4,0,.2,1), visibility .3s;
+    pointer-events:none;
   }
-  /* Saat open: geser masuk */
+
+  /* Saat open: geser masuk, aktifkan interaksi */
   .sidebar.open{
-    display:flex !important;
     transform:translateX(0);
+    visibility:visible;
+    pointer-events:all;
   }
 
   #hbtn{display:flex !important;align-items:center;justify-content:center}
@@ -214,9 +232,9 @@ body::after{
   .pgrid{grid-template-columns:1fr !important}
   #srow{grid-template-columns:1fr 1fr !important}
   .acpad{padding:13px !important}
-  /* Pastikan admin main tidak ter-cover */
-  #amain{width:100% !important;overflow-x:hidden}
+  #amain{width:100% !important}
 }
+
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
   .sidebar{width:80vw;max-width:275px}
@@ -233,7 +251,7 @@ body::after{
 
 <!-- Loading -->
 <div id="lscreen">
-  <div class="llogo">LinkSpace</div>
+  <div class="llogo">Lak3saLink</div>
   <div class="sp"></div>
   <p style="font-size:.8rem;color:rgba(255,255,255,.38);margin-top:4px;">Menghubungkan ke server...</p>
 </div>
@@ -262,7 +280,7 @@ body::after{
         </div>
       </div>
       <div class="fu s4" style="text-align:center;margin-top:38px;">
-        <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> LinkSpace</span>
+        <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> Lak3saLink</span>
         <p style="margin-top:10px;font-size:.7rem;color:rgba(255,255,255,.16);">
           <a href="#admin" style="color:inherit;text-decoration:none;">Admin</a>
         </p>
@@ -276,7 +294,7 @@ body::after{
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div style="width:100%;max-width:400px;" class="fu">
       <div style="text-align:center;margin-bottom:28px;">
-        <span class="badge badge-b" style="margin-bottom:14px;"><i class="fas fa-link" style="font-size:.62rem;"></i> LinkSpace</span>
+        <span class="badge badge-b" style="margin-bottom:14px;"><i class="fas fa-link" style="font-size:.62rem;"></i> Lak3saLink</span>
         <h1 class="fd" style="font-size:2rem;font-weight:800;margin-bottom:7px;">Masuk Admin</h1>
         <p style="color:var(--w6);font-size:.88rem;">Kelola tautan dan profil halaman Anda</p>
       </div>
@@ -333,7 +351,7 @@ body::after{
   <aside class="sidebar" id="sidebar">
     <div style="padding:15px;border-bottom:1px solid rgba(255,255,255,.06);">
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> LinkSpace</span>
+        <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> Lak3saLink</span>
         <button id="closesb" onclick="closeSB()" style="display:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;width:30px;height:30px;cursor:pointer;color:var(--w6);align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-times"></i></button>
       </div>
       <p style="margin-top:7px;font-size:.73rem;color:var(--w3);">Admin</p>
@@ -485,7 +503,7 @@ body::after{
 // ─────────────────────────────────────────────────────────
 // ⚙️ KONFIGURASI — ISI BAGIAN INI
 // ─────────────────────────────────────────────────────────
-const AS_URL = 'https://script.google.com/macros/s/AKfycbzPjDm07Abzafm5QZqjjD9f8O_e65JO5Min-iPO_uaNIm-A6L-Dx3IFj2QU_yeo5VFvtw/exec';
+const AS_URL = 'GANTI_DENGAN_URL_APPS_SCRIPT_WEB_APP';
 // Password TIDAK lagi disimpan di sini maupun localStorage.
 // Password disimpan di sheet "Config" di spreadsheet Anda.
 // Password default saat pertama kali setup: admin123
@@ -804,15 +822,25 @@ function swPanel(id,el){
   closeSB();
 }
 function togSB(){
-  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
-  const isOpen=sb.classList.toggle('open');
-  ov.classList.toggle('show',isOpen);
-  if(cb)cb.style.display=isOpen?'flex':'none';
-  document.body.style.overflow=isOpen?'hidden':'';
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sb-ov');
+  const cb=document.getElementById('closesb');
+  const isOpen=!sb.classList.contains('open');
+  if(isOpen){
+    sb.classList.add('open');
+    ov.classList.add('show');
+    if(cb)cb.style.display='flex';
+    document.body.style.overflow='hidden';
+  } else {
+    closeSB();
+  }
 }
 function closeSB(){
-  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
-  sb.classList.remove('open');ov.classList.remove('show');
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sb-ov');
+  const cb=document.getElementById('closesb');
+  sb.classList.remove('open');
+  ov.classList.remove('show');
   if(cb)cb.style.display='none';
   document.body.style.overflow='';
 }
