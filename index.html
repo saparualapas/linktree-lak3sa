@@ -61,7 +61,6 @@ body::after{
   color:var(--w);background:rgba(255,255,255,.09);
   border:1.5px solid rgba(255,255,255,.20);
   cursor:pointer;text-decoration:none;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   transition:all .28s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
 }
 .lbtn::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,163,245,.22),rgba(56,200,232,.14));opacity:0;transition:opacity .28s}
@@ -166,15 +165,8 @@ body::after{
 /* ══════════════════════════════════════════
    OVERLAY SIDEBAR MOBILE
 ══════════════════════════════════════════ */
-#sb-ov{
-  display:none;
-  position:fixed;inset:0;
-  z-index:98;
-  background:rgba(0,0,0,.6);
-  cursor:pointer;
-  pointer-events:none;
-}
-#sb-ov.show{display:block;pointer-events:all}
+#sb-ov{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.65);cursor:pointer;pointer-events:none}
+#sb-ov.show{display:block;pointer-events:auto}
 
 /* ══════════════════════════════════════════
    SIDEBAR — Desktop: sticky normal
@@ -201,30 +193,32 @@ body::after{
 @media(max-width:768px){
   #admin-view.active{flex-direction:column}
 
-  /* Sidebar tersembunyi di luar layar */
   .sidebar{
-    display:flex !important;   /* selalu flex agar isi bisa di-render */
-    flex-direction:column;
-    position:fixed;
-    top:0;left:0;bottom:0;
-    width:260px;height:100vh;
-    z-index:999;               /* tertinggi, di atas segalanya */
-    background:#040c1c;
-    border-right:1px solid rgba(255,255,255,.08);
-    box-shadow:10px 0 50px rgba(0,0,0,.9);
-    overflow-y:auto;overflow-x:hidden;
-    /* Mulai tersembunyi di kiri */
-    transform:translateX(-110%);
-    visibility:hidden;
-    transition:transform .3s cubic-bezier(.4,0,.2,1), visibility .3s;
-    pointer-events:none;
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    bottom:0 !important;
+    width:260px !important;
+    height:100vh !important;
+    z-index:9999 !important;
+    background:#040c1c !important;
+    border-right:1px solid rgba(255,255,255,.1) !important;
+    box-shadow:12px 0 60px rgba(0,0,0,.95) !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
+    /* Tersembunyi di luar layar kiri */
+    transform:translateX(-110%) !important;
+    transition:transform .28s ease !important;
+    /* pointer-events none saat tertutup */
+    pointer-events:none !important;
   }
 
-  /* Saat open: geser masuk, aktifkan interaksi */
+  /* Saat terbuka */
   .sidebar.open{
-    transform:translateX(0);
-    visibility:visible;
-    pointer-events:all;
+    transform:translateX(0) !important;
+    pointer-events:auto !important;
   }
 
   #hbtn{display:flex !important;align-items:center;justify-content:center}
@@ -237,11 +231,58 @@ body::after{
 
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
-  .sidebar{width:80vw;max-width:275px}
+  .sidebar{width:82vw !important;max-width:280px !important}
 }
 
 /* Admin main */
 #amain{min-width:0;overflow-x:hidden;flex:1;display:flex;flex-direction:column}
+
+/* ── LINK CONTEXT MENU (titik tiga) ── */
+.link-wrap{position:relative;width:100%}
+.link-more-btn{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.7);font-size:.85rem;
+  transition:all .2s;z-index:2;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.link-more-btn:hover{background:rgba(255,255,255,.18);color:white}
+.ctx-menu{
+  position:absolute;right:0;top:calc(100% + 6px);
+  background:#0e1c38;border:1px solid rgba(91,163,245,.3);
+  border-radius:14px;padding:6px;min-width:180px;
+  box-shadow:0 16px 48px rgba(0,0,0,.7);
+  z-index:1000;
+  opacity:0;transform:translateY(-8px) scale(.96);
+  pointer-events:none;
+  transition:all .18s cubic-bezier(.4,0,.2,1);
+}
+.ctx-menu.open{
+  opacity:1;transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+.ctx-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:9px;
+  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.84rem;
+  color:rgba(255,255,255,.85);cursor:pointer;
+  transition:background .15s;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.ctx-item:hover{background:rgba(91,163,245,.18);color:white}
+.ctx-item i{width:16px;text-align:center;color:var(--bl);font-size:.82rem}
+.ctx-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:4px 0}
+/* Toast copy kecil */
+#copy-toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);
+  color:#4ade80;font-family:"Space Grotesk",sans-serif;font-weight:600;
+  font-size:.82rem;padding:8px 18px;border-radius:99px;
+  opacity:0;transition:all .25s;z-index:9999;pointer-events:none;white-space:nowrap;
+}
+#copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -257,6 +298,7 @@ body::after{
 </div>
 
 <div id="toast"></div>
+<div id="copy-toast"></div>
 
 <!-- Overlay sidebar mobile (z-index:98) -->
 <div id="sb-ov" onclick="closeSB()"></div>
@@ -646,12 +688,93 @@ function renderPubLinks(links) {
   if(!links.length){c.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.38);font-size:.84rem;">Belum ada tautan.</p>';return;}
   links.sort((a,b)=>(parseInt(a.order)||99)-(parseInt(b.order)||99));
   links.forEach((lnk,i)=>{
+    // Wrapper
+    const wrap=document.createElement('div');
+    wrap.className='link-wrap fu';
+    wrap.style.animationDelay=`${0.1+i*0.07}s`;
+
+    // Link utama (tanpa arrow kanan karena ada titik tiga)
     const a=document.createElement('a');
     a.href=lnk.url;a.target='_blank';a.rel='noopener noreferrer';
-    a.className='lbtn fu';a.style.animationDelay=`${0.1+i*0.07}s`;
-    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88);"></i></span><span style="flex:1;">${lnk.title}</span><i class="fas fa-arrow-right larr" style="font-size:.75rem;"></i>`;
-    c.appendChild(a);
+    a.className='lbtn';
+    a.style.paddingRight='52px'; // ruang untuk tombol titik tiga
+    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88);"></i></span><span style="flex:1;">${lnk.title}</span>`;
+
+    // Tombol titik tiga
+    const moreBtn=document.createElement('button');
+    moreBtn.className='link-more-btn';
+    moreBtn.innerHTML='<i class="fas fa-ellipsis-vertical"></i>';
+    moreBtn.title='Opsi';
+
+    // Context menu
+    const menuId='ctx-'+i;
+    const menu=document.createElement('div');
+    menu.className='ctx-menu';
+    menu.id=menuId;
+    menu.innerHTML=`
+      <a class="ctx-item" href="${lnk.url}" target="_blank" rel="noopener">
+        <i class="fas fa-external-link-alt"></i> Buka Tautan
+      </a>
+      <a class="ctx-item" onclick="copyLink('${lnk.url.replace(/'/g,"\\'")}')">
+        <i class="fas fa-copy"></i> Salin Tautan
+      </a>
+      <hr class="ctx-divider"/>
+      <a class="ctx-item" onclick="shareLink('${lnk.title.replace(/'/g,"\\'")}','${lnk.url.replace(/'/g,"\\'")}')">
+        <i class="fas fa-share-alt"></i> Bagikan
+      </a>
+      <a class="ctx-item" href="https://wa.me/?text=${encodeURIComponent(lnk.title+' '+lnk.url)}" target="_blank">
+        <i class="fab fa-whatsapp" style="color:#4ade80;"></i> Kirim ke WhatsApp
+      </a>
+      <a class="ctx-item" href="https://t.me/share/url?url=${encodeURIComponent(lnk.url)}&text=${encodeURIComponent(lnk.title)}" target="_blank">
+        <i class="fab fa-telegram" style="color:#38c8e8;"></i> Kirim ke Telegram
+      </a>
+    `;
+
+    // Toggle menu saat tombol diklik
+    moreBtn.addEventListener('click', (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      // Tutup semua menu lain
+      document.querySelectorAll('.ctx-menu.open').forEach(m=>{if(m.id!==menuId)m.classList.remove('open');});
+      menu.classList.toggle('open');
+    });
+
+    wrap.appendChild(a);
+    wrap.appendChild(moreBtn);
+    wrap.appendChild(menu);
+    c.appendChild(wrap);
   });
+
+  // Tutup semua menu saat klik di luar
+  document.addEventListener('click', ()=>{
+    document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
+  }, {once:false});
+}
+
+function copyLink(url){
+  navigator.clipboard.writeText(url).then(()=>{
+    const t=document.getElementById('copy-toast');
+    t.textContent='✓ Tautan disalin!';t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  }).catch(()=>{
+    // Fallback untuk browser lama
+    const ta=document.createElement('textarea');
+    ta.value=url;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');
+    document.body.removeChild(ta);
+    const t=document.getElementById('copy-toast');
+    t.textContent='✓ Tautan disalin!';t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  });
+  document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
+}
+
+function shareLink(title, url){
+  if(navigator.share){
+    navigator.share({title:title,url:url}).catch(()=>{});
+  } else {
+    copyLink(url);
+  }
+  document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
 }
 function renderFloatersBG(floaters) {
   const c=document.getElementById('bg-floaters'); c.innerHTML='';
