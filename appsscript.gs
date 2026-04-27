@@ -1,41 +1,39 @@
 // ═══════════════════════════════════════════════════════════════
 //  LinkSpace — Google Apps Script Backend
-//  Salin seluruh kode ini ke Google Apps Script, lalu Deploy
-//  sebagai Web App dengan akses "Anyone"
+//  Password tersimpan di spreadsheet (sheet "Config")
+//  Jalankan setupSheets() SEKALI sebelum deploy
 // ═══════════════════════════════════════════════════════════════
 
-// ─── GANTI ID SPREADSHEET ANDA DI SINI ───
+// ── GANTI DENGAN ID SPREADSHEET ANDA ──
 const SPREADSHEET_ID = 'GANTI_DENGAN_ID_SPREADSHEET_ANDA';
 
-// Nama sheet (jangan diubah kecuali Anda juga mengubah di kode)
+const SHEET_CONFIG   = 'Config';
 const SHEET_PROFILE  = 'Profile';
 const SHEET_LINKS    = 'Links';
 const SHEET_FLOATERS = 'Floaters';
 
+// Password default saat pertama kali setup
+const DEFAULT_PASSWORD = 'admin123';
+
 // ═══════════════════════════════════════════════════════════════
-//  ENTRY POINT — POST
+//  ENTRY POINT
 // ═══════════════════════════════════════════════════════════════
 function doPost(e) {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json',
-  };
-
   try {
     const body   = JSON.parse(e.postData.contents);
     const action = body.action;
     let result;
 
     switch (action) {
-      case 'getAll':        result = getAll();                  break;
-      case 'saveProfile':   result = saveProfile(body);         break;
-      case 'addLink':       result = addLink(body);             break;
-      case 'updateLink':    result = updateLink(body);          break;
-      case 'deleteLink':    result = deleteLink(body);          break;
-      case 'addFloater':    result = addFloater(body);          break;
-      case 'deleteFloater': result = deleteFloater(body);       break;
+      case 'getAll':          result = getAll();                     break;
+      case 'login':           result = login(body);                  break;
+      case 'changePassword':  result = changePassword(body);         break;
+      case 'saveProfile':     result = saveProfile(body);            break;
+      case 'addLink':         result = addLink(body);                break;
+      case 'updateLink':      result = updateLink(body);             break;
+      case 'deleteLink':      result = deleteLink(body);             break;
+      case 'addFloater':      result = addFloater(body);             break;
+      case 'deleteFloater':   result = deleteFloater(body);          break;
       default:
         result = { ok: false, error: 'Unknown action: ' + action };
     }
@@ -51,9 +49,8 @@ function doPost(e) {
   }
 }
 
-// Untuk handle preflight OPTIONS (CORS)
+// Untuk test langsung di browser (GET)
 function doGet(e) {
-  // Bisa dipakai untuk test: buka URL Apps Script langsung di browser
   const result = getAll();
   return ContentService
     .createTextOutput(JSON.stringify(result))
@@ -61,94 +58,147 @@ function doGet(e) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  SETUP SHEETS — Jalankan fungsi ini SEKALI untuk membuat sheet
+//  SETUP — Jalankan fungsi ini SEKALI dari editor Apps Script
+//  Menu: Run > setupSheets
 // ═══════════════════════════════════════════════════════════════
 function setupSheets() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-  // ── Profile sheet ──
-  let profileSheet = ss.getSheetByName(SHEET_PROFILE);
-  if (!profileSheet) {
-    profileSheet = ss.insertSheet(SHEET_PROFILE);
-  }
-  // Header row
-  profileSheet.getRange(1, 1, 1, 6).setValues([
-    ['name', 'tagline', 'avatar_url', 'color1', 'color2', 'updated_at']
+  // ── Config (password) ──
+  let cfg = ss.getSheetByName(SHEET_CONFIG);
+  if (!cfg) cfg = ss.insertSheet(SHEET_CONFIG);
+  cfg.clearContents();
+  cfg.getRange(1,1,2,2).setValues([
+    ['key',      'value'],
+    ['password', DEFAULT_PASSWORD],
   ]);
-  // Baris data profil (hanya 1 baris, row 2)
-  const existingProfile = profileSheet.getRange(2, 1, 1, 1).getValue();
-  if (!existingProfile) {
-    profileSheet.getRange(2, 1, 1, 6).setValues([
-      ['', '', '', '#2979d4', '#1a4a9e', new Date().toISOString()]
-    ]);
-  }
+  cfg.getRange('A:B').setColumnWidth(0, 180);
 
-  // ── Links sheet ──
-  let linksSheet = ss.getSheetByName(SHEET_LINKS);
-  if (!linksSheet) {
-    linksSheet = ss.insertSheet(SHEET_LINKS);
-  }
-  linksSheet.getRange(1, 1, 1, 5).setValues([
-    ['title', 'url', 'icon', 'order', 'created_at']
+  // ── Profile ──
+  let prof = ss.getSheetByName(SHEET_PROFILE);
+  if (!prof) prof = ss.insertSheet(SHEET_PROFILE);
+  prof.clearContents();
+  prof.getRange(1,1,2,7).setValues([
+    ['name','tagline','avatar_url','color1','color2','updated_at','_reserved'],
+    ['','','','#2979d4','#1a4a9e',new Date().toISOString(),''],
   ]);
 
-  // ── Floaters sheet ──
-  let floatersSheet = ss.getSheetByName(SHEET_FLOATERS);
-  if (!floatersSheet) {
-    floatersSheet = ss.insertSheet(SHEET_FLOATERS);
-  }
-  floatersSheet.getRange(1, 1, 1, 5).setValues([
-    ['url', 'size', 'left', 'top', 'created_at']
-  ]);
+  // ── Links ──
+  let lnk = ss.getSheetByName(SHEET_LINKS);
+  if (!lnk) lnk = ss.insertSheet(SHEET_LINKS);
+  lnk.clearContents();
+  lnk.getRange(1,1,1,5).setValues([['title','url','icon','order','created_at']]);
 
-  Logger.log('✅ Setup selesai! Sheet Profile, Links, dan Floaters telah dibuat.');
+  // ── Floaters ──
+  let flt = ss.getSheetByName(SHEET_FLOATERS);
+  if (!flt) flt = ss.insertSheet(SHEET_FLOATERS);
+  flt.clearContents();
+  flt.getRange(1,1,1,5).setValues([['url','size','left','top','created_at']]);
+
+  Logger.log('✅ Setup selesai! Sheet Config, Profile, Links, Floaters dibuat.');
+  Logger.log('Password default: ' + DEFAULT_PASSWORD);
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  GET ALL DATA
+//  HELPERS — Config sheet
+// ═══════════════════════════════════════════════════════════════
+function getConfig(key) {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_CONFIG);
+  const data  = sheet.getDataRange().getValues();
+  // Row 0 = header, data mulai row 1
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === key) return String(data[i][1]);
+  }
+  return null;
+}
+
+function setConfig(key, value) {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_CONFIG);
+  const data  = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === key) {
+      sheet.getRange(i + 1, 2).setValue(value);
+      return;
+    }
+  }
+  // Key belum ada, tambahkan baris baru
+  sheet.appendRow([key, value]);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════════════
+function login(body) {
+  const storedPwd = getConfig('password') || DEFAULT_PASSWORD;
+  if (body.password !== storedPwd) {
+    throw new Error('Password salah');
+  }
+  // Buat token sederhana berbasis timestamp
+  // Token ini tidak divalidasi server (stateless), hanya dipakai
+  // di client sebagai tanda sudah login dalam sesi ini.
+  const token = 'ls_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  return { ok: true, token: token };
+}
+
+function changePassword(body) {
+  const storedPwd = getConfig('password') || DEFAULT_PASSWORD;
+  if (body.oldPassword !== storedPwd) {
+    throw new Error('Password lama salah');
+  }
+  if (!body.newPassword || body.newPassword.length < 8) {
+    throw new Error('Password baru minimal 8 karakter');
+  }
+  setConfig('password', body.newPassword);
+  return { ok: true };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  GET ALL
 // ═══════════════════════════════════════════════════════════════
 function getAll() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
   // Profile
-  const profileSheet = ss.getSheetByName(SHEET_PROFILE);
-  const profData     = profileSheet.getRange(2, 1, 1, 6).getValues()[0];
+  const profSheet = ss.getSheetByName(SHEET_PROFILE);
+  const profRow   = profSheet.getRange(2,1,1,6).getValues()[0];
   const profile = {
-    name:       profData[0] || '',
-    tagline:    profData[1] || '',
-    avatar_url: profData[2] || '',
-    color1:     profData[3] || '#2979d4',
-    color2:     profData[4] || '#1a4a9e',
+    name:       String(profRow[0] || ''),
+    tagline:    String(profRow[1] || ''),
+    avatar_url: String(profRow[2] || ''),
+    color1:     String(profRow[3] || '#2979d4'),
+    color2:     String(profRow[4] || '#1a4a9e'),
   };
 
   // Links
-  const linksSheet = ss.getSheetByName(SHEET_LINKS);
-  const linksData  = linksSheet.getDataRange().getValues();
+  const lnkSheet = ss.getSheetByName(SHEET_LINKS);
+  const lnkData  = lnkSheet.getDataRange().getValues();
   const links = [];
-  for (let i = 1; i < linksData.length; i++) {
-    const row = linksData[i];
-    if (!row[0] && !row[1]) continue; // Skip empty rows
+  for (let i = 1; i < lnkData.length; i++) {
+    const r = lnkData[i];
+    if (!r[0] && !r[1]) continue;
     links.push({
-      title:  row[0] || '',
-      url:    row[1] || '',
-      icon:   row[2] || '',
-      order:  row[3] || 99,
-      _row:   i + 1, // Actual sheet row number (1-indexed)
+      title: String(r[0] || ''),
+      url:   String(r[1] || ''),
+      icon:  String(r[2] || ''),
+      order: r[3] || 99,
+      _row:  i + 1,
     });
   }
 
   // Floaters
-  const floatersSheet = ss.getSheetByName(SHEET_FLOATERS);
-  const floatersData  = floatersSheet.getDataRange().getValues();
+  const fltSheet = ss.getSheetByName(SHEET_FLOATERS);
+  const fltData  = fltSheet.getDataRange().getValues();
   const floaters = [];
-  for (let i = 1; i < floatersData.length; i++) {
-    const row = floatersData[i];
-    if (!row[0]) continue;
+  for (let i = 1; i < fltData.length; i++) {
+    const r = fltData[i];
+    if (!r[0]) continue;
     floaters.push({
-      url:  row[0] || '',
-      size: row[1] || 120,
-      left: row[2] || 10,
-      top:  row[3] || 20,
+      url:  String(r[0] || ''),
+      size: Number(r[1] || 120),
+      left: Number(r[2] || 10),
+      top:  Number(r[3] || 20),
       _row: i + 1,
     });
   }
@@ -160,10 +210,9 @@ function getAll() {
 //  PROFILE
 // ═══════════════════════════════════════════════════════════════
 function saveProfile(body) {
-  const ss          = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sheet       = ss.getSheetByName(SHEET_PROFILE);
-  // Selalu tulis ke baris 2 (1 baris data profil)
-  sheet.getRange(2, 1, 1, 6).setValues([[
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_PROFILE);
+  sheet.getRange(2,1,1,6).setValues([[
     body.name       || '',
     body.tagline    || '',
     body.avatar_url || '',
@@ -184,7 +233,7 @@ function addLink(body) {
     body.title || '',
     body.url   || '',
     body.icon  || '',
-    body.order || 99,
+    Number(body.order) || 99,
     new Date().toISOString(),
   ]);
   return { ok: true };
@@ -194,12 +243,12 @@ function updateLink(body) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_LINKS);
   const row   = parseInt(body.rowIndex);
-  if (!row || row < 2) throw new Error('Invalid row index');
-  sheet.getRange(row, 1, 1, 5).setValues([[
+  if (!row || row < 2) throw new Error('Row tidak valid');
+  sheet.getRange(row,1,1,5).setValues([[
     body.title || '',
     body.url   || '',
     body.icon  || '',
-    body.order || 99,
+    Number(body.order) || 99,
     new Date().toISOString(),
   ]]);
   return { ok: true };
@@ -209,22 +258,22 @@ function deleteLink(body) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_LINKS);
   const row   = parseInt(body.rowIndex);
-  if (!row || row < 2) throw new Error('Invalid row index');
+  if (!row || row < 2) throw new Error('Row tidak valid');
   sheet.deleteRow(row);
   return { ok: true };
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  FLOATERS (Gambar Background)
+//  FLOATERS
 // ═══════════════════════════════════════════════════════════════
 function addFloater(body) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_FLOATERS);
   sheet.appendRow([
     body.url  || '',
-    body.size || 120,
-    body.left || 10,
-    body.top  || 20,
+    Number(body.size) || 120,
+    Number(body.left) || 10,
+    Number(body.top)  || 20,
     new Date().toISOString(),
   ]);
   return { ok: true };
@@ -234,7 +283,7 @@ function deleteFloater(body) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_FLOATERS);
   const row   = parseInt(body.rowIndex);
-  if (!row || row < 2) throw new Error('Invalid row index');
+  if (!row || row < 2) throw new Error('Row tidak valid');
   sheet.deleteRow(row);
   return { ok: true };
 }
