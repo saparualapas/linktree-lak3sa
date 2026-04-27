@@ -61,6 +61,7 @@ body::after{
   color:var(--w);background:rgba(255,255,255,.09);
   border:1.5px solid rgba(255,255,255,.20);
   cursor:pointer;text-decoration:none;
+  
   transition:all .28s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
 }
 .lbtn::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,163,245,.22),rgba(56,200,232,.14));opacity:0;transition:opacity .28s}
@@ -162,65 +163,46 @@ body::after{
 /* ── PUB NAME ── */
 .pubname{font-size:1.85rem;font-weight:800;background:linear-gradient(135deg,#fff 0%,rgba(124,190,255,.88) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
 
-/* ══════════════════════════════════════════
-   OVERLAY SIDEBAR MOBILE
-══════════════════════════════════════════ */
-#sb-ov{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.65);cursor:pointer;pointer-events:none}
-#sb-ov.show{display:block;pointer-events:auto}
+/* ══════════════════════════════════════
+   SIDEBAR OVERLAY MOBILE
+══════════════════════════════════════ */
+#sb-ov{
+  display:none;
+  position:fixed;inset:0;
+  z-index:9998;
+  background:rgba(0,0,0,.65);
+  cursor:pointer;
+}
+#sb-ov.show{display:block}
 
-/* ══════════════════════════════════════════
-   SIDEBAR — Desktop: sticky normal
-   Mobile: hidden, slide in sebagai drawer
-══════════════════════════════════════════ */
-
-/* DESKTOP: sidebar tampil normal */
+/* Desktop: sidebar normal */
 @media(min-width:769px){
   .sidebar{
-    display:flex;
+    display:flex !important;
     position:sticky;
-    top:0;
-    width:224px;
-    height:100vh;
-    z-index:1;
-    flex-shrink:0;
+    top:0;width:224px;height:100vh;
+    flex-shrink:0;z-index:1;
   }
-  #hbtn{display:none !important}
-  #closesb{display:none !important}
-  #sb-ov{display:none !important}
+  #hbtn,#closesb{display:none !important}
 }
 
-/* MOBILE: sidebar jadi drawer overlay */
+/* Mobile: sidebar drawer pakai left */
 @media(max-width:768px){
   #admin-view.active{flex-direction:column}
-
   .sidebar{
     position:fixed !important;
-    top:0 !important;
-    left:0 !important;
-    bottom:0 !important;
-    width:260px !important;
-    height:100vh !important;
+    top:0 !important;left:-280px !important;
+    width:260px !important;height:100vh !important;
     z-index:9999 !important;
     background:#040c1c !important;
     border-right:1px solid rgba(255,255,255,.1) !important;
     box-shadow:12px 0 60px rgba(0,0,0,.95) !important;
-    overflow-y:auto !important;
-    overflow-x:hidden !important;
-    display:flex !important;
-    flex-direction:column !important;
-    /* Tersembunyi di luar layar kiri */
-    transform:translateX(-110%) !important;
-    transition:transform .28s ease !important;
-    /* pointer-events none saat tertutup */
-    pointer-events:none !important;
+    overflow-y:auto !important;overflow-x:hidden !important;
+    display:flex !important;flex-direction:column !important;
+    transition:left .28s ease !important;
+    /* TIDAK pakai transform agar tidak bikin stacking context */
   }
-
-  /* Saat terbuka */
-  .sidebar.open{
-    transform:translateX(0) !important;
-    pointer-events:auto !important;
-  }
-
+  .sidebar.open{left:0 !important}
   #hbtn{display:flex !important;align-items:center;justify-content:center}
   #closesb{display:flex !important}
   .pgrid{grid-template-columns:1fr !important}
@@ -228,61 +210,77 @@ body::after{
   .acpad{padding:13px !important}
   #amain{width:100% !important}
 }
+@media(max-width:480px){
+  #srow{grid-template-columns:1fr !important}
+  .sidebar{width:80vw !important;left:-82vw !important}
+  .sidebar.open{left:0 !important}
+}
+#amain{min-width:0;overflow-x:hidden;flex:1;display:flex;flex-direction:column}
+}
 
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
-  .sidebar{width:82vw !important;max-width:280px !important}
+  .sidebar{width:80vw;max-width:275px}
 }
 
 /* Admin main */
 #amain{min-width:0;overflow-x:hidden;flex:1;display:flex;flex-direction:column}
 
-/* ── LINK CONTEXT MENU (titik tiga) ── */
+/* ── LINK CONTEXT MENU ── */
 .link-wrap{position:relative;width:100%}
 .link-more-btn{
-  position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  width:32px;height:32px;border-radius:8px;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:rgba(255,255,255,.7);font-size:.85rem;
-  transition:all .2s;z-index:2;flex-shrink:0;
+  cursor:pointer;color:rgba(255,255,255,.75);font-size:.9rem;
+  transition:all .2s;z-index:2;
   -webkit-tap-highlight-color:transparent;
 }
-.link-more-btn:hover{background:rgba(255,255,255,.18);color:white}
+.link-more-btn:hover,.link-more-btn:active{
+  background:rgba(91,163,245,.3);color:white;
+}
 .ctx-menu{
-  position:absolute;right:0;top:calc(100% + 6px);
-  background:#0e1c38;border:1px solid rgba(91,163,245,.3);
-  border-radius:14px;padding:6px;min-width:180px;
-  box-shadow:0 16px 48px rgba(0,0,0,.7);
-  z-index:1000;
-  opacity:0;transform:translateY(-8px) scale(.96);
-  pointer-events:none;
-  transition:all .18s cubic-bezier(.4,0,.2,1);
+  position:fixed;
+  background:#0c1930;
+  border:1px solid rgba(91,163,245,.35);
+  border-radius:14px;padding:6px;
+  min-width:190px;
+  box-shadow:0 20px 60px rgba(0,0,0,.85);
+  z-index:10000;
+  opacity:0;pointer-events:none;
+  transform-origin:top right;
+  transform:scale(.95) translateY(-4px);
+  transition:opacity .15s ease,transform .15s ease;
 }
 .ctx-menu.open{
-  opacity:1;transform:translateY(0) scale(1);
-  pointer-events:auto;
+  opacity:1;pointer-events:auto;
+  transform:scale(1) translateY(0);
 }
 .ctx-item{
   display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:9px;
-  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.84rem;
-  color:rgba(255,255,255,.85);cursor:pointer;
+  padding:10px 13px;border-radius:9px;
+  font-family:"Space Grotesk",sans-serif;
+  font-weight:600;font-size:.85rem;
+  color:rgba(255,255,255,.88);cursor:pointer;
   transition:background .15s;text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent;white-space:nowrap;
 }
-.ctx-item:hover{background:rgba(91,163,245,.18);color:white}
-.ctx-item i{width:16px;text-align:center;color:var(--bl);font-size:.82rem}
-.ctx-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:4px 0}
-/* Toast copy kecil */
+.ctx-item:hover,.ctx-item:active{background:rgba(41,121,212,.25);color:white}
+.ctx-item i{width:17px;text-align:center;color:var(--bl);font-size:.83rem;flex-shrink:0}
+.ctx-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:4px 6px}
 #copy-toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);
-  color:#4ade80;font-family:"Space Grotesk",sans-serif;font-weight:600;
-  font-size:.82rem;padding:8px 18px;border-radius:99px;
-  opacity:0;transition:all .25s;z-index:9999;pointer-events:none;white-space:nowrap;
+  position:fixed;bottom:70px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(34,197,94,.22);border:1px solid rgba(34,197,94,.45);
+  color:#4ade80;font-family:"Space Grotesk",sans-serif;
+  font-weight:600;font-size:.83rem;
+  padding:9px 20px;border-radius:99px;
+  opacity:0;transition:all .25s;
+  z-index:11000;pointer-events:none;white-space:nowrap;
 }
 #copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 </style>
 </head>
 <body>
@@ -685,97 +683,100 @@ function renderPubProfile(p) {
 function renderPubLinks(links) {
   const c=document.getElementById('pub-links');
   c.innerHTML='';
-  if(!links.length){c.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.38);font-size:.84rem;">Belum ada tautan.</p>';return;}
+  // Hapus ctx-menu lama dari body
+  document.querySelectorAll('.ctx-menu').forEach(m=>m.remove());
+  if(!links.length){
+    c.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.38);font-size:.84rem;">Belum ada tautan.</p>';
+    return;
+  }
   links.sort((a,b)=>(parseInt(a.order)||99)-(parseInt(b.order)||99));
   links.forEach((lnk,i)=>{
-    // Wrapper
     const wrap=document.createElement('div');
     wrap.className='link-wrap fu';
     wrap.style.animationDelay=`${0.1+i*0.07}s`;
 
-    // Link utama (tanpa arrow kanan karena ada titik tiga)
     const a=document.createElement('a');
     a.href=lnk.url;a.target='_blank';a.rel='noopener noreferrer';
     a.className='lbtn';
-    a.style.paddingRight='52px'; // ruang untuk tombol titik tiga
-    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88);"></i></span><span style="flex:1;">${lnk.title}</span>`;
+    a.style.paddingRight='54px';
+    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88);"></i></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${lnk.title}</span>`;
 
-    // Tombol titik tiga
-    const moreBtn=document.createElement('button');
-    moreBtn.className='link-more-btn';
-    moreBtn.innerHTML='<i class="fas fa-ellipsis-vertical"></i>';
-    moreBtn.title='Opsi';
+    const btn=document.createElement('button');
+    btn.className='link-more-btn';
+    btn.innerHTML='<i class="fas fa-ellipsis-vertical"></i>';
 
-    // Context menu
-    const menuId='ctx-'+i;
-    const menu=document.createElement('div');
-    menu.className='ctx-menu';
-    menu.id=menuId;
-    menu.innerHTML=`
-      <a class="ctx-item" href="${lnk.url}" target="_blank" rel="noopener">
-        <i class="fas fa-external-link-alt"></i> Buka Tautan
-      </a>
-      <a class="ctx-item" onclick="copyLink('${lnk.url.replace(/'/g,"\\'")}')">
-        <i class="fas fa-copy"></i> Salin Tautan
-      </a>
-      <hr class="ctx-divider"/>
-      <a class="ctx-item" onclick="shareLink('${lnk.title.replace(/'/g,"\\'")}','${lnk.url.replace(/'/g,"\\'")}')">
-        <i class="fas fa-share-alt"></i> Bagikan
-      </a>
-      <a class="ctx-item" href="https://wa.me/?text=${encodeURIComponent(lnk.title+' '+lnk.url)}" target="_blank">
-        <i class="fab fa-whatsapp" style="color:#4ade80;"></i> Kirim ke WhatsApp
-      </a>
-      <a class="ctx-item" href="https://t.me/share/url?url=${encodeURIComponent(lnk.url)}&text=${encodeURIComponent(lnk.title)}" target="_blank">
-        <i class="fab fa-telegram" style="color:#38c8e8;"></i> Kirim ke Telegram
-      </a>
-    `;
+    // ctx-menu di-append ke body (position:fixed) agar tidak terpotong parent
+    const menuEl=document.createElement('div');
+    menuEl.className='ctx-menu';
+    const waUrl='https://wa.me/?text='+encodeURIComponent(lnk.title+' - '+lnk.url);
+    const tgUrl='https://t.me/share/url?url='+encodeURIComponent(lnk.url)+'&text='+encodeURIComponent(lnk.title);
+    menuEl.innerHTML=
+      '<a class="ctx-item" href="'+lnk.url+'" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i>Buka Tautan</a>'+
+      '<a class="ctx-item" onclick="copyLnk(this)" data-url="'+lnk.url.replace(/"/g,'&quot;')+'"><i class="fas fa-copy"></i>Salin Tautan</a>'+
+      '<hr class="ctx-divider"/>'+
+      '<a class="ctx-item" onclick="shareLnk(this)" data-title="'+lnk.title.replace(/"/g,'&quot;')+'" data-url="'+lnk.url.replace(/"/g,'&quot;')+'"><i class="fas fa-share-alt"></i>Bagikan</a>'+
+      '<a class="ctx-item" href="'+waUrl+'" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#4ade80;"></i>WhatsApp</a>'+
+      '<a class="ctx-item" href="'+tgUrl+'" target="_blank" rel="noopener"><i class="fab fa-telegram" style="color:#38c8e8;"></i>Telegram</a>';
+    document.body.appendChild(menuEl);
 
-    // Toggle menu saat tombol diklik
-    moreBtn.addEventListener('click', (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      // Tutup semua menu lain
-      document.querySelectorAll('.ctx-menu.open').forEach(m=>{if(m.id!==menuId)m.classList.remove('open');});
-      menu.classList.toggle('open');
+    btn.addEventListener('click',(e)=>{
+      e.preventDefault();e.stopPropagation();
+      const isOpen=menuEl.classList.contains('open');
+      document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
+      if(!isOpen){
+        const rect=btn.getBoundingClientRect();
+        menuEl.style.top=(rect.bottom+6)+'px';
+        menuEl.style.right=(window.innerWidth-rect.right)+'px';
+        menuEl.style.left='auto';
+        menuEl.classList.add('open');
+        // Cek apakah keluar layar bawah
+        requestAnimationFrame(()=>{
+          const mr=menuEl.getBoundingClientRect();
+          if(mr.bottom>window.innerHeight-8){
+            menuEl.style.top=(rect.top-mr.height-6)+'px';
+          }
+          if(mr.left<8){menuEl.style.right='auto';menuEl.style.left='8px';}
+        });
+      }
     });
 
     wrap.appendChild(a);
-    wrap.appendChild(moreBtn);
-    wrap.appendChild(menu);
+    wrap.appendChild(btn);
     c.appendChild(wrap);
   });
-
-  // Tutup semua menu saat klik di luar
-  document.addEventListener('click', ()=>{
-    document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
-  }, {once:false});
 }
 
-function copyLink(url){
-  navigator.clipboard.writeText(url).then(()=>{
+// Tutup ctx-menu saat klik di luar
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
+});
+
+function copyLnk(el){
+  const url=el.dataset.url;
+  const doToast=()=>{
     const t=document.getElementById('copy-toast');
-    t.textContent='✓ Tautan disalin!';t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2000);
-  }).catch(()=>{
-    // Fallback untuk browser lama
-    const ta=document.createElement('textarea');
-    ta.value=url;ta.style.position='fixed';ta.style.opacity='0';
-    document.body.appendChild(ta);ta.select();document.execCommand('copy');
-    document.body.removeChild(ta);
-    const t=document.getElementById('copy-toast');
-    t.textContent='✓ Tautan disalin!';t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2000);
-  });
+    t.textContent='✓ Tautan berhasil disalin!';t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2200);
+  };
+  if(navigator.clipboard){navigator.clipboard.writeText(url).then(doToast).catch(()=>{fbCopy(url);doToast();});}
+  else{fbCopy(url);doToast();}
+  document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
+}
+function fbCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+function shareLnk(el){
+  const title=el.dataset.title,url=el.dataset.url;
+  if(navigator.share){navigator.share({title,url}).catch(()=>{});}
+  else{copyLnk({dataset:{url}});}
   document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
 }
 
-function shareLink(title, url){
-  if(navigator.share){
-    navigator.share({title:title,url:url}).catch(()=>{});
-  } else {
-    copyLink(url);
-  }
-  document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
-}
+
 function renderFloatersBG(floaters) {
   const c=document.getElementById('bg-floaters'); c.innerHTML='';
   floaters.forEach((f,i)=>{
@@ -948,14 +949,13 @@ function togSB(){
   const sb=document.getElementById('sidebar');
   const ov=document.getElementById('sb-ov');
   const cb=document.getElementById('closesb');
-  const isOpen=!sb.classList.contains('open');
-  if(isOpen){
+  const isOpen=sb.classList.contains('open');
+  if(isOpen){ closeSB(); }
+  else {
     sb.classList.add('open');
     ov.classList.add('show');
     if(cb)cb.style.display='flex';
     document.body.style.overflow='hidden';
-  } else {
-    closeSB();
   }
 }
 function closeSB(){
