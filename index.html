@@ -2,43 +2,44 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Lak3saLink — Lapas Saparua</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lak3saLink — Lapas Kelas III Saparua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
+/* ── TOKENS ── */
 :root{
-  --bd:#06101f;--bd2:#0a1a30;--bm:#11285a;--bb:#1e56b0;
-  --bl:#5ba3f5;--bg:#7cbeff;--cy:#38c8e8;
-  --w:rgba(255,255,255,1);--w9:rgba(255,255,255,.90);
-  --w6:rgba(255,255,255,.60);--w3:rgba(255,255,255,.30);
-  --w1:rgba(255,255,255,.10);--w06:rgba(255,255,255,.06);
+  --bd:#06101f;--bl:#5ba3f5;--bg:#7cbeff;--cy:#38c8e8;
+  --w:rgba(255,255,255,1);--w9:rgba(255,255,255,.9);
+  --w6:rgba(255,255,255,.6);--w3:rgba(255,255,255,.3);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bd);color:var(--w);min-height:100vh;overflow-x:hidden}
-h1,h2,h3,.fd{font-family:"Space Grotesk",sans-serif}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:#06101f;color:var(--w);min-height:100vh;overflow-x:hidden}
+.fd{font-family:"Space Grotesk",sans-serif}
+h1,h2,h3{font-family:"Space Grotesk",sans-serif}
 
-/* ── BG via pseudo-elements (TIDAK ganggu klik) ── */
+/* ── BACKGROUND (pseudo-elements, z-index negatif, TIDAK halangi klik) ── */
 body::before{
   content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:
-    radial-gradient(ellipse 80% 60% at 15% 5%,rgba(30,86,176,.58) 0%,transparent 55%),
-    radial-gradient(ellipse 65% 55% at 85% 90%,rgba(17,40,90,.78) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(56,200,232,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 5%,rgba(30,86,176,.55) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 55% at 85% 90%,rgba(17,40,90,.75) 0%,transparent 55%),
     linear-gradient(155deg,#06101f 0%,#0a1a30 35%,#0e2248 65%,#06101f 100%);
   animation:bgp 22s ease-in-out infinite alternate;
 }
-@keyframes bgp{0%{filter:brightness(1) hue-rotate(0deg)}100%{filter:brightness(1.07) hue-rotate(7deg)}}
+@keyframes bgp{0%{filter:brightness(1)}100%{filter:brightness(1.08) hue-rotate(6deg)}}
 body::after{
   content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
   background-size:54px 54px;
 }
 
-/* ── FLOATERS (di bawah semua konten) ── */
+/* ── FLOATERS ── */
 #bg-floaters{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .bg-floater{
   position:absolute;border-radius:50%;object-fit:cover;
@@ -46,100 +47,238 @@ body::after{
   border:1px solid rgba(255,255,255,.06);
   animation:floatImg 20s ease-in-out infinite;
 }
-@keyframes floatImg{0%{transform:translateY(0) rotate(0deg);opacity:.18}50%{transform:translateY(-24px) rotate(4deg);opacity:.27}100%{transform:translateY(0) rotate(-3deg);opacity:.18}}
+@keyframes floatImg{
+  0%{transform:translateY(0) rotate(0deg);opacity:.18}
+  50%{transform:translateY(-24px) rotate(4deg);opacity:.28}
+  100%{transform:translateY(0) rotate(-3deg);opacity:.18}
+}
+
+/* ── PUBLIC PAGE BG — lebih terang ── */
+.pub-bg{
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 0%,rgba(41,121,212,.45) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 5%,rgba(56,200,232,.2) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 55% at 85% 90%,rgba(30,86,176,.35) 0%,transparent 55%),
+    linear-gradient(160deg,#0d2144 0%,#112a5c 40%,#0f2248 70%,#0a1a30 100%);
+}
 
 /* ── VIEWS ── */
 .view{display:none}
 .view.active{display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
-#admin-view.active{flex-direction:row}
-
-/* ── LINK BTN ── */
-.lbtn{
-  display:flex;align-items:center;gap:13px;width:100%;
-  padding:15px 18px;border-radius:17px;
-  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.97rem;
-  color:var(--w);background:rgba(255,255,255,.09);
-  border:1.5px solid rgba(255,255,255,.20);
-  cursor:pointer;text-decoration:none;
-  
-  transition:all .28s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
-}
-.lbtn::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,163,245,.22),rgba(56,200,232,.14));opacity:0;transition:opacity .28s}
-.lbtn:hover{transform:translateY(-3px) scale(1.012);border-color:rgba(124,190,255,.55);box-shadow:0 12px 32px rgba(20,70,160,.45)}
-.lbtn:hover::before{opacity:1}
-.lic{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;transition:background .2s}
-.lbtn:hover .lic{background:rgba(91,163,245,.28)}
-.larr{margin-left:auto;flex-shrink:0;opacity:0;transform:translateX(-8px);transition:all .28s}
-.lbtn:hover .larr{opacity:.7;transform:translateX(0)}
-
-/* ── AVATAR RING ── */
-.aring{display:inline-block;border-radius:50%;padding:3px;background:linear-gradient(135deg,var(--cy),var(--bl),rgba(255,255,255,.5));box-shadow:0 0 32px rgba(56,200,232,.28)}
-.aring img{width:110px;height:110px;border-radius:50%;display:block;object-fit:cover;border:3px solid var(--bd)}
+#admin-view.active{flex-direction:row;height:100vh;overflow:hidden}
 
 /* ── GLASS ── */
-.glass{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.glass{
+  background:rgba(255,255,255,.09);
+  border:1.5px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+
+/* ── LINK BUTTON (public) — tanpa backdrop-filter! ── */
+.lbtn{
+  display:flex;align-items:center;gap:13px;
+  width:100%;padding:16px 18px;border-radius:18px;
+  font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1rem;
+  color:var(--w);
+  background:rgba(255,255,255,.12);
+  border:1.5px solid rgba(255,255,255,.25);
+  cursor:pointer;text-decoration:none;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+  position:relative;overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,.2);
+}
+.lbtn::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(91,163,245,.18),rgba(56,200,232,.12));
+  opacity:0;transition:opacity .25s;
+}
+.lbtn:hover{
+  transform:translateY(-3px);
+  border-color:rgba(124,190,255,.6);
+  box-shadow:0 12px 32px rgba(20,70,160,.4);
+  background:rgba(255,255,255,.18);
+}
+.lbtn:hover::after{opacity:1}
+.lic{
+  width:40px;height:40px;border-radius:11px;
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1.05rem;transition:background .2s;
+}
+.lbtn:hover .lic{background:rgba(91,163,245,.32)}
+
+/* ── LINK WRAP & MORE BTN ── */
+.link-wrap{position:relative;width:100%}
+.link-more-btn{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.7);font-size:.9rem;
+  transition:all .2s;z-index:2;
+  -webkit-tap-highlight-color:transparent;
+  /* PENTING: TIDAK pakai backdrop-filter */
+}
+.link-more-btn:hover,.link-more-btn:active{
+  background:rgba(91,163,245,.3);color:white;
+}
+
+/* ── CONTEXT MENU (position:fixed, append ke body) ── */
+.ctx-menu{
+  position:fixed;
+  background:#0c1930;
+  border:1px solid rgba(91,163,245,.4);
+  border-radius:14px;padding:6px;
+  min-width:195px;
+  box-shadow:0 24px 64px rgba(0,0,0,.85),0 0 0 1px rgba(91,163,245,.1);
+  z-index:99999;
+  opacity:0;pointer-events:none;
+  transform-origin:top right;
+  transform:scale(.94) translateY(-6px);
+  transition:opacity .15s ease,transform .15s ease;
+}
+.ctx-menu.open{
+  opacity:1;pointer-events:auto;
+  transform:scale(1) translateY(0);
+}
+.ctx-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 13px;border-radius:10px;
+  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.86rem;
+  color:rgba(255,255,255,.9);cursor:pointer;
+  transition:background .15s;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;white-space:nowrap;
+}
+.ctx-item:hover,.ctx-item:active{background:rgba(41,121,212,.28);color:white}
+.ctx-item i{width:17px;text-align:center;color:var(--bl);font-size:.84rem;flex-shrink:0}
+.ctx-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:4px 6px}
+
+/* ── COPY TOAST ── */
+#copy-toast{
+  position:fixed;bottom:72px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(34,197,94,.22);border:1px solid rgba(34,197,94,.45);
+  color:#4ade80;font-family:"Space Grotesk",sans-serif;
+  font-weight:600;font-size:.83rem;
+  padding:9px 22px;border-radius:99px;
+  opacity:0;transition:all .25s;
+  z-index:99999;pointer-events:none;white-space:nowrap;
+}
+#copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── AVATAR ── */
+.aring{
+  display:inline-block;border-radius:50%;padding:3px;
+  background:linear-gradient(135deg,var(--cy),var(--bl),rgba(255,255,255,.6));
+  box-shadow:0 0 36px rgba(56,200,232,.35);
+}
+.aring img{
+  width:115px;height:115px;border-radius:50%;
+  display:block;object-fit:cover;
+  border:3px solid #0a1a30;
+}
+
+/* ── PUBLIC NAME ── */
+.pubname{
+  font-size:1.9rem;font-weight:800;
+  background:linear-gradient(135deg,#fff 0%,rgba(160,210,255,.95) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.2;
+}
+.pubtagline{
+  font-size:.95rem;
+  color:rgba(255,255,255,.72);
+  font-weight:400;
+}
+
+/* ── BADGE ── */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border-radius:99px;
+  font-size:.7rem;font-weight:700;
+  font-family:"Space Grotesk",sans-serif;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.badge-b{
+  background:rgba(41,121,212,.22);
+  border:1px solid rgba(91,163,245,.42);
+  color:var(--bg);
+}
 
 /* ── INPUTS ── */
-.inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;color:var(--w);font-family:"Plus Jakarta Sans",sans-serif;font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.inp{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;color:var(--w);
+  font-family:"Plus Jakarta Sans",sans-serif;
+  font-size:.88rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
 .inp:focus{border-color:var(--bl);box-shadow:0 0 0 3px rgba(91,163,245,.18)}
-.inp::placeholder{color:rgba(255,255,255,.26)}
-.lbl{display:block;font-size:.71rem;font-weight:600;color:rgba(255,255,255,.42);margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+.inp::placeholder{color:rgba(255,255,255,.28)}
+.lbl{
+  display:block;font-size:.71rem;font-weight:600;
+  color:rgba(255,255,255,.44);margin-bottom:4px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
 
 /* ── BUTTONS ── */
-.btn-p{padding:11px 22px;background:linear-gradient(135deg,#2979d4,#1a4a9e);border:1px solid rgba(91,163,245,.38);border-radius:10px;color:white;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(20,70,160,.38)}
+.btn-p{
+  padding:11px 22px;
+  background:linear-gradient(135deg,#2979d4,#1a4a9e);
+  border:1px solid rgba(91,163,245,.38);
+  border-radius:10px;color:white;
+  font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:.9rem;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px rgba(20,70,160,.38);
+}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,70,160,.55)}
 .btn-p:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn-d{padding:7px 12px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.28);border-radius:8px;color:#f87171;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;transition:all .2s}
-.btn-d:hover{background:rgba(239,68,68,.22)}
-.btn-s{padding:7px 12px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);border-radius:8px;color:#4ade80;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;transition:all .2s}
-.btn-s:hover{background:rgba(34,197,94,.22)}
-.btn-c{padding:11px 22px;background:linear-gradient(135deg,rgba(56,200,232,.18),rgba(91,163,245,.18));border:1px solid rgba(56,200,232,.38);border-radius:10px;color:var(--cy);font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s}
-.btn-c:hover{background:linear-gradient(135deg,rgba(56,200,232,.28),rgba(91,163,245,.28));transform:translateY(-1px)}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  width:224px;flex-shrink:0;
-  background:rgba(5,12,30,.98);
-  border-right:1px solid rgba(255,255,255,.07);
-  display:flex;flex-direction:column;
-  height:100vh;position:sticky;top:0;overflow-y:auto;
-  /* PENTING: z-index normal di desktop, akan di-override mobile */
-  z-index:1;
+.btn-d{
+  padding:7px 12px;background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.28);border-radius:8px;
+  color:#f87171;font-family:"Space Grotesk",sans-serif;
+  font-weight:600;font-size:.8rem;cursor:pointer;transition:all .2s;
 }
-.nitem{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.84rem;color:var(--w6);cursor:pointer;transition:all .2s;text-decoration:none;margin:2px 0;border-left:2px solid transparent}
-.nitem:hover,.nitem.active{background:rgba(41,121,212,.17);color:var(--w)}
-.nitem.active{color:var(--bg);border-left-color:var(--bg);padding-left:11px}
-.nitem i{width:17px;text-align:center;font-size:.88rem}
-
-/* ── PANELS ── */
-.apanel{display:none}.apanel.active{display:block}
-
-/* ── LINK ITEM ADMIN ── */
-.lia{display:flex;align-items:center;gap:11px;padding:11px 13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;transition:all .2s}
-.lia:hover{background:rgba(255,255,255,.07)}
-
-/* ── FLOATER ITEM ── */
-.fitem{display:flex;align-items:center;gap:11px;padding:10px 13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:8px}
-.fthumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}
+.btn-d:hover{background:rgba(239,68,68,.22)}
+.btn-s{
+  padding:7px 12px;background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.28);border-radius:8px;
+  color:#4ade80;font-family:"Space Grotesk",sans-serif;
+  font-weight:600;font-size:.8rem;cursor:pointer;transition:all .2s;
+}
+.btn-s:hover{background:rgba(34,197,94,.22)}
+.btn-c{
+  padding:11px 22px;
+  background:linear-gradient(135deg,rgba(56,200,232,.2),rgba(91,163,245,.2));
+  border:1px solid rgba(56,200,232,.4);border-radius:10px;
+  color:var(--cy);font-family:"Space Grotesk",sans-serif;
+  font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;
+}
+.btn-c:hover{transform:translateY(-1px);background:linear-gradient(135deg,rgba(56,200,232,.3),rgba(91,163,245,.3))}
 
 /* ── TOAST ── */
-#toast{position:fixed;bottom:22px;right:22px;padding:12px 18px;border-radius:12px;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.875rem;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px}
+#toast{
+  position:fixed;bottom:22px;right:22px;
+  padding:12px 18px;border-radius:12px;
+  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.875rem;
+  z-index:99998;transform:translateY(80px);opacity:0;
+  transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px;
+}
 #toast.show{transform:translateY(0);opacity:1}
 #toast.success{background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.33);color:#4ade80}
 #toast.error{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.33);color:#f87171}
-#toast.info{background:rgba(91,163,245,.18);border:1px solid rgba(91,163,245,.33);color:#93c5fd}
-
-/* ── BADGE ── */
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-size:.7rem;font-weight:700;font-family:"Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.badge-b{background:rgba(41,121,212,.2);border:1px solid rgba(91,163,245,.38);color:var(--bg)}
-
-/* ── ANIM ── */
-.fu{animation:fadeUp .65s cubic-bezier(.4,0,.2,1) both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.s1{animation-delay:.06s}.s2{animation-delay:.14s}.s3{animation-delay:.22s}.s4{animation-delay:.30s}
 
 /* ── SPINNER ── */
-.sp{width:18px;height:18px;display:inline-block;border:2px solid rgba(255,255,255,.2);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
+.sp{
+  width:18px;height:18px;display:inline-block;
+  border:2px solid rgba(255,255,255,.2);
+  border-top-color:white;border-radius:50%;
+  animation:spin .7s linear infinite;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── DIVIDER ── */
@@ -148,180 +287,201 @@ body::after{
 /* ── STAT CARD ── */
 .sc{background:rgba(41,121,212,.1);border:1px solid rgba(91,163,245,.2);border-radius:14px;padding:17px}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px}
-
-/* ── MODAL ── */
-.mwrap{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.mwrap.open{display:flex}
+/* ── ANIM ── */
+.fu{animation:fadeUp .65s cubic-bezier(.4,0,.2,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.s1{animation-delay:.06s}.s2{animation-delay:.14s}.s3{animation-delay:.22s}.s4{animation-delay:.3s}
 
 /* ── LOADING ── */
-#lscreen{position:fixed;inset:0;z-index:500;background:var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
-#lscreen.hide{opacity:0;pointer-events:none}
-.llogo{font-family:"Space Grotesk",sans-serif;font-weight:800;font-size:2rem;background:linear-gradient(135deg,#fff,#38c8e8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-/* ── PUB NAME ── */
-.pubname{font-size:1.85rem;font-weight:800;background:linear-gradient(135deg,#fff 0%,rgba(124,190,255,.88) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
-
-/* ══════════════════════════════════════
-   SIDEBAR OVERLAY MOBILE
-══════════════════════════════════════ */
-#sb-ov{
-  display:none;
-  position:fixed;inset:0;
-  z-index:9998;
-  background:rgba(0,0,0,.65);
-  cursor:pointer;
+#lscreen{
+  position:fixed;inset:0;z-index:9000;
+  background:#06101f;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:opacity .4s;
 }
-#sb-ov.show{display:block}
+#lscreen.hide{opacity:0;pointer-events:none}
+.llogo{
+  font-family:"Space Grotesk",sans-serif;font-weight:800;font-size:2rem;
+  background:linear-gradient(135deg,#fff,#38c8e8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 
-/* Desktop: sidebar normal */
+/* ── MODAL ── */
+.mwrap{
+  display:none;position:fixed;inset:0;z-index:8000;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.75);
+}
+.mwrap.open{display:flex}
+
+/* ══════════════════════════════════════════
+   ADMIN LAYOUT
+══════════════════════════════════════════ */
+/* Sidebar base style */
+.sidebar{
+  background:#040c1c;
+  border-right:1px solid rgba(255,255,255,.07);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+}
+.nitem{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;border-radius:10px;
+  font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.85rem;
+  color:var(--w6);cursor:pointer;transition:all .2s;
+  text-decoration:none;margin:2px 0;border-left:2px solid transparent;
+}
+.nitem:hover,.nitem.active{background:rgba(41,121,212,.18);color:var(--w)}
+.nitem.active{color:var(--bg);border-left-color:var(--bg);padding-left:12px}
+.nitem i{width:18px;text-align:center;font-size:.88rem}
+.apanel{display:none}.apanel.active{display:block}
+.lia{
+  display:flex;align-items:center;gap:11px;padding:11px 13px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;transition:all .2s;
+}
+.lia:hover{background:rgba(255,255,255,.07)}
+.fitem{
+  display:flex;align-items:center;gap:11px;padding:10px 13px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;margin-bottom:8px;
+}
+.fthumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px}
+
+/* ══════════════════════════════════════════
+   DESKTOP LAYOUT (≥769px)
+══════════════════════════════════════════ */
 @media(min-width:769px){
   .sidebar{
-    display:flex !important;
-    position:sticky;
-    top:0;width:224px;height:100vh;
-    flex-shrink:0;z-index:1;
+    width:224px;flex-shrink:0;
+    position:sticky;top:0;height:100vh;
+    /* TIDAK ada z-index tinggi di desktop */
   }
-  #hbtn,#closesb{display:none !important}
+  #hbtn,#closesb,#sb-ov{display:none !important}
+  #amain{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 }
 
-/* Mobile: sidebar drawer pakai left */
+/* ══════════════════════════════════════════
+   MOBILE LAYOUT (≤768px)
+   SOLUSI FINAL: sidebar pakai left property,
+   TIDAK ada transform, TIDAK ada visibility,
+   TIDAK ada backdrop-filter
+══════════════════════════════════════════ */
 @media(max-width:768px){
-  #admin-view.active{flex-direction:column}
+  /* Admin view: column di mobile */
+  #admin-view.active{
+    flex-direction:column !important;
+    height:auto !important;
+    overflow:visible !important;
+  }
+
+  /* Sidebar: drawer dari kiri, awalnya hidden di luar layar */
   .sidebar{
     position:fixed !important;
-    top:0 !important;left:-280px !important;
-    width:260px !important;height:100vh !important;
-    z-index:9999 !important;
-    background:#040c1c !important;
-    border-right:1px solid rgba(255,255,255,.1) !important;
-    box-shadow:12px 0 60px rgba(0,0,0,.95) !important;
-    overflow-y:auto !important;overflow-x:hidden !important;
-    display:flex !important;flex-direction:column !important;
-    transition:left .28s ease !important;
-    /* TIDAK pakai transform agar tidak bikin stacking context */
+    top:0 !important;
+    /* Mulai tersembunyi di kiri: left negatif = lebar sidebar */
+    left:-270px !important;
+    width:260px !important;
+    height:100vh !important;
+    /* Z-index SANGAT tinggi, di atas apapun */
+    z-index:9000 !important;
+    background:#030b18 !important;
+    box-shadow:none !important;
+    /* Animasi dengan left property (BUKAN transform) */
+    transition:left .28s ease, box-shadow .28s ease !important;
   }
-  .sidebar.open{left:0 !important}
+
+  /* Saat open: geser ke kanan masuk layar */
+  .sidebar.open{
+    left:0 !important;
+    box-shadow:15px 0 50px rgba(0,0,0,.9) !important;
+  }
+
+  /* Overlay di belakang sidebar */
+  #sb-ov{
+    display:none;
+    position:fixed !important;
+    inset:0 !important;
+    z-index:8999 !important; /* tepat di bawah sidebar */
+    background:rgba(0,0,0,.65) !important;
+    cursor:pointer;
+  }
+  #sb-ov.show{display:block !important}
+
+  /* Hamburger dan close button */
   #hbtn{display:flex !important;align-items:center;justify-content:center}
   #closesb{display:flex !important}
+
+  /* Admin main: full width */
+  #amain{
+    width:100% !important;
+    min-width:0;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+  }
+
+  /* Grid panels */
   .pgrid{grid-template-columns:1fr !important}
   #srow{grid-template-columns:1fr 1fr !important}
   .acpad{padding:13px !important}
-  #amain{width:100% !important}
 }
+
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
-  .sidebar{width:80vw !important;left:-82vw !important}
+  .sidebar{left:-82vw !important;width:80vw !important}
   .sidebar.open{left:0 !important}
 }
-#amain{min-width:0;overflow-x:hidden;flex:1;display:flex;flex-direction:column}
-}
-
-@media(max-width:480px){
-  #srow{grid-template-columns:1fr !important}
-  .sidebar{width:80vw;max-width:275px}
-}
-
-/* Admin main */
-#amain{min-width:0;overflow-x:hidden;flex:1;display:flex;flex-direction:column}
-
-/* ── LINK CONTEXT MENU ── */
-.link-wrap{position:relative;width:100%}
-.link-more-btn{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:34px;height:34px;border-radius:9px;
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:rgba(255,255,255,.75);font-size:.9rem;
-  transition:all .2s;z-index:2;
-  -webkit-tap-highlight-color:transparent;
-}
-.link-more-btn:hover,.link-more-btn:active{
-  background:rgba(91,163,245,.3);color:white;
-}
-.ctx-menu{
-  position:fixed;
-  background:#0c1930;
-  border:1px solid rgba(91,163,245,.35);
-  border-radius:14px;padding:6px;
-  min-width:190px;
-  box-shadow:0 20px 60px rgba(0,0,0,.85);
-  z-index:10000;
-  opacity:0;pointer-events:none;
-  transform-origin:top right;
-  transform:scale(.95) translateY(-4px);
-  transition:opacity .15s ease,transform .15s ease;
-}
-.ctx-menu.open{
-  opacity:1;pointer-events:auto;
-  transform:scale(1) translateY(0);
-}
-.ctx-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 13px;border-radius:9px;
-  font-family:"Space Grotesk",sans-serif;
-  font-weight:600;font-size:.85rem;
-  color:rgba(255,255,255,.88);cursor:pointer;
-  transition:background .15s;text-decoration:none;
-  -webkit-tap-highlight-color:transparent;white-space:nowrap;
-}
-.ctx-item:hover,.ctx-item:active{background:rgba(41,121,212,.25);color:white}
-.ctx-item i{width:17px;text-align:center;color:var(--bl);font-size:.83rem;flex-shrink:0}
-.ctx-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin:4px 6px}
-#copy-toast{
-  position:fixed;bottom:70px;left:50%;
-  transform:translateX(-50%) translateY(16px);
-  background:rgba(34,197,94,.22);border:1px solid rgba(34,197,94,.45);
-  color:#4ade80;font-family:"Space Grotesk",sans-serif;
-  font-weight:600;font-size:.83rem;
-  padding:9px 20px;border-radius:99px;
-  opacity:0;transition:all .25s;
-  z-index:11000;pointer-events:none;white-space:nowrap;
-}
-#copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 </style>
 </head>
 <body>
 
-<!-- bg floaters (z-index:-1, TIDAK halangi klik) -->
+<!-- Floaters BG (z-index:-1) -->
 <div id="bg-floaters"></div>
 
-<!-- Loading -->
+<!-- Loading (z-index:9000, sama dengan sidebar tapi tampil duluan) -->
 <div id="lscreen">
   <div class="llogo">Lak3saLink</div>
   <div class="sp"></div>
   <p style="font-size:.8rem;color:rgba(255,255,255,.38);margin-top:4px;">Menghubungkan ke server...</p>
 </div>
 
+<!-- Toast notif -->
 <div id="toast"></div>
 <div id="copy-toast"></div>
 
-<!-- Overlay sidebar mobile (z-index:98) -->
+<!-- Overlay sidebar (mobile only, z-index:8999) -->
 <div id="sb-ov" onclick="closeSB()"></div>
 
-<!-- ═════════ PUBLIC ═════════ -->
-<div id="public-view" class="view">
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px;">
-    <div style="width:100%;max-width:420px;">
-      <div class="fu" style="text-align:center;margin-bottom:30px;">
-        <div class="aring" style="display:inline-block;margin-bottom:16px;">
+<!-- ═══════ PUBLIC VIEW ═══════ -->
+<div id="public-view" class="view pub-bg">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:52px 20px;">
+    <div style="width:100%;max-width:440px;">
+
+      <!-- Profile -->
+      <div class="fu" style="text-align:center;margin-bottom:34px;">
+        <div class="aring" style="display:inline-block;margin-bottom:18px;">
           <img id="pub-avatar" src="" alt="Avatar"
-            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 110 110%22><rect width=%22110%22 height=%22110%22 rx=%2255%22 fill=%22%230a1a30%22/><text x=%2255%22 y=%2274%22 text-anchor=%22middle%22 font-size=%2252%22>🏛️</text></svg>'"/>
+            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 115 115%22><rect width=%22115%22 height=%22115%22 rx=%2257%22 fill=%22%230a1a30%22/><text x=%2257%22 y=%2277%22 text-anchor=%22middle%22 font-size=%2256%22>🏛️</text></svg>'"/>
         </div>
-        <h1 id="pub-name" class="pubname" style="margin-bottom:6px;">—</h1>
-        <p id="pub-tagline" style="font-size:.93rem;color:rgba(255,255,255,.62);">—</p>
+        <h1 id="pub-name" class="pubname" style="margin-bottom:8px;">—</h1>
+        <p id="pub-tagline" class="pubtagline">—</p>
       </div>
-      <div id="pub-links" class="fu s2" style="display:flex;flex-direction:column;gap:11px;">
-        <div style="text-align:center;padding:20px;color:rgba(255,255,255,.38);">
+
+      <!-- Links -->
+      <div id="pub-links" class="fu s2" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="text-align:center;padding:22px;color:rgba(255,255,255,.4);">
           <div class="sp" style="margin:0 auto 10px;"></div>
-          <p style="font-size:.83rem;">Memuat tautan...</p>
+          <p style="font-size:.84rem;">Memuat tautan...</p>
         </div>
       </div>
-      <div class="fu s4" style="text-align:center;margin-top:38px;">
+
+      <!-- Footer -->
+      <div class="fu s4" style="text-align:center;margin-top:40px;">
         <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> Lak3saLink</span>
-        <p style="margin-top:10px;font-size:.7rem;color:rgba(255,255,255,.16);">
+        <p style="margin-top:10px;font-size:.7rem;color:rgba(255,255,255,.2);">
           <a href="#admin" style="color:inherit;text-decoration:none;">Admin</a>
         </p>
       </div>
@@ -329,7 +489,7 @@ body::after{
   </div>
 </div>
 
-<!-- ═════════ LOGIN ═════════ -->
+<!-- ═══════ LOGIN VIEW ═══════ -->
 <div id="login-view" class="view">
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div style="width:100%;max-width:400px;" class="fu">
@@ -347,12 +507,8 @@ body::after{
           </div>
         </div>
         <p id="l-err" style="color:#f87171;font-size:.8rem;display:none;"></p>
-        <button id="l-btn" class="btn-p" onclick="doLogin()" style="width:100%;">
-          <span id="l-btxt">Masuk</span>
-        </button>
-        <div style="text-align:center;">
-          <a href="#reset" style="font-size:.8rem;color:var(--bg);text-decoration:none;">Lupa / Ganti password?</a>
-        </div>
+        <button id="l-btn" class="btn-p" onclick="doLogin()" style="width:100%;"><span id="l-btxt">Masuk</span></button>
+        <div style="text-align:center;"><a href="#reset" style="font-size:.8rem;color:var(--bg);text-decoration:none;">Lupa / Ganti password?</a></div>
       </div>
       <p style="text-align:center;margin-top:18px;font-size:.84rem;color:var(--w6);">
         <a onclick="navigate('public-view')" href="#" style="color:inherit;text-decoration:none;"><i class="fas fa-arrow-left" style="font-size:.73rem;margin-right:4px;"></i>Kembali ke halaman utama</a>
@@ -361,7 +517,7 @@ body::after{
   </div>
 </div>
 
-<!-- ═════════ RESET PASSWORD ═════════ -->
+<!-- ═══════ RESET VIEW ═══════ -->
 <div id="reset-view" class="view">
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div style="width:100%;max-width:400px;" class="fu">
@@ -370,12 +526,12 @@ body::after{
           <i class="fas fa-key" style="color:var(--bl);font-size:1.2rem;"></i>
         </div>
         <h1 class="fd" style="font-size:1.6rem;font-weight:800;margin-bottom:6px;">Ganti Password</h1>
-        <p style="color:var(--w6);font-size:.86rem;">Perubahan tersimpan di spreadsheet dan berlaku di semua perangkat</p>
+        <p style="color:var(--w6);font-size:.86rem;">Password tersimpan di spreadsheet, berlaku di semua perangkat</p>
       </div>
       <div class="glass" style="border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:15px;">
         <div><label class="lbl">Password Lama</label><input type="password" id="r-old" class="inp" placeholder="Password saat ini"/></div>
         <div><label class="lbl">Password Baru</label><input type="password" id="r-new" class="inp" placeholder="Min. 8 karakter"/></div>
-        <div><label class="lbl">Konfirmasi Password Baru</label><input type="password" id="r-con" class="inp" placeholder="Ulangi password baru"/></div>
+        <div><label class="lbl">Konfirmasi</label><input type="password" id="r-con" class="inp" placeholder="Ulangi password baru"/></div>
         <p id="r-msg" style="font-size:.8rem;display:none;"></p>
         <button class="btn-p" onclick="doResetPwd()" style="width:100%;"><span id="r-btxt">Simpan Password Baru</span></button>
         <div style="text-align:center;"><a href="#login" style="font-size:.8rem;color:var(--w6);text-decoration:none;"><i class="fas fa-arrow-left" style="margin-right:3px;"></i>Kembali ke Login</a></div>
@@ -384,15 +540,18 @@ body::after{
   </div>
 </div>
 
-<!-- ═════════ ADMIN ═════════ -->
+<!-- ═══════ ADMIN VIEW ═══════ -->
 <div id="admin-view" class="view">
 
-  <!-- SIDEBAR (z-index:1 desktop, z-index:99 mobile via CSS) -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div style="padding:15px;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div style="padding:15px 14px;border-bottom:1px solid rgba(255,255,255,.06);">
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="badge badge-b"><i class="fas fa-link" style="font-size:.62rem;"></i> Lak3saLink</span>
-        <button id="closesb" onclick="closeSB()" style="display:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;width:30px;height:30px;cursor:pointer;color:var(--w6);align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-times"></i></button>
+        <button id="closesb" onclick="closeSB()"
+          style="display:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;width:30px;height:30px;cursor:pointer;color:var(--w6);align-items:center;justify-content:center;font-size:.85rem;">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       <p style="margin-top:7px;font-size:.73rem;color:var(--w3);">Admin</p>
     </div>
@@ -408,15 +567,23 @@ body::after{
     <div style="padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);font-size:.63rem;color:rgba(255,255,255,.14);text-align:center;">Google Sheets Backend</div>
   </aside>
 
+  <!-- MAIN -->
   <main id="amain">
-    <header style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(5,12,30,.9);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;position:sticky;top:0;z-index:10;">
+    <!-- Header -->
+    <header style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(4,12,28,.92);border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;position:sticky;top:0;z-index:100;">
       <div style="display:flex;align-items:center;gap:11px;">
-        <button id="hbtn" onclick="togSB()" style="display:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;width:33px;height:33px;cursor:pointer;color:var(--w6);font-size:.98rem;flex-shrink:0;"><i class="fas fa-bars"></i></button>
-        <h2 id="ptitle" class="fd" style="font-size:1.04rem;font-weight:700;">Kelola Tautan</h2>
+        <button id="hbtn" onclick="togSB()"
+          style="display:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--w6);font-size:1rem;align-items:center;justify-content:center;">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 id="ptitle" class="fd" style="font-size:1.05rem;font-weight:700;">Kelola Tautan</h2>
       </div>
-      <button onclick="doLogout()" class="btn-d" style="font-size:.76rem;padding:5px 11px;flex-shrink:0;"><i class="fas fa-sign-out-alt" style="margin-right:3px;"></i>Keluar</button>
+      <button onclick="doLogout()" class="btn-d" style="font-size:.76rem;padding:6px 12px;">
+        <i class="fas fa-sign-out-alt" style="margin-right:3px;"></i>Keluar
+      </button>
     </header>
 
+    <!-- Content -->
     <div class="acpad" style="flex:1;overflow-y:auto;padding:18px;">
 
       <!-- PANEL LINKS -->
@@ -449,14 +616,13 @@ body::after{
         <div class="glass" style="border-radius:17px;padding:26px;">
           <h3 class="fd" style="font-size:.92rem;font-weight:700;margin-bottom:20px;"><i class="fas fa-user-edit" style="color:var(--bl);margin-right:7px;"></i>Pengaturan Profil</h3>
           <div style="display:flex;align-items:center;gap:13px;padding:13px;background:rgba(41,121,212,.1);border:1px solid rgba(91,163,245,.2);border-radius:12px;margin-bottom:20px;">
-            <img id="adm-avprev" src="" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);"
-              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 50 50%22><rect width=%2250%22 height=%2250%22 rx=%2225%22 fill=%22%230a1a30%22/><text x=%2225%22 y=%2233%22 text-anchor=%22middle%22 font-size=%2223%22>👤</text></svg>'"/>
+            <img id="adm-avprev" src="" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 50 50%22><rect width=%2250%22 height=%2250%22 rx=%2225%22 fill=%22%230a1a30%22/><text x=%2225%22 y=%2233%22 text-anchor=%22middle%22 font-size=%2223%22>👤</text></svg>'"/>
             <div><p id="adm-nprev" class="fd" style="font-weight:700;font-size:.93rem;">Nama</p><p id="adm-tprev" style="font-size:.76rem;color:var(--w6);">Tagline</p></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:15px;">
             <div><label class="lbl">Nama Tampilan</label><input type="text" id="adm-n" class="inp" placeholder="Nama Anda" oninput="document.getElementById('adm-nprev').textContent=this.value||'Nama'"/></div>
             <div><label class="lbl">Bio / Tagline</label><input type="text" id="adm-t" class="inp" placeholder="Deskripsi singkat" oninput="document.getElementById('adm-tprev').textContent=this.value||'Tagline'"/></div>
-            <div><label class="lbl">URL Foto Profil</label><input type="url" id="adm-av" class="inp" placeholder="https://i.imgur.com/..." oninput="document.getElementById('adm-avprev').src=this.value"/><p style="font-size:.7rem;margin-top:3px;color:var(--w3);">Gunakan link dari Imgur, Google Drive, dll.</p></div>
+            <div><label class="lbl">URL Foto Profil</label><input type="url" id="adm-av" class="inp" placeholder="https://i.imgur.com/..." oninput="document.getElementById('adm-avprev').src=this.value"/></div>
             <hr class="dv"/>
             <div><label class="lbl">Warna Tombol (Gradient)</label>
               <div style="display:flex;gap:9px;align-items:center;">
@@ -468,10 +634,9 @@ body::after{
             <button class="btn-p" onclick="saveProfile()" style="width:100%;"><span id="sp-txt">Simpan Profil</span></button>
           </div>
         </div>
-        <!-- Ganti Password — tersimpan di Spreadsheet -->
         <div class="glass" style="border-radius:17px;padding:26px;margin-top:14px;">
           <h3 class="fd" style="font-size:.92rem;font-weight:700;margin-bottom:6px;"><i class="fas fa-shield-alt" style="color:var(--cy);margin-right:7px;"></i>Ganti Password Admin</h3>
-          <p style="font-size:.78rem;color:var(--w6);margin-bottom:18px;">Password disimpan di spreadsheet dan berlaku di semua perangkat/browser.</p>
+          <p style="font-size:.78rem;color:var(--w6);margin-bottom:18px;">Tersimpan di spreadsheet, berlaku di semua perangkat.</p>
           <div style="display:flex;flex-direction:column;gap:13px;">
             <div><label class="lbl">Password Lama</label><input type="password" id="s-old" class="inp" placeholder="Password saat ini"/></div>
             <div><label class="lbl">Password Baru</label><input type="password" id="s-new" class="inp" placeholder="Min. 8 karakter"/></div>
@@ -485,17 +650,17 @@ body::after{
       <div id="p-floaters" class="apanel" style="max-width:660px;margin:0 auto;">
         <div class="glass" style="border-radius:17px;padding:22px;">
           <h3 class="fd" style="font-size:.92rem;font-weight:700;margin-bottom:5px;"><i class="fas fa-images" style="color:var(--bl);margin-right:7px;"></i>Gambar Melayang (Background)</h3>
-          <p style="font-size:.79rem;color:var(--w6);margin-bottom:18px;">Gambar-gambar ini melayang transparan di belakang halaman publik.</p>
+          <p style="font-size:.79rem;color:var(--w6);margin-bottom:18px;">Gambar melayang transparan di belakang halaman publik.</p>
           <div style="display:flex;flex-direction:column;gap:11px;padding:15px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:18px;">
             <h4 style="font-size:.8rem;font-weight:700;font-family:'Space Grotesk',sans-serif;color:var(--bg);">+ Tambah Gambar</h4>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
               <div><label class="lbl">URL Gambar</label><input type="url" id="f-url" class="inp" placeholder="https://..." oninput="prevFlt(this.value)"/></div>
-              <div><label class="lbl">Ukuran (px)</label><input type="number" id="f-sz" class="inp" placeholder="120" value="120" min="60" max="350"/></div>
+              <div><label class="lbl">Ukuran (px)</label><input type="number" id="f-sz" class="inp" value="120" min="60" max="350"/></div>
               <div><label class="lbl">Posisi Kiri (%)</label><input type="number" id="f-l" class="inp" placeholder="10" min="0" max="90"/></div>
               <div><label class="lbl">Posisi Atas (%)</label><input type="number" id="f-t" class="inp" placeholder="20" min="0" max="90"/></div>
             </div>
             <div style="display:flex;align-items:center;gap:9px;">
-              <img id="f-prev" src="" style="width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);display:none;"/>
+              <img id="f-prev" src="" style="width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.1);display:none;"/>
               <button class="btn-p" onclick="addFloater()" style="flex:1;"><span id="af-txt">Tambah Gambar</span></button>
             </div>
           </div>
@@ -508,8 +673,7 @@ body::after{
         <p style="font-size:.82rem;color:var(--w6);margin-bottom:11px;">Preview tampilan halaman publik:</p>
         <div class="glass" style="border-radius:20px;padding:26px;text-align:center;">
           <div class="aring" style="display:inline-block;margin-bottom:13px;">
-            <img id="prev-av" src="" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);"
-              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 78 78%22><rect width=%2278%22 height=%2278%22 rx=%2239%22 fill=%22%230a1a30%22/><text x=%2239%22 y=%2252%22 text-anchor=%22middle%22 font-size=%2236%22>👤</text></svg>'"/>
+            <img id="prev-av" src="" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid #06101f;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 78 78%22><rect width=%2278%22 height=%2278%22 rx=%2239%22 fill=%22%230a1a30%22/><text x=%2239%22 y=%2252%22 text-anchor=%22middle%22 font-size=%2236%22>👤</text></svg>'"/>
           </div>
           <h2 id="prev-n" class="fd" style="font-size:1.2rem;font-weight:800;margin-bottom:3px;">—</h2>
           <p id="prev-tg" style="font-size:.8rem;color:var(--w6);margin-bottom:18px;">—</p>
@@ -517,18 +681,18 @@ body::after{
         </div>
       </div>
 
-    </div>
+    </div><!-- /acpad -->
   </main>
 </div>
 
-<!-- EDIT MODAL (z-index:200) -->
+<!-- EDIT MODAL -->
 <div id="edit-modal" class="mwrap" onclick="if(event.target===this)closeEM()">
   <div class="glass" style="border-radius:19px;padding:26px;width:100%;max-width:400px;margin:16px;">
     <h3 class="fd" style="font-size:.97rem;font-weight:700;margin-bottom:18px;">Edit Tautan</h3>
     <input type="hidden" id="e-idx"/>
     <div style="display:flex;flex-direction:column;gap:13px;">
       <div><label class="lbl">Judul</label><input type="text" id="e-t" class="inp"/></div>
-      <div><label class="lbl">Icon (Font Awesome)</label><input type="text" id="e-i" class="inp" placeholder="fas fa-globe"/></div>
+      <div><label class="lbl">Icon</label><input type="text" id="e-i" class="inp" placeholder="fas fa-globe"/></div>
       <div><label class="lbl">URL</label><input type="url" id="e-u" class="inp"/></div>
       <div><label class="lbl">Urutan</label><input type="number" id="e-o" class="inp" min="1"/></div>
       <div style="display:flex;gap:9px;justify-content:flex-end;margin-top:5px;">
@@ -540,153 +704,132 @@ body::after{
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────
-// ⚙️ KONFIGURASI — ISI BAGIAN INI
-// ─────────────────────────────────────────────────────────
-const AS_URL = 'https://script.google.com/macros/s/AKfycbzPjDm07Abzafm5QZqjjD9f8O_e65JO5Min-iPO_uaNIm-A6L-Dx3IFj2QU_yeo5VFvtw/exec';
-// Password TIDAK lagi disimpan di sini maupun localStorage.
-// Password disimpan di sheet "Config" di spreadsheet Anda.
-// Password default saat pertama kali setup: admin123
+// ─── KONFIGURASI ───
+const AS_URL = 'https://script.google.com/macros/s/AKfycbzPjDm07Abzafm5QZqjjKJBe7-E-6-AUbxGQMrG-2C4DEhJDYfWzBYj5N7rSwXHsxLh/exec';
 
-// ─────────────────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────────────────
-let ST = { links:[], floaters:[], profile:{} };
+// ─── STATE ───
+let ST={links:[],floaters:[],profile:{}};
 
-// ─────────────────────────────────────────────────────────
-// API — semua request ke Apps Script
-// ─────────────────────────────────────────────────────────
-async function api(action, payload={}) {
-  const res = await fetch(AS_URL, {
-    method:'POST',
-    headers:{'Content-Type':'text/plain'},
-    body: JSON.stringify({action, ...payload}),
-    redirect:'follow',
+// ─── API ───
+async function api(action,payload={}){
+  const res=await fetch(AS_URL,{
+    method:'POST',headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({action,...payload}),redirect:'follow',
   });
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.error || 'Server error');
+  const data=await res.json();
+  if(!data.ok)throw new Error(data.error||'Server error');
   return data;
 }
 
-// ─────────────────────────────────────────────────────────
-// AUTH — password diverifikasi oleh Apps Script (bukan lokal)
-// Session token disimpan di sessionStorage (hilang saat tab ditutup)
-// ─────────────────────────────────────────────────────────
-function getToken() { return sessionStorage.getItem('ls_tok') || ''; }
-function setToken(t) { if(t) sessionStorage.setItem('ls_tok', t); else sessionStorage.removeItem('ls_tok'); }
-function isIn() { return !!getToken(); }
+// ─── AUTH ───
+function getToken(){return sessionStorage.getItem('ls_tok')||''}
+function setToken(t){t?sessionStorage.setItem('ls_tok',t):sessionStorage.removeItem('ls_tok')}
+function isIn(){return!!getToken()}
 
-async function doLogin() {
-  const pwd = document.getElementById('l-pwd').value.trim();
-  const err = document.getElementById('l-err');
-  const btn = document.getElementById('l-btn');
-  if (!pwd) { err.textContent='Masukkan password.'; err.style.display='block'; return; }
+async function doLogin(){
+  const pwd=document.getElementById('l-pwd').value.trim();
+  const err=document.getElementById('l-err');
+  const btn=document.getElementById('l-btn');
+  if(!pwd){err.textContent='Masukkan password.';err.style.display='block';return;}
   err.style.display='none';
   btn.innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle;"></div>';
   btn.disabled=true;
-  try {
-    const res = await api('login', { password: pwd });
-    setToken(res.token);   // token dari server (timestamp-based)
-    btn.innerHTML='<span id="l-btxt">Masuk</span>';
-    btn.disabled=false;
+  try{
+    const res=await api('login',{password:pwd});
+    setToken(res.token);
+    btn.innerHTML='<span>Masuk</span>';btn.disabled=false;
     window.location.hash='#admin';
-  } catch(e) {
-    btn.innerHTML='<span id="l-btxt">Masuk</span>';
-    btn.disabled=false;
-    err.textContent='Password salah.';
-    err.style.display='block';
+  }catch(e){
+    btn.innerHTML='<span>Masuk</span>';btn.disabled=false;
+    err.textContent='Password salah.';err.style.display='block';
   }
 }
-document.getElementById('l-pwd').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('l-pwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-function doLogout() { setToken(''); window.location.hash='#login'; }
+function doLogout(){setToken('');window.location.hash='#login';}
 
-async function doResetPwd() {
-  const oldP=document.getElementById('r-old').value.trim();
-  const newP=document.getElementById('r-new').value.trim();
-  const con=document.getElementById('r-con').value.trim();
+async function doResetPwd(){
+  const o=document.getElementById('r-old').value.trim();
+  const n=document.getElementById('r-new').value.trim();
+  const c=document.getElementById('r-con').value.trim();
   const msg=document.getElementById('r-msg');
   const btn=document.getElementById('r-btxt');
   msg.style.display='none';
-  if (!oldP||!newP||!con) { msg.style.color='#f87171'; msg.textContent='Semua field wajib diisi.'; msg.style.display='block'; return; }
-  if (newP.length<8) { msg.style.color='#f87171'; msg.textContent='Password min. 8 karakter.'; msg.style.display='block'; return; }
-  if (newP!==con) { msg.style.color='#f87171'; msg.textContent='Password baru tidak cocok.'; msg.style.display='block'; return; }
+  if(!o||!n||!c){msg.style.color='#f87171';msg.textContent='Semua field wajib diisi.';msg.style.display='block';return;}
+  if(n.length<8){msg.style.color='#f87171';msg.textContent='Password min. 8 karakter.';msg.style.display='block';return;}
+  if(n!==c){msg.style.color='#f87171';msg.textContent='Konfirmasi tidak cocok.';msg.style.display='block';return;}
   btn.textContent='Menyimpan...';
-  try {
-    await api('changePassword', { oldPassword: oldP, newPassword: newP });
-    msg.style.color='#4ade80'; msg.textContent='✓ Password berhasil diubah! Silakan login ulang.'; msg.style.display='block';
-    setToken('');
-    setTimeout(()=>{ window.location.hash='#login'; },2000);
-  } catch(e) {
-    msg.style.color='#f87171'; msg.textContent='Gagal: '+e.message; msg.style.display='block';
-  }
+  try{
+    await api('changePassword',{oldPassword:o,newPassword:n});
+    msg.style.color='#4ade80';msg.textContent='✓ Password diubah! Silakan login ulang.';msg.style.display='block';
+    setToken('');setTimeout(()=>{window.location.hash='#login';},2000);
+  }catch(e){msg.style.color='#f87171';msg.textContent='Gagal: '+e.message;msg.style.display='block';}
   btn.textContent='Simpan Password Baru';
 }
 
-async function changePwd() {
+async function changePwd(){
   const o=document.getElementById('s-old').value.trim();
   const n=document.getElementById('s-new').value.trim();
   const c=document.getElementById('s-con').value.trim();
   const btn=document.getElementById('cp-txt');
-  if (!o||!n||!c) { showToast('Semua field wajib diisi.','error'); return; }
-  if (n.length<8) { showToast('Password min. 8 karakter.','error'); return; }
-  if (n!==c) { showToast('Password tidak cocok.','error'); return; }
+  if(!o||!n||!c){showToast('Semua field wajib diisi.','error');return;}
+  if(n.length<8){showToast('Min. 8 karakter.','error');return;}
+  if(n!==c){showToast('Password tidak cocok.','error');return;}
   btn.textContent='Menyimpan...';
-  try {
-    await api('changePassword', { oldPassword: o, newPassword: n });
-    showToast('Password diubah! Silakan login ulang.');
-    setToken('');
-    document.getElementById('s-old').value='';
-    document.getElementById('s-new').value='';
-    document.getElementById('s-con').value='';
-    setTimeout(()=>{ window.location.hash='#login'; },2000);
-  } catch(e) { showToast('Gagal: '+e.message,'error'); }
+  try{
+    await api('changePassword',{oldPassword:o,newPassword:n});
+    showToast('Password diubah! Silakan login ulang.');setToken('');
+    ['s-old','s-new','s-con'].forEach(id=>document.getElementById(id).value='');
+    setTimeout(()=>{window.location.hash='#login';},2200);
+  }catch(e){showToast('Gagal: '+e.message,'error');}
   btn.textContent='Ubah Password';
 }
 
-// ─────────────────────────────────────────────────────────
-// ROUTER
-// ─────────────────────────────────────────────────────────
+// ─── ROUTER ───
 const VIEWS=['public-view','login-view','reset-view','admin-view'];
-function navigate(id) {
-  VIEWS.forEach(v=>{ const el=document.getElementById(v); el.classList.remove('active'); el.style.display='none'; });
-  const el=document.getElementById(id); el.style.display='flex'; el.classList.add('active');
+function navigate(id){
+  VIEWS.forEach(v=>{
+    const el=document.getElementById(v);
+    el.classList.remove('active');el.style.display='none';
+  });
+  document.getElementById(id).style.display='flex';
+  document.getElementById(id).classList.add('active');
 }
-function handleRoute() {
+function handleRoute(){
   const h=window.location.hash;
-  if(h==='#admin') { if(isIn()){navigate('admin-view');loadAdmin();}else window.location.hash='#login'; }
-  else if(h==='#login') { if(isIn()) window.location.hash='#admin'; else navigate('login-view'); }
-  else if(h==='#reset') { navigate('reset-view'); }
-  else { navigate('public-view'); loadPublic(); }
+  if(h==='#admin'){if(isIn()){navigate('admin-view');loadAdmin();}else window.location.hash='#login';}
+  else if(h==='#login'){if(isIn())window.location.hash='#admin';else navigate('login-view');}
+  else if(h==='#reset'){navigate('reset-view');}
+  else{navigate('public-view');loadPublic();}
 }
-window.addEventListener('hashchange', handleRoute);
+window.addEventListener('hashchange',handleRoute);
 
-// ─────────────────────────────────────────────────────────
-// PUBLIC
-// ─────────────────────────────────────────────────────────
-async function loadPublic() {
-  try {
+// ─── PUBLIC ───
+async function loadPublic(){
+  try{
     const d=await api('getAll');
     renderPubProfile(d.profile||{});
     renderPubLinks(d.links||[]);
     renderFloatersBG(d.floaters||[]);
-  } catch(e) {
-    document.getElementById('pub-links').innerHTML='<p style="text-align:center;color:rgba(255,255,255,.38);font-size:.84rem;">Gagal memuat. Periksa konfigurasi Apps Script.</p>';
+  }catch(e){
+    document.getElementById('pub-links').innerHTML='<p style="text-align:center;color:rgba(255,255,255,.4);font-size:.85rem;">Gagal memuat. Periksa konfigurasi.</p>';
   }
 }
-function renderPubProfile(p) {
+
+function renderPubProfile(p){
   document.getElementById('pub-name').textContent=p.name||'';
   document.getElementById('pub-tagline').textContent=p.tagline||'';
-  if(p.avatar_url) document.getElementById('pub-avatar').src=p.avatar_url;
+  if(p.avatar_url)document.getElementById('pub-avatar').src=p.avatar_url;
   ST.profile=p;
 }
-function renderPubLinks(links) {
+
+function renderPubLinks(links){
   const c=document.getElementById('pub-links');
   c.innerHTML='';
   // Hapus ctx-menu lama dari body
   document.querySelectorAll('.ctx-menu').forEach(m=>m.remove());
   if(!links.length){
-    c.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.38);font-size:.84rem;">Belum ada tautan.</p>';
+    c.innerHTML='<p style="text-align:center;color:rgba(255,255,255,.4);font-size:.85rem;">Belum ada tautan.</p>';
     return;
   }
   links.sort((a,b)=>(parseInt(a.order)||99)-(parseInt(b.order)||99));
@@ -695,46 +838,50 @@ function renderPubLinks(links) {
     wrap.className='link-wrap fu';
     wrap.style.animationDelay=`${0.1+i*0.07}s`;
 
+    // Link utama
     const a=document.createElement('a');
     a.href=lnk.url;a.target='_blank';a.rel='noopener noreferrer';
-    a.className='lbtn';
-    a.style.paddingRight='54px';
-    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88);"></i></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${lnk.title}</span>`;
+    a.className='lbtn';a.style.paddingRight='58px';
+    a.innerHTML=`<span class="lic"><i class="${lnk.icon||'fas fa-link'}" style="color:rgba(255,255,255,.9);"></i></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${lnk.title}</span>`;
 
+    // Tombol titik tiga
     const btn=document.createElement('button');
     btn.className='link-more-btn';
     btn.innerHTML='<i class="fas fa-ellipsis-vertical"></i>';
 
-    // ctx-menu di-append ke body (position:fixed) agar tidak terpotong parent
+    // Context menu — di-append ke body dengan position:fixed
     const menuEl=document.createElement('div');
     menuEl.className='ctx-menu';
     const waUrl='https://wa.me/?text='+encodeURIComponent(lnk.title+' - '+lnk.url);
     const tgUrl='https://t.me/share/url?url='+encodeURIComponent(lnk.url)+'&text='+encodeURIComponent(lnk.title);
     menuEl.innerHTML=
       '<a class="ctx-item" href="'+lnk.url+'" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i>Buka Tautan</a>'+
-      '<a class="ctx-item" onclick="copyLnk(this)" data-url="'+lnk.url.replace(/"/g,'&quot;')+'"><i class="fas fa-copy"></i>Salin Tautan</a>'+
+      '<a class="ctx-item" id="cp-'+i+'"><i class="fas fa-copy"></i>Salin Tautan</a>'+
       '<hr class="ctx-divider"/>'+
-      '<a class="ctx-item" onclick="shareLnk(this)" data-title="'+lnk.title.replace(/"/g,'&quot;')+'" data-url="'+lnk.url.replace(/"/g,'&quot;')+'"><i class="fas fa-share-alt"></i>Bagikan</a>'+
+      '<a class="ctx-item" id="sh-'+i+'"><i class="fas fa-share-alt"></i>Bagikan</a>'+
       '<a class="ctx-item" href="'+waUrl+'" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#4ade80;"></i>WhatsApp</a>'+
       '<a class="ctx-item" href="'+tgUrl+'" target="_blank" rel="noopener"><i class="fab fa-telegram" style="color:#38c8e8;"></i>Telegram</a>';
     document.body.appendChild(menuEl);
 
+    // Event: salin
+    menuEl.querySelector('#cp-'+i).addEventListener('click',()=>{copyLnk(lnk.url);});
+    // Event: share
+    menuEl.querySelector('#sh-'+i).addEventListener('click',()=>{shareLnk(lnk.title,lnk.url);});
+
+    // Toggle menu
     btn.addEventListener('click',(e)=>{
       e.preventDefault();e.stopPropagation();
-      const isOpen=menuEl.classList.contains('open');
+      const wasOpen=menuEl.classList.contains('open');
       document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
-      if(!isOpen){
+      if(!wasOpen){
         const rect=btn.getBoundingClientRect();
         menuEl.style.top=(rect.bottom+6)+'px';
         menuEl.style.right=(window.innerWidth-rect.right)+'px';
         menuEl.style.left='auto';
         menuEl.classList.add('open');
-        // Cek apakah keluar layar bawah
         requestAnimationFrame(()=>{
           const mr=menuEl.getBoundingClientRect();
-          if(mr.bottom>window.innerHeight-8){
-            menuEl.style.top=(rect.top-mr.height-6)+'px';
-          }
+          if(mr.bottom>window.innerHeight-10)menuEl.style.top=(rect.top-mr.height-6)+'px';
           if(mr.left<8){menuEl.style.right='auto';menuEl.style.left='8px';}
         });
       }
@@ -751,48 +898,43 @@ document.addEventListener('click',()=>{
   document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
 });
 
-function copyLnk(el){
-  const url=el.dataset.url;
+function copyLnk(url){
   const doToast=()=>{
     const t=document.getElementById('copy-toast');
     t.textContent='✓ Tautan berhasil disalin!';t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'),2200);
   };
-  if(navigator.clipboard){navigator.clipboard.writeText(url).then(doToast).catch(()=>{fbCopy(url);doToast();});}
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(doToast).catch(()=>{fbCopy(url);doToast();});
   else{fbCopy(url);doToast();}
   document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
 }
-function fbCopy(text){
+function fbCopy(t){
   const ta=document.createElement('textarea');
-  ta.value=text;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
   document.body.appendChild(ta);ta.focus();ta.select();
   try{document.execCommand('copy');}catch(e){}
   document.body.removeChild(ta);
 }
-function shareLnk(el){
-  const title=el.dataset.title,url=el.dataset.url;
-  if(navigator.share){navigator.share({title,url}).catch(()=>{});}
-  else{copyLnk({dataset:{url}});}
+function shareLnk(title,url){
+  if(navigator.share)navigator.share({title,url}).catch(()=>{});
+  else copyLnk(url);
   document.querySelectorAll('.ctx-menu.open').forEach(m=>m.classList.remove('open'));
 }
 
-
-function renderFloatersBG(floaters) {
-  const c=document.getElementById('bg-floaters'); c.innerHTML='';
+function renderFloatersBG(floaters){
+  const c=document.getElementById('bg-floaters');c.innerHTML='';
   floaters.forEach((f,i)=>{
     if(!f.url)return;
     const img=document.createElement('img');
-    img.src=f.url; img.className='bg-floater';
+    img.src=f.url;img.className='bg-floater';
     img.style.cssText=`width:${f.size||120}px;height:${f.size||120}px;left:${f.left||10}%;top:${f.top||20}%;animation-delay:${i*3.2}s;animation-duration:${16+i*4}s;`;
     c.appendChild(img);
   });
 }
 
-// ─────────────────────────────────────────────────────────
-// ADMIN
-// ─────────────────────────────────────────────────────────
-async function loadAdmin() {
-  try {
+// ─── ADMIN ───
+async function loadAdmin(){
+  try{
     const d=await api('getAll');
     ST.links=d.links||[];ST.floaters=d.floaters||[];ST.profile=d.profile||{};
     const p=ST.profile;
@@ -803,39 +945,28 @@ async function loadAdmin() {
     document.getElementById('adm-c2').value=p.color2||'#1a4a9e';
     document.getElementById('adm-nprev').textContent=p.name||'Nama';
     document.getElementById('adm-tprev').textContent=p.tagline||'Tagline';
-    if(p.avatar_url) document.getElementById('adm-avprev').src=p.avatar_url;
+    if(p.avatar_url)document.getElementById('adm-avprev').src=p.avatar_url;
     document.getElementById('s-name').textContent=p.name||'—';
     document.getElementById('s-total').textContent=ST.links.length;
-    renderAdminLinks(); renderAdminFloaters(); renderFloatersBG(ST.floaters);
-  } catch(e){ showToast('Gagal memuat: '+e.message,'error'); }
+    renderAdminLinks();renderAdminFloaters();renderFloatersBG(ST.floaters);
+  }catch(e){showToast('Gagal memuat: '+e.message,'error');}
 }
 
-function renderAdminLinks() {
+function renderAdminLinks(){
   const list=document.getElementById('a-llist');
   document.getElementById('s-total').textContent=ST.links.length;
-  if(!ST.links.length){list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w6);">Belum ada tautan. Tambahkan!</p>';return;}
+  if(!ST.links.length){list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w6);">Belum ada tautan.</p>';return;}
   const sorted=[...ST.links].sort((a,b)=>(parseInt(a.order)||99)-(parseInt(b.order)||99));
   list.innerHTML='';
-  sorted.forEach((lnk)=>{
+  sorted.forEach(lnk=>{
     const origIdx=ST.links.indexOf(lnk);
     const d=document.createElement('div');d.className='lia';
-    d.innerHTML=`
-      <div style="width:34px;height:34px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <i class="${lnk.icon||'fas fa-link'}" style="color:var(--bl);font-size:.82rem;"></i>
-      </div>
-      <div style="flex:1;min-width:0;">
-        <p class="fd" style="font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lnk.title}</p>
-        <p style="font-size:.7rem;color:var(--w6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lnk.url}</p>
-      </div>
-      <div style="display:flex;gap:5px;flex-shrink:0;">
-        <button class="btn-s" onclick="openEM(${origIdx})" style="padding:5px 9px;"><i class="fas fa-pen"></i></button>
-        <button class="btn-d" onclick="delLink(${origIdx})" style="padding:5px 9px;"><i class="fas fa-trash"></i></button>
-      </div>`;
+    d.innerHTML=`<div style="width:34px;height:34px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="${lnk.icon||'fas fa-link'}" style="color:var(--bl);font-size:.82rem;"></i></div><div style="flex:1;min-width:0;"><p class="fd" style="font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lnk.title}</p><p style="font-size:.7rem;color:var(--w6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lnk.url}</p></div><div style="display:flex;gap:5px;flex-shrink:0;"><button class="btn-s" onclick="openEM(${origIdx})" style="padding:5px 9px;"><i class="fas fa-pen"></i></button><button class="btn-d" onclick="delLink(${origIdx})" style="padding:5px 9px;"><i class="fas fa-trash"></i></button></div>`;
     list.appendChild(d);
   });
 }
 
-async function addLink() {
+async function addLink(){
   const t=document.getElementById('lnk-t').value.trim(),u=document.getElementById('lnk-u').value.trim();
   const ic=document.getElementById('lnk-i').value.trim(),o=document.getElementById('lnk-o').value.trim();
   const btn=document.getElementById('al-txt');
@@ -843,13 +974,11 @@ async function addLink() {
   btn.textContent='Menambahkan...';
   try{
     await api('addLink',{title:t,url:u,icon:ic,order:o});
-    document.getElementById('lnk-t').value='';document.getElementById('lnk-u').value='';
-    document.getElementById('lnk-i').value='';document.getElementById('lnk-o').value='';
+    ['lnk-t','lnk-u','lnk-i','lnk-o'].forEach(id=>document.getElementById(id).value='');
     showToast('Tautan ditambahkan!');await loadAdmin();
   }catch(e){showToast('Gagal: '+e.message,'error');}
   btn.textContent='Tambah Tautan';
 }
-
 function openEM(idx){
   const lnk=ST.links[idx];
   document.getElementById('e-idx').value=idx;
@@ -864,16 +993,15 @@ async function saveEdit(){
   const idx=parseInt(document.getElementById('e-idx').value),lnk=ST.links[idx];
   try{
     await api('updateLink',{rowIndex:lnk._row,title:document.getElementById('e-t').value.trim(),url:document.getElementById('e-u').value.trim(),icon:document.getElementById('e-i').value.trim(),order:document.getElementById('e-o').value.trim()});
-    showToast('Tautan diperbarui!');closeEM();await loadAdmin();
+    showToast('Diperbarui!');closeEM();await loadAdmin();
   }catch(e){showToast('Gagal: '+e.message,'error');}
 }
 async function delLink(idx){
   if(!confirm('Hapus tautan ini?'))return;
   const lnk=ST.links[idx];
-  try{await api('deleteLink',{rowIndex:lnk._row});showToast('Tautan dihapus.');await loadAdmin();}
+  try{await api('deleteLink',{rowIndex:lnk._row});showToast('Dihapus.');await loadAdmin();}
   catch(e){showToast('Gagal: '+e.message,'error');}
 }
-
 async function saveProfile(){
   const btn=document.getElementById('sp-txt');btn.textContent='Menyimpan...';
   try{
@@ -883,23 +1011,21 @@ async function saveProfile(){
   }catch(e){showToast('Gagal: '+e.message,'error');}
   btn.textContent='Simpan Profil';
 }
-
 function renderAdminFloaters(){
   const list=document.getElementById('flt-list'),fl=ST.floaters;
   if(!fl.length){list.innerHTML='<p style="text-align:center;padding:16px;font-size:.82rem;color:var(--w6);">Belum ada gambar.</p>';return;}
   list.innerHTML='';
   fl.forEach((f,i)=>{
     const d=document.createElement('div');d.className='fitem';
-    d.innerHTML=`<img src="${f.url||''}" class="fthumb" onerror="this.style.opacity='.3'" alt="img"/><div style="flex:1;min-width:0;"><p style="font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9);">${f.url||'—'}</p><p style="font-size:.7rem;color:var(--w6);">Ukuran: ${f.size||120}px · ${f.left||0}% kiri, ${f.top||0}% atas</p></div><button class="btn-d" onclick="delFlt(${i})" style="padding:5px 9px;flex-shrink:0;"><i class="fas fa-trash"></i></button>`;
+    d.innerHTML=`<img src="${f.url||''}" class="fthumb" onerror="this.style.opacity='.3'" alt=""/><div style="flex:1;min-width:0;"><p style="font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9);">${f.url||'—'}</p><p style="font-size:.7rem;color:var(--w6);">Ukuran:${f.size||120}px · ${f.left||0}% kiri, ${f.top||0}% atas</p></div><button class="btn-d" onclick="delFlt(${i})" style="padding:5px 9px;flex-shrink:0;"><i class="fas fa-trash"></i></button>`;
     list.appendChild(d);
   });
 }
 function prevFlt(url){const p=document.getElementById('f-prev');if(url){p.src=url;p.style.display='block';}else p.style.display='none';}
 async function addFloater(){
-  const url=document.getElementById('f-url').value.trim(),sz=document.getElementById('f-sz').value.trim();
-  const l=document.getElementById('f-l').value.trim(),t=document.getElementById('f-t').value.trim();
+  const url=document.getElementById('f-url').value.trim(),sz=document.getElementById('f-sz').value,l=document.getElementById('f-l').value,t=document.getElementById('f-t').value;
   const btn=document.getElementById('af-txt');
-  if(!url){showToast('URL gambar wajib diisi.','error');return;}
+  if(!url){showToast('URL wajib diisi.','error');return;}
   btn.textContent='Menambahkan...';
   try{
     await api('addFloater',{url,size:sz,left:l,top:t});
@@ -911,16 +1037,15 @@ async function addFloater(){
 async function delFlt(idx){
   if(!confirm('Hapus gambar ini?'))return;
   const f=ST.floaters[idx];
-  try{await api('deleteFloater',{rowIndex:f._row});showToast('Gambar dihapus.');await loadAdmin();}
+  try{await api('deleteFloater',{rowIndex:f._row});showToast('Dihapus.');await loadAdmin();}
   catch(e){showToast('Gagal: '+e.message,'error');}
 }
-
 async function loadPreview(){
   try{
     const d=await api('getAll'),p=d.profile||{};
     document.getElementById('prev-n').textContent=p.name||'—';
     document.getElementById('prev-tg').textContent=p.tagline||'—';
-    if(p.avatar_url) document.getElementById('prev-av').src=p.avatar_url;
+    if(p.avatar_url)document.getElementById('prev-av').src=p.avatar_url;
     const links=(d.links||[]).sort((a,b)=>(parseInt(a.order)||99)-(parseInt(b.order)||99));
     const c=document.getElementById('prev-links');c.innerHTML='';
     links.forEach(lnk=>{
@@ -932,41 +1057,38 @@ async function loadPreview(){
   }catch(e){showToast('Gagal preview','error');}
 }
 
-// ─────────────────────────────────────────────────────────
-// UI HELPERS
-// ─────────────────────────────────────────────────────────
+// ─── UI HELPERS ───
 function swPanel(id,el){
   document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(el)el.classList.add('active');
-  const titles={'p-links':'Kelola Tautan','p-profile':'Profil & Keamanan','p-floaters':'Gambar Background','p-preview':'Preview Halaman'};
+  const titles={'p-links':'Kelola Tautan','p-profile':'Profil & Keamanan','p-floaters':'Gambar Background','p-preview':'Preview'};
   document.getElementById('ptitle').textContent=titles[id]||'Dashboard';
   if(id==='p-preview')loadPreview();
   closeSB();
 }
+
 function togSB(){
   const sb=document.getElementById('sidebar');
-  const ov=document.getElementById('sb-ov');
-  const cb=document.getElementById('closesb');
-  const isOpen=sb.classList.contains('open');
-  if(isOpen){ closeSB(); }
-  else {
-    sb.classList.add('open');
-    ov.classList.add('show');
-    if(cb)cb.style.display='flex';
-    document.body.style.overflow='hidden';
-  }
+  if(sb.classList.contains('open'))closeSB();
+  else openSB();
+}
+function openSB(){
+  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
+  sb.classList.add('open');
+  ov.classList.add('show');
+  if(cb)cb.style.display='flex';
+  document.body.style.overflow='hidden';
 }
 function closeSB(){
-  const sb=document.getElementById('sidebar');
-  const ov=document.getElementById('sb-ov');
-  const cb=document.getElementById('closesb');
+  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
   sb.classList.remove('open');
   ov.classList.remove('show');
   if(cb)cb.style.display='none';
   document.body.style.overflow='';
 }
+
 function tpwd(id,btn){
   const inp=document.getElementById(id);
   inp.type=inp.type==='password'?'text':'password';
@@ -978,16 +1100,10 @@ function showToast(msg,type='success'){
   clearTimeout(tt);tt=setTimeout(()=>{t.className='';},3500);
 }
 
-// ─────────────────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────────────────
+// ─── INIT ───
 window.addEventListener('load',()=>{
   const ls=document.getElementById('lscreen');
-  setTimeout(()=>{
-    ls.classList.add('hide');
-    setTimeout(()=>{ls.style.display='none';},400);
-    handleRoute();
-  },600);
+  setTimeout(()=>{ls.classList.add('hide');setTimeout(()=>{ls.style.display='none';},400);handleRoute();},600);
 });
 </script>
 </body>
