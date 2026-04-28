@@ -294,7 +294,7 @@ body::after{
 
 /* ── LOADING ── */
 #lscreen{
-  position:fixed;inset:0;z-index:9000;
+  position:fixed;inset:0;z-index:5000;
   background:#06101f;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
   transition:opacity .4s;
@@ -358,81 +358,63 @@ body::after{
     position:sticky;top:0;height:100vh;
     /* TIDAK ada z-index tinggi di desktop */
   }
-  #hbtn,#closesb,#sb-ov{display:none !important}
+  #hbtn,#closesb,
   #amain{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 }
 
-/* ══════════════════════════════════════════
-   MOBILE LAYOUT (≤768px)
-   SOLUSI FINAL: sidebar pakai left property,
-   TIDAK ada transform, TIDAK ada visibility,
-   TIDAK ada backdrop-filter
-══════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   MOBILE ≤768px
+   Prinsip: sidebar pakai left property saja,
+   TIDAK pakai transform atau visibility.
+   sb-ov dikontrol HANYA lewat JS (style.display)
+   bukan class, agar tidak ada konflik CSS.
+══════════════════════════════════════ */
 @media(max-width:768px){
-  /* Admin view: column di mobile */
-  #admin-view.active{
-    flex-direction:column !important;
-    height:auto !important;
-    overflow:visible !important;
-  }
+  #admin-view.active{flex-direction:column !important;height:auto !important;overflow:visible !important}
 
-  /* Sidebar: drawer dari kiri, awalnya hidden di luar layar */
   .sidebar{
     position:fixed !important;
     top:0 !important;
-    /* Mulai tersembunyi di kiri: left negatif = lebar sidebar */
     left:-270px !important;
     width:260px !important;
     height:100vh !important;
-    /* Z-index SANGAT tinggi, di atas apapun */
-    z-index:9000 !important;
+    z-index:7000 !important;
     background:#030b18 !important;
+    border-right:1px solid rgba(255,255,255,.1) !important;
     box-shadow:none !important;
-    /* Animasi dengan left property (BUKAN transform) */
     transition:left .28s ease, box-shadow .28s ease !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
   }
-
-  /* Saat open: geser ke kanan masuk layar */
   .sidebar.open{
     left:0 !important;
-    box-shadow:15px 0 50px rgba(0,0,0,.9) !important;
+    box-shadow:20px 0 60px rgba(0,0,0,.95) !important;
   }
-
-  /* Overlay di belakang sidebar */
-  #sb-ov{
-    display:none;
-    position:fixed !important;
-    inset:0 !important;
-    z-index:8999 !important; /* tepat di bawah sidebar */
-    background:rgba(0,0,0,.65) !important;
-    cursor:pointer;
-  }
-  #sb-ov.show{display:block !important}
-
-  /* Hamburger dan close button */
   #hbtn{display:flex !important;align-items:center;justify-content:center}
   #closesb{display:flex !important}
-
-  /* Admin main: full width */
-  #amain{
-    width:100% !important;
-    min-width:0;
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    overflow-x:hidden;
-  }
-
-  /* Grid panels */
+  #amain{width:100% !important;min-width:0;flex:1;display:flex;flex-direction:column;overflow-x:hidden}
   .pgrid{grid-template-columns:1fr !important}
   #srow{grid-template-columns:1fr 1fr !important}
   .acpad{padding:13px !important}
 }
-
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
   .sidebar{left:-82vw !important;width:80vw !important}
+}
+  .sidebar{left:-82vw !important;width:80vw !important}
   .sidebar.open{left:0 !important}
+}
+
+/* sb-ov: dikontrol JS via style.display, bukan class */
+#sb-ov{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:6999; /* tepat di bawah sidebar (7000) */
+  background:rgba(0,0,0,.65);
+  cursor:pointer;
 }
 </style>
 </head>
@@ -1059,6 +1041,7 @@ async function loadPreview(){
 
 // ─── UI HELPERS ───
 function swPanel(id,el){
+  closeSB();
   document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1070,24 +1053,30 @@ function swPanel(id,el){
 }
 
 function togSB(){
-  const sb=document.getElementById('sidebar');
-  if(sb.classList.contains('open'))closeSB();
+  var sb=document.getElementById('sidebar');
+  if(sb.classList.contains('open')) closeSB();
   else openSB();
 }
 function openSB(){
-  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('sb-ov');
+  var cb=document.getElementById('closesb');
   sb.classList.add('open');
-  ov.classList.add('show');
-  if(cb)cb.style.display='flex';
+  // Kontrol overlay via style langsung (bukan class) agar tidak konflik CSS
+  ov.style.display='block';
+  if(cb) cb.style.display='flex';
   document.body.style.overflow='hidden';
 }
 function closeSB(){
-  const sb=document.getElementById('sidebar'),ov=document.getElementById('sb-ov'),cb=document.getElementById('closesb');
+  var sb=document.getElementById('sidebar');
+  var ov=document.getElementById('sb-ov');
+  var cb=document.getElementById('closesb');
   sb.classList.remove('open');
-  ov.classList.remove('show');
-  if(cb)cb.style.display='none';
+  ov.style.display='none';
+  if(cb) cb.style.display='none';
   document.body.style.overflow='';
 }
+
 
 function tpwd(id,btn){
   const inp=document.getElementById(id);
