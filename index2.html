@@ -356,10 +356,10 @@ body::after{
   .sidebar{
     width:224px;flex-shrink:0;
     position:sticky;top:0;height:100vh;
+    /* TIDAK ada z-index tinggi di desktop */
   }
-  #hbtn,#closesb{display:none !important}
+  #hbtn,#closesb,
   #amain{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
-  #admin-view.active{display:flex;flex-direction:row;height:100vh;overflow:hidden}
 }
 
 /* ══════════════════════════════════════
@@ -402,6 +402,8 @@ body::after{
 @media(max-width:480px){
   #srow{grid-template-columns:1fr !important}
   .sidebar{left:-82vw !important;width:80vw !important}
+}
+  .sidebar{left:-82vw !important;width:80vw !important}
   .sidebar.open{left:0 !important}
 }
 
@@ -413,10 +415,6 @@ body::after{
   z-index:6999; /* tepat di bawah sidebar (7000) */
   background:rgba(0,0,0,.65);
   cursor:pointer;
-  pointer-events:none; /* default: tidak halangi klik */
-}
-#sb-ov[style*="block"]{
-  pointer-events:auto; /* aktif hanya saat display:block via JS */
 }
 </style>
 </head>
@@ -568,7 +566,7 @@ body::after{
     </header>
 
     <!-- Content -->
-    <div class="acpad" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:18px;">
+    <div class="acpad" style="flex:1;overflow-y:auto;padding:18px;">
 
       <!-- PANEL LINKS -->
       <div id="p-links" class="apanel active" style="max-width:940px;margin:0 auto;">
@@ -1064,8 +1062,8 @@ function openSB(){
   var ov=document.getElementById('sb-ov');
   var cb=document.getElementById('closesb');
   sb.classList.add('open');
+  // Kontrol overlay via style langsung (bukan class) agar tidak konflik CSS
   ov.style.display='block';
-  ov.style.pointerEvents='auto';
   if(cb) cb.style.display='flex';
   document.body.style.overflow='hidden';
 }
@@ -1075,7 +1073,6 @@ function closeSB(){
   var cb=document.getElementById('closesb');
   sb.classList.remove('open');
   ov.style.display='none';
-  ov.style.pointerEvents='none';
   if(cb) cb.style.display='none';
   document.body.style.overflow='';
 }
