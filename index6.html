@@ -19,7 +19,7 @@
   --sb-w:230px;
 }
 html{height:100%}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg1);color:var(--w);min-height:100%;overflow-x:hidden;width:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg1);color:var(--w);min-height:100%;overflow-x:hidden}
 h1,h2,h3,.fd{font-family:'Space Grotesk',sans-serif}
 a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}
@@ -202,7 +202,9 @@ body::after{
 .pan{display:none}.pan.on{display:block}
 
 /* Link item admin */
-.lia{display:flex;align-items:center;gap:0;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;overflow:hidden;width:100%}
+.lia{display:flex;align-items:center;gap:11px;padding:11px 13px;
+  background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;
+  min-width:0;overflow:hidden}
 .lia:hover{background:var(--w1)}
 
 /* Floater item */
@@ -265,16 +267,12 @@ body::after{
   #hbtn{display:flex !important;align-items:center;justify-content:center}
   #closesb{display:flex !important}
 
-  .am{height:auto !important;min-height:100vh;overflow-x:hidden !important}
-  .ac{padding:14px !important;overflow-x:hidden !important;box-sizing:border-box !important;width:100% !important;max-width:100vw !important}
+  .am{height:auto !important;min-height:100vh}
+  .ac{padding:14px !important}
 
   .pgrid{grid-template-columns:1fr !important;overflow-x:hidden !important}
-  #srow{grid-template-columns:1fr !important;width:100% !important;overflow:hidden !important}
+  #srow{grid-template-columns:1fr !important}
 }
-
-/* ── ANTI OVERFLOW GLOBAL ── */
-#admin-view *{max-width:100%;box-sizing:border-box}
-#admin-view .lia{max-width:100%;overflow:hidden}
 </style>
 </head>
 <body>
@@ -404,7 +402,7 @@ body::after{
     <!-- Header -->
     <div class="ah">
       <div style="display:flex;align-items:center;gap:10px">
-        <button id="hbtn" onclick="sbToggle()" style="display:none;background:var(--w06);border:1px solid var(--w1);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;color:var(--w5);font-size:.98rem"><i class="fas fa-bars"></i></button>
+        <button id="hbtn" onclick="sbOpen()" style="display:none;background:var(--w06);border:1px solid var(--w1);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;color:var(--w5);font-size:.98rem"><i class="fas fa-bars"></i></button>
         <h2 id="ptitle" class="fd" style="font-size:1.05rem;font-weight:700">Kelola Tautan</h2>
       </div>
       <button onclick="doLogout()" class="btn btn-red btn-sm"><i class="fas fa-sign-out-alt" style="margin-right:3px"></i>Keluar</button>
@@ -414,7 +412,7 @@ body::after{
     <div class="ac">
 
       <!-- PANEL: LINKS -->
-      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;overflow:hidden;width:100%">
+      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;overflow:hidden">
         <div id="srow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Total Tautan</p><p id="s-tot" class="fd" style="font-size:2.1rem;font-weight:800;margin-top:2px">—</p></div>
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Profil</p><p id="s-name" class="fd" style="font-size:.92rem;font-weight:700;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</p></div>
@@ -673,46 +671,13 @@ async function loadAdmin(){
   }catch(e){toast('Gagal memuat: '+e.message,'err');}
 }
 function renderLinks(){
-  const list=document.getElementById('llist');
-  document.getElementById('s-tot').textContent=ST.links.length;
-  if(!ST.links.length){
-    list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w5)">Belum ada tautan. Tambahkan!</p>';
-    return;
-  }
+  const list=document.getElementById('llist');document.getElementById('s-tot').textContent=ST.links.length;
+  if(!ST.links.length){list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w5)">Belum ada tautan. Tambahkan!</p>';return;}
   const s=[...ST.links].sort((a,b)=>(+a.order||99)-(+b.order||99));
   list.innerHTML='';
   s.forEach(lnk=>{
-    const oi=ST.links.indexOf(lnk);
-    const d=document.createElement('div');
-    d.className='lia';
-    // Icon box
-    const icon=document.createElement('div');
-    icon.style.cssText='width:36px;height:36px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0';
-    icon.innerHTML=`<i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.82rem"></i>`;
-    // Text box — min-width:0 kritis agar flex item bisa mengecil
-    const txt=document.createElement('div');
-    txt.style.cssText='flex:1;min-width:0;overflow:hidden';
-    const title=document.createElement('p');
-    title.className='fd';
-    title.style.cssText='font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    title.textContent=lnk.title;
-    const url=document.createElement('p');
-    url.style.cssText='font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    url.textContent=lnk.url;
-    txt.appendChild(title);txt.appendChild(url);
-    // Buttons — flex-shrink:0 agar tidak terpotong
-    const btns=document.createElement('div');
-    btns.style.cssText='display:flex;gap:5px;flex-shrink:0;margin-left:8px';
-    const editBtn=document.createElement('button');
-    editBtn.className='btn btn-green btn-sm';
-    editBtn.innerHTML='<i class="fas fa-pen"></i>';
-    editBtn.onclick=()=>openEM(oi);
-    const delBtn=document.createElement('button');
-    delBtn.className='btn btn-red btn-sm';
-    delBtn.innerHTML='<i class="fas fa-trash"></i>';
-    delBtn.onclick=()=>delLink(oi);
-    btns.appendChild(editBtn);btns.appendChild(delBtn);
-    d.appendChild(icon);d.appendChild(txt);d.appendChild(btns);
+    const oi=ST.links.indexOf(lnk),d=document.createElement('div');d.className='lia';
+    d.innerHTML=`<div style="width:34px;height:34px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.82rem"></i></div><div style="flex:1;min-width:0;overflow:hidden"><p class="fd" style="font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.title}</p><p style="font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.url}</p></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn btn-green btn-sm" onclick="openEM(${oi})"><i class="fas fa-pen"></i></button><button class="btn btn-red btn-sm" onclick="delLink(${oi})"><i class="fas fa-trash"></i></button></div>`;
     list.appendChild(d);
   });
 }
@@ -797,7 +762,7 @@ function sbClose(){
 function sbToggle(){
   if(document.getElementById('sb').classList.contains('on'))sbClose();else sbOpen();
 }
-// hbtn sudah pakai onclick='sbToggle()' di HTML
+document.getElementById('hbtn').addEventListener('click',sbToggle);
 
 // ── UTILS ──
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
