@@ -202,7 +202,7 @@ body::after{
 .pan{display:none}.pan.on{display:block}
 
 /* Link item admin */
-.lia{display:flex;align-items:center;gap:0;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;min-width:0}
+.lia{display:flex;align-items:center;gap:0;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;overflow:hidden;width:100%}
 .lia:hover{background:var(--w1)}
 
 /* Floater item */
@@ -265,13 +265,16 @@ body::after{
   #hbtn{display:flex !important;align-items:center;justify-content:center}
   #closesb{display:flex !important}
 
-  .am{height:auto !important;min-height:100vh}
-  .ac{padding:14px !important;box-sizing:border-box !important;width:100% !important}
+  .am{height:auto !important;min-height:100vh;overflow-x:hidden !important}
+  .ac{padding:14px !important;overflow-x:hidden !important;box-sizing:border-box !important;width:100% !important;max-width:100vw !important}
 
   .pgrid{grid-template-columns:1fr !important;overflow-x:hidden !important}
   #srow{grid-template-columns:1fr !important;width:100% !important;overflow:hidden !important}
 }
 
+/* ── ANTI OVERFLOW GLOBAL ── */
+#admin-view *{max-width:100%;box-sizing:border-box}
+#admin-view .lia{max-width:100%;overflow:hidden}
 </style>
 </head>
 <body>
@@ -411,13 +414,13 @@ body::after{
     <div class="ac">
 
       <!-- PANEL: LINKS -->
-      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;width:100%">
+      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;overflow:hidden;width:100%">
         <div id="srow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Total Tautan</p><p id="s-tot" class="fd" style="font-size:2.1rem;font-weight:800;margin-top:2px">—</p></div>
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Profil</p><p id="s-name" class="fd" style="font-size:.92rem;font-weight:700;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</p></div>
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Status</p><p class="fd" style="font-size:.88rem;font-weight:700;margin-top:4px;color:var(--green)"><i class="fas fa-circle" style="font-size:.56rem;margin-right:4px"></i>Aktif</p></div>
         </div>
-        <div class="pgrid" style="display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start;min-width:0">
+        <div class="pgrid" style="display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start;min-width:0;overflow:hidden">
           <!-- Form tambah -->
           <div class="glass" style="padding:20px">
             <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:15px"><i class="fas fa-plus-circle" style="color:var(--bluel);margin-right:6px"></i>Tambah Tautan</h3>
@@ -430,12 +433,10 @@ body::after{
             </div>
           </div>
           <!-- List -->
-          <div class="glass" style="padding:20px;overflow:hidden">
+          <div class="glass" style="padding:20px">
             <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:14px"><i class="fas fa-list" style="color:var(--bluel);margin-right:6px"></i>Daftar Tautan</h3>
-            <div style="overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch">
-            <div id="llist" style="display:flex;flex-direction:column;gap:9px;min-width:400px">
+            <div id="llist" style="display:flex;flex-direction:column;gap:9px;overflow-x:auto">
               <div style="text-align:center;padding:18px;color:var(--w5)"><div class="sp" style="margin:0 auto 8px"></div><p style="font-size:.82rem">Memuat...</p></div>
-            </div><!-- /scroll-wrap -->
             </div>
           </div>
         </div>
@@ -683,44 +684,38 @@ function renderLinks(){
   s.forEach(lnk=>{
     const oi=ST.links.indexOf(lnk);
     const d=document.createElement('div');
-    // .lia: flex row, konten tidak terpotong
-    d.style.cssText='display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s';
-
-    // Icon
+    d.className='lia';
+    // Icon box
     const icon=document.createElement('div');
     icon.style.cssText='width:36px;height:36px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0';
     icon.innerHTML=`<i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.82rem"></i>`;
-
-    // Teks — min-width:0 supaya ellipsis bekerja
+    // Text box — min-width:0 kritis agar flex item bisa mengecil
     const txt=document.createElement('div');
     txt.style.cssText='flex:1;min-width:0;overflow:hidden';
-    const p1=document.createElement('p');
-    p1.className='fd';
-    p1.style.cssText='font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    p1.textContent=lnk.title;
-    const p2=document.createElement('p');
-    p2.style.cssText='font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-    p2.textContent=lnk.url;
-    txt.appendChild(p1);txt.appendChild(p2);
-
-    // Tombol — flex-shrink:0 agar tidak terpotong SAMA SEKALI
+    const title=document.createElement('p');
+    title.className='fd';
+    title.style.cssText='font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    title.textContent=lnk.title;
+    const url=document.createElement('p');
+    url.style.cssText='font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    url.textContent=lnk.url;
+    txt.appendChild(title);txt.appendChild(url);
+    // Buttons — flex-shrink:0 agar tidak terpotong
     const btns=document.createElement('div');
-    btns.style.cssText='display:flex;gap:5px;flex-shrink:0';
-    const eb=document.createElement('button');
-    eb.className='btn btn-green btn-sm';
-    eb.innerHTML='<i class="fas fa-pen"></i>';
-    eb.onclick=()=>openEM(oi);
-    const db=document.createElement('button');
-    db.className='btn btn-red btn-sm';
-    db.innerHTML='<i class="fas fa-trash"></i>';
-    db.onclick=()=>delLink(oi);
-    btns.appendChild(eb);btns.appendChild(db);
-
+    btns.style.cssText='display:flex;gap:5px;flex-shrink:0;margin-left:8px';
+    const editBtn=document.createElement('button');
+    editBtn.className='btn btn-green btn-sm';
+    editBtn.innerHTML='<i class="fas fa-pen"></i>';
+    editBtn.onclick=()=>openEM(oi);
+    const delBtn=document.createElement('button');
+    delBtn.className='btn btn-red btn-sm';
+    delBtn.innerHTML='<i class="fas fa-trash"></i>';
+    delBtn.onclick=()=>delLink(oi);
+    btns.appendChild(editBtn);btns.appendChild(delBtn);
     d.appendChild(icon);d.appendChild(txt);d.appendChild(btns);
     list.appendChild(d);
   });
 }
-
 async function addLink(){
   const t=document.getElementById('lnk-t').value.trim(),u=document.getElementById('lnk-u').value.trim(),ic=document.getElementById('lnk-i').value.trim(),o=document.getElementById('lnk-o').value.trim();
   const btn=document.getElementById('al-t');
