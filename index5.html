@@ -50,7 +50,7 @@ body::after{
 #ls{position:fixed;inset:0;z-index:2000;background:var(--bg1);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
   transition:opacity .4s}
-#ls.out{opacity:0;pointer-events:none !important}
+#ls.out{opacity:0;pointer-events:none}
 .ll{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:2rem;
   background:linear-gradient(135deg,#fff,var(--cyan));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -173,7 +173,7 @@ body::after{
 }
 
 /* ===== ADMIN LAYOUT ===== */
-#admin-view{flex-direction:row !important}
+#admin-view{flex-direction:row !important;height:100vh;overflow:hidden}
 
 /* Sidebar */
 .sb{
@@ -181,8 +181,7 @@ body::after{
   background:rgba(3,10,25,.97);
   border-right:1px solid var(--w06);
   display:flex;flex-direction:column;
-  /* TIDAK ada position/height di sini — dikontrol penuh oleh media query */
-  overflow-y:auto;overflow-x:hidden;
+  height:100vh;overflow-y:auto;overflow-x:hidden;
 }
 .ni{display:flex;align-items:center;gap:10px;
   padding:10px 13px;border-radius:10px;margin:2px 0;
@@ -193,7 +192,7 @@ body::after{
 .ni i{width:18px;text-align:center;font-size:.88rem}
 
 /* Admin main */
-.am{flex:1;min-width:0;display:flex;flex-direction:column}
+.am{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .ah{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
   padding:0 18px;background:rgba(3,10,25,.9);border-bottom:1px solid var(--w06);position:sticky;top:0;z-index:10}
 .ac{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px}
@@ -203,8 +202,7 @@ body::after{
 
 /* Link item admin */
 .lia{display:flex;align-items:center;gap:11px;padding:11px 13px;
-  background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;
-  min-width:0;overflow:hidden}
+  background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s}
 .lia:hover{background:var(--w1)}
 
 /* Floater item */
@@ -232,19 +230,12 @@ body::after{
 
 /* ===== RESPONSIVE ===== */
 @media(min-width:769px){
-  #hbtn,#closesb{display:none !important}
-  #admin-view{height:100vh;overflow:hidden}
-  .sb{
-    position:sticky !important;
-    top:0 !important;
-    height:100vh !important;
-  }
-  .am{height:100vh;overflow:hidden}
-  .ac{overflow-y:auto;overflow-x:hidden}
+  #hbtn,#closesb,
+  .sb{position:sticky;top:0}
 }
 
 @media(max-width:768px){
-  #admin-view{flex-direction:column !important}
+  #admin-view{flex-direction:column !important;height:auto !important;overflow:visible !important}
 
   /* Sidebar: drawer, HANYA pakai left property */
   .sb{
@@ -270,7 +261,7 @@ body::after{
   .am{height:auto !important;min-height:100vh}
   .ac{padding:14px !important}
 
-  .pgrid{grid-template-columns:1fr !important;overflow-x:hidden !important}
+  .pgrid{grid-template-columns:1fr !important}
   #srow{grid-template-columns:1fr !important}
 }
 </style>
@@ -412,13 +403,13 @@ body::after{
     <div class="ac">
 
       <!-- PANEL: LINKS -->
-      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;overflow:hidden">
+      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto">
         <div id="srow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Total Tautan</p><p id="s-tot" class="fd" style="font-size:2.1rem;font-weight:800;margin-top:2px">—</p></div>
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Profil</p><p id="s-name" class="fd" style="font-size:.92rem;font-weight:700;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</p></div>
           <div class="card"><p style="font-size:.68rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.06em;font-family:'Space Grotesk',sans-serif">Status</p><p class="fd" style="font-size:.88rem;font-weight:700;margin-top:4px;color:var(--green)"><i class="fas fa-circle" style="font-size:.56rem;margin-right:4px"></i>Aktif</p></div>
         </div>
-        <div class="pgrid" style="display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start;min-width:0;overflow:hidden">
+        <div class="pgrid" style="display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start">
           <!-- Form tambah -->
           <div class="glass" style="padding:20px">
             <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:15px"><i class="fas fa-plus-circle" style="color:var(--bluel);margin-right:6px"></i>Tambah Tautan</h3>
@@ -433,7 +424,7 @@ body::after{
           <!-- List -->
           <div class="glass" style="padding:20px">
             <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:14px"><i class="fas fa-list" style="color:var(--bluel);margin-right:6px"></i>Daftar Tautan</h3>
-            <div id="llist" style="display:flex;flex-direction:column;gap:9px;overflow-x:auto">
+            <div id="llist" style="display:flex;flex-direction:column;gap:9px">
               <div style="text-align:center;padding:18px;color:var(--w5)"><div class="sp" style="margin:0 auto 8px"></div><p style="font-size:.82rem">Memuat...</p></div>
             </div>
           </div>
@@ -677,7 +668,7 @@ function renderLinks(){
   list.innerHTML='';
   s.forEach(lnk=>{
     const oi=ST.links.indexOf(lnk),d=document.createElement('div');d.className='lia';
-    d.innerHTML=`<div style="width:34px;height:34px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.82rem"></i></div><div style="flex:1;min-width:0;overflow:hidden"><p class="fd" style="font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.title}</p><p style="font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.url}</p></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn btn-green btn-sm" onclick="openEM(${oi})"><i class="fas fa-pen"></i></button><button class="btn btn-red btn-sm" onclick="delLink(${oi})"><i class="fas fa-trash"></i></button></div>`;
+    d.innerHTML=`<div style="width:34px;height:34px;border-radius:9px;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.82rem"></i></div><div style="flex:1;min-width:0"><p class="fd" style="font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.title}</p><p style="font-size:.7rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lnk.url}</p></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn btn-green btn-sm" onclick="openEM(${oi})"><i class="fas fa-pen"></i></button><button class="btn btn-red btn-sm" onclick="delLink(${oi})"><i class="fas fa-trash"></i></button></div>`;
     list.appendChild(d);
   });
 }
@@ -772,7 +763,7 @@ function toast(msg,type='ok'){const t=document.getElementById('toast');t.textCon
 // ── INIT ──
 window.addEventListener('load',()=>{
   const ls=document.getElementById('ls');
-  setTimeout(()=>{ls.classList.add('out');setTimeout(()=>{ls.style.display='none';ls.style.pointerEvents='none';},400);route();},700);
+  setTimeout(()=>{ls.classList.add('out');setTimeout(()=>{ls.style.display='none';},400);route();},700);
 });
 </script>
 </body>
