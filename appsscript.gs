@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  LinkSpace — Google Apps Script Backend
+//  Lak3saLink — Google Apps Script Backend
 //  Password tersimpan di spreadsheet (sheet "Config")
 //  Jalankan setupSheets() SEKALI sebelum deploy
 // ═══════════════════════════════════════════════════════════════
@@ -11,6 +11,7 @@ const SHEET_CONFIG   = 'Config';
 const SHEET_PROFILE  = 'Profile';
 const SHEET_LINKS    = 'Links';
 const SHEET_FLOATERS = 'Floaters';
+const SHEET_PHOTOS   = 'Photos';
 
 // Password default saat pertama kali setup
 const DEFAULT_PASSWORD = 'admin123';
@@ -34,6 +35,9 @@ function doPost(e) {
       case 'deleteLink':      result = deleteLink(body);             break;
       case 'addFloater':      result = addFloater(body);             break;
       case 'deleteFloater':   result = deleteFloater(body);          break;
+      case 'addPhoto':        result = addPhoto(body);               break;
+      case 'updatePhoto':     result = updatePhoto(body);            break;
+      case 'deletePhoto':     result = deletePhoto(body);            break;
       default:
         result = { ok: false, error: 'Unknown action: ' + action };
     }
@@ -72,7 +76,6 @@ function setupSheets() {
     ['key',      'value'],
     ['password', DEFAULT_PASSWORD],
   ]);
-  cfg.getRange('A:B').setColumnWidth(0, 180);
 
   // ── Profile ──
   let prof = ss.getSheetByName(SHEET_PROFILE);
@@ -95,7 +98,14 @@ function setupSheets() {
   flt.clearContents();
   flt.getRange(1,1,1,5).setValues([['url','size','left','top','created_at']]);
 
-  Logger.log('✅ Setup selesai! Sheet Config, Profile, Links, Floaters dibuat.');
+  // ── Photos ──
+  let pht = ss.getSheetByName(SHEET_PHOTOS);
+  if (!pht) pht = ss.insertSheet(SHEET_PHOTOS);
+  pht.clearContents();
+  // data_b64 berisi string base64 data URL foto (bisa panjang, set kolom lebar)
+  pht.getRange(1,1,1,4).setValues([['title','order','data_b64','created_at']]);
+
+  Logger.log('✅ Setup selesai! Sheet Config, Profile, Links, Floaters, Photos dibuat.');
   Logger.log('Password default: ' + DEFAULT_PASSWORD);
 }
 
@@ -106,7 +116,6 @@ function getConfig(key) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_CONFIG);
   const data  = sheet.getDataRange().getValues();
-  // Row 0 = header, data mulai row 1
   for (let i = 1; i < data.length; i++) {
     if (data[i][0] === key) return String(data[i][1]);
   }
@@ -123,7 +132,6 @@ function setConfig(key, value) {
       return;
     }
   }
-  // Key belum ada, tambahkan baris baru
   sheet.appendRow([key, value]);
 }
 
@@ -135,9 +143,6 @@ function login(body) {
   if (body.password !== storedPwd) {
     throw new Error('Password salah');
   }
-  // Buat token sederhana berbasis timestamp
-  // Token ini tidak divalidasi server (stateless), hanya dipakai
-  // di client sebagai tanda sudah login dalam sesi ini.
   const token = 'ls_' + Date.now() + '_' + Math.random().toString(36).slice(2);
   return { ok: true, token: token };
 }
@@ -203,7 +208,24 @@ function getAll() {
     });
   }
 
-  return { ok: true, profile, links, floaters };
+  // Photos
+  const phtSheet = ss.getSheetByName(SHEET_PHOTOS);
+  const photos   = [];
+  if (phtSheet) {
+    const phtData = phtSheet.getDataRange().getValues();
+    for (let i = 1; i < phtData.length; i++) {
+      const r = phtData[i];
+      if (!r[0]) continue;
+      photos.push({
+        title:    String(r[0] || ''),
+        order:    r[1] || 99,
+        data_b64: String(r[2] || ''),
+        _row:     i + 1,
+      });
+    }
+  }
+
+  return { ok: true, profile, links, floaters, photos };
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -283,6 +305,61 @@ function deleteFloater(body) {
   const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_FLOATERS);
   const row   = parseInt(body.rowIndex);
+  if (!row || row < 2) throw new Error('Row tidak valid');
+  sheet.deleteRow(row);
+  return { ok: true };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  PHOTOS
+//  Foto disimpan sebagai data URL base64 langsung di spreadsheet.
+//  Batasi ukuran file di sisi client (maks ~1.5 MB sebelum encode).
+//  Base64 dari 1.5 MB ≈ 2 MB string — masih dalam batas sel Sheets.
+// ═══════════════════════════════════════════════════════════════
+function addPhoto(body) {
+  if (!body.title) throw new Error('Judul foto wajib diisi');
+  if (!body.data_b64) throw new Error('Data foto tidak ada');
+
+  // Validasi ukuran: base64 string > ~2.1 MB kemungkinan terlalu besar
+  if (body.data_b64.length > 2200000) {
+    throw new Error('Foto terlalu besar. Maksimal 1.5 MB.');
+  }
+
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet   = ss.getSheetByName(SHEET_PHOTOS);
+
+  // Buat sheet Photos jika belum ada (untuk instalasi lama)
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_PHOTOS);
+    sheet.getRange(1,1,1,4).setValues([['title','order','data_b64','created_at']]);
+  }
+
+  sheet.appendRow([
+    body.title || '',
+    Number(body.order) || 99,
+    body.data_b64,
+    new Date().toISOString(),
+  ]);
+  return { ok: true };
+}
+
+function updatePhoto(body) {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_PHOTOS);
+  if (!sheet) throw new Error('Sheet Photos tidak ditemukan');
+  const row = parseInt(body.rowIndex);
+  if (!row || row < 2) throw new Error('Row tidak valid');
+  // Hanya update judul dan urutan (tidak ubah data foto)
+  sheet.getRange(row, 1).setValue(body.title || '');
+  sheet.getRange(row, 2).setValue(Number(body.order) || 99);
+  return { ok: true };
+}
+
+function deletePhoto(body) {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_PHOTOS);
+  if (!sheet) throw new Error('Sheet Photos tidak ditemukan');
+  const row = parseInt(body.rowIndex);
   if (!row || row < 2) throw new Error('Row tidak valid');
   sheet.deleteRow(row);
   return { ok: true };
