@@ -3,1089 +3,1356 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Lak3saLink — Tautan resmi Lapas Kelas III Saparua"/>
 <title>Lak3saLink — Lapas Kelas III Saparua</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 <style>
-/* ===== RESET & BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg1:#05101e;--bg2:#091830;--bg3:#0d2044;
-  --blue:#2979d4;--blue2:#1a4a9e;--bluel:#5ba3f5;--blueg:#7cbeff;--cyan:#38c8e8;
-  --gold:#f5c842;--gold2:#e8a020;
+  --bg:#06101f;--bg2:#091830;--bg3:#0d2044;
+  --blue:#2979d4;--blue2:#1a4a9e;--bl:#5ba3f5;--bc:#7cbeff;--cy:#38c8e8;
+  --gd:#f5c518;--gd2:#d4960e;
   --w:#fff;--w9:rgba(255,255,255,.9);--w7:rgba(255,255,255,.7);
   --w5:rgba(255,255,255,.5);--w3:rgba(255,255,255,.3);--w1:rgba(255,255,255,.1);
-  --w06:rgba(255,255,255,.06);--w04:rgba(255,255,255,.04);--w02:rgba(255,255,255,.02);
+  --w08:rgba(255,255,255,.08);--w06:rgba(255,255,255,.06);--w04:rgba(255,255,255,.04);
   --red:#f87171;--green:#4ade80;
-  --sb-w:230px;
+  --sb:230px;--rad:14px;
 }
-html{height:100%}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg1);color:var(--w);min-height:100%;overflow-x:hidden;width:100%}
-h1,h2,h3,.fd{font-family:'Sora',sans-serif}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--w);
+  min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.fd{font-family:'Sora',system-ui,sans-serif}
 a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}
-button{cursor:pointer;font-family:inherit}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+textarea{font-family:inherit;resize:vertical}
 ::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:rgba(91,163,245,.25);border-radius:4px}
+::-webkit-scrollbar-thumb{background:rgba(91,163,245,.2);border-radius:4px}
 
-/* ===== BACKGROUND ===== */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+/* BG */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 90% 55% at 18% -5%,rgba(41,121,212,.55) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 50% at 85% 105%,rgba(20,60,130,.65) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(56,200,232,.06) 0%,transparent 60%),
-    linear-gradient(155deg,var(--bg1) 0%,var(--bg2) 45%,var(--bg3) 75%,var(--bg1) 100%);
-}
-/* Grid lines */
-body::after{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    radial-gradient(ellipse 85% 55% at 15% -5%,rgba(41,121,212,.5) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 50% at 88% 108%,rgba(15,50,120,.6) 0%,transparent 55%),
+    linear-gradient(155deg,var(--bg) 0%,var(--bg2) 45%,var(--bg3) 75%,var(--bg) 100%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--w06) 1px,transparent 1px),linear-gradient(90deg,var(--w06) 1px,transparent 1px);
-  background-size:52px 52px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 0%, transparent 75%);
-}
-#bg-floaters{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  background-size:54px 54px;
+  mask-image:radial-gradient(ellipse 75% 70% at 50% 35%,#000 0%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 75% 70% at 50% 35%,#000 0%,transparent 100%)}
+#bgf{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bf{position:absolute;border-radius:50%;object-fit:cover;
-  filter:blur(1px) saturate(.5) brightness(.45) opacity(.7);
-  animation:bfloat 20s ease-in-out infinite;}
-@keyframes bfloat{0%,100%{transform:translateY(0) rotate(0) scale(1)}50%{transform:translateY(-18px) rotate(5deg) scale(1.03)}}
+  filter:blur(2px) saturate(.4) brightness(.4);
+  animation:bfl 22s ease-in-out infinite;will-change:transform}
+@keyframes bfl{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-16px) scale(1.04)}}
 
-/* ===== LOADING ===== */
-#ls{position:fixed;inset:0;z-index:2000;background:var(--bg1);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-  transition:opacity .4s}
-#ls.out{opacity:0;pointer-events:none !important}
-.ll{font-family:'Sora',sans-serif;font-weight:800;font-size:2.2rem;
-  background:linear-gradient(135deg,#fff 0%,var(--cyan) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:-0.03em}
-.sp{width:20px;height:20px;border:2px solid var(--w1);border-top-color:var(--w);
-  border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+/* LOADING */
+#ls{position:fixed;inset:0;z-index:3000;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  transition:opacity .35s ease}
+#ls.out{opacity:0;pointer-events:none}
+.ll{font-family:'Sora',sans-serif;font-weight:800;font-size:2rem;
+  background:linear-gradient(135deg,#fff,var(--cy));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
+.sp{width:18px;height:18px;border:2px solid var(--w1);border-top-color:var(--w);
+  border-radius:50%;animation:spin .65s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ===== TOAST ===== */
-#toast{position:fixed;bottom:20px;right:16px;z-index:1500;
-  padding:11px 18px;border-radius:12px;font-family:'Sora',sans-serif;
-  font-weight:600;font-size:.85rem;pointer-events:none;
-  transform:translateY(60px);opacity:0;transition:all .3s;max-width:280px}
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:16px;z-index:2000;
+  padding:10px 16px;border-radius:12px;font-family:'Sora',sans-serif;
+  font-weight:700;font-size:.8rem;pointer-events:none;
+  transform:translateY(56px);opacity:0;transition:all .28s;max-width:260px;
+  display:flex;align-items:center;gap:8px}
 #toast.show{transform:translateY(0);opacity:1}
-#toast.ok{background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.35);color:var(--green)}
-#toast.err{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);color:var(--red)}
-#ctoast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(20px);
-  z-index:1500;opacity:0;pointer-events:none;
-  background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:var(--green);
-  font-family:'Sora',sans-serif;font-weight:600;font-size:.82rem;
-  padding:8px 20px;border-radius:99px;transition:all .25s;white-space:nowrap}
+#toast.ok{background:rgba(34,197,94,.16);border:1px solid rgba(34,197,94,.35);color:var(--green)}
+#toast.err{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.35);color:var(--red)}
+#toast.warn{background:rgba(245,197,24,.14);border:1px solid rgba(245,197,24,.3);color:var(--gd)}
+#ctoast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(16px);
+  z-index:2000;opacity:0;pointer-events:none;
+  background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.4);color:var(--green);
+  font-family:'Sora',sans-serif;font-weight:700;font-size:.78rem;
+  padding:7px 18px;border-radius:99px;transition:all .22s;white-space:nowrap}
 #ctoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ===== VIEWS ===== */
-.view{display:none;position:relative;z-index:1;min-height:100vh}
-.view.on{display:flex;flex-direction:column;position:relative;z-index:1}
+/* VIEWS */
+.view{display:none;position:relative;z-index:1;min-height:100dvh;min-height:100vh}
+.view.on{display:flex;flex-direction:column}
 
-/* ===== GLASS / CARD ===== */
-.glass{background:rgba(8,18,42,.6);border:1px solid rgba(255,255,255,.1);border-radius:18px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.card{background:rgba(41,121,212,.08);border:1px solid rgba(91,163,245,.15);border-radius:14px;padding:18px}
+/* GLASS */
+.glass{background:rgba(7,16,40,.62);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--rad);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.card{background:rgba(41,121,212,.08);border:1px solid rgba(91,163,245,.14);
+  border-radius:12px;padding:16px}
 
-/* ===== BADGE ===== */
-.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:99px;
-  font-size:.68rem;font-weight:700;font-family:'Sora',sans-serif;
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;
+  font-size:.65rem;font-weight:700;font-family:'Sora',sans-serif;
   letter-spacing:.08em;text-transform:uppercase;
-  background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.3);color:var(--blueg)}
+  background:rgba(41,121,212,.14);border:1px solid rgba(91,163,245,.28);color:var(--bc)}
 
-/* ===== INPUTS ===== */
-.inp{width:100%;padding:10px 13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;color:var(--w);font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s}
-.inp:focus{border-color:var(--bluel);box-shadow:0 0 0 3px rgba(91,163,245,.12)}
+/* INPUTS */
+.inp{width:100%;padding:9px 12px;background:var(--w04);border:1px solid rgba(255,255,255,.09);
+  border-radius:9px;color:var(--w);font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.86rem;outline:none;transition:border-color .18s,box-shadow .18s;-webkit-appearance:none}
+.inp:focus{border-color:var(--bl);box-shadow:0 0 0 3px rgba(91,163,245,.12)}
 .inp::placeholder{color:var(--w3)}
-.lbl{display:block;font-size:.68rem;font-weight:700;color:var(--w5);
+.inp:disabled{opacity:.5}
+.lbl{display:block;font-size:.66rem;font-weight:700;color:var(--w5);
   margin-bottom:4px;letter-spacing:.07em;text-transform:uppercase}
 
-/* ===== BUTTONS ===== */
-.btn{padding:10px 20px;border-radius:10px;font-family:'Sora',sans-serif;
-  font-weight:700;font-size:.88rem;border:none;transition:all .2s}
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:9px;font-family:'Sora',sans-serif;
+  font-weight:700;font-size:.84rem;transition:all .18s;display:inline-flex;
+  align-items:center;justify-content:center;gap:6px;-webkit-tap-highlight-color:transparent}
 .btn-blue{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;
-  box-shadow:0 4px 18px rgba(20,70,160,.3)}
-.btn-blue:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(20,70,160,.45)}
-.btn-blue:disabled{opacity:.5;transform:none;cursor:not-allowed}
-.btn-red{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red)}
-.btn-red:hover{background:rgba(239,68,68,.2)}
-.btn-green{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--green)}
-.btn-green:hover{background:rgba(34,197,94,.2)}
-.btn-cyan{background:rgba(56,200,232,.12);border:1px solid rgba(56,200,232,.3);color:var(--cyan)}
-.btn-cyan:hover{background:rgba(56,200,232,.22)}
-.btn-gold{background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);color:var(--gold)}
-.btn-gold:hover{background:rgba(245,200,66,.22)}
-.btn-sm{padding:6px 11px;font-size:.78rem;border-radius:8px}
+  box-shadow:0 3px 14px rgba(20,70,160,.28)}
+.btn-blue:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(20,70,160,.42)}
+.btn-blue:active:not(:disabled){transform:translateY(0)}
+.btn-blue:disabled{opacity:.45;cursor:not-allowed}
+.btn-red{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.24);color:var(--red)}
+.btn-red:hover:not(:disabled){background:rgba(239,68,68,.2)}
+.btn-green{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.24);color:var(--green)}
+.btn-green:hover:not(:disabled){background:rgba(34,197,94,.2)}
+.btn-cy{background:rgba(56,200,232,.1);border:1px solid rgba(56,200,232,.28);color:var(--cy)}
+.btn-cy:hover:not(:disabled){background:rgba(56,200,232,.2)}
+.btn-gd{background:rgba(245,197,24,.1);border:1px solid rgba(245,197,24,.28);color:var(--gd)}
+.btn-gd:hover:not(:disabled){background:rgba(245,197,24,.2)}
+.btn-sm{padding:5px 10px;font-size:.74rem;border-radius:7px}
+.btn-xs{padding:4px 8px;font-size:.7rem;border-radius:6px}
+.dv{border:none;border-top:1px solid var(--w06);margin:14px 0}
 
-/* ===== DIVIDER ===== */
-.dv{border:none;border-top:1px solid var(--w06);margin:16px 0}
+/* ANIM */
+.fu{animation:fu .5s cubic-bezier(.4,0,.2,1) both}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}
 
-/* ===== ANIM ===== */
-.fu{animation:fu .55s cubic-bezier(.4,0,.2,1) both}
-@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.d1{animation-delay:.06s}.d2{animation-delay:.13s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}
-.d5{animation-delay:.35s}.d6{animation-delay:.42s}
-
-/* ===== AVATAR RING ===== */
+/* AVATAR RING */
 .aring{display:inline-block;border-radius:50%;padding:3px;
-  background:conic-gradient(var(--cyan),var(--bluel),var(--gold),var(--cyan));
-  box-shadow:0 0 36px rgba(56,200,232,.25),0 0 60px rgba(41,121,212,.15)}
-.aring img{border-radius:50%;object-fit:cover;border:3px solid var(--bg1)}
+  background:conic-gradient(var(--cy),var(--bl),var(--gd),var(--cy));
+  box-shadow:0 0 32px rgba(56,200,232,.22),0 0 54px rgba(41,121,212,.12)}
+.aring img{border-radius:50%;object-fit:cover;border:3px solid var(--bg)}
 
-/* ===== PUBLIC LINK BTN ===== */
-.lbtn{display:flex;align-items:center;gap:13px;width:100%;
-  padding:16px 20px;border-radius:16px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  color:var(--w);font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;
-  transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;}
-.lbtn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(120deg,rgba(91,163,245,.15) 0%,rgba(56,200,232,.08) 100%);
-  opacity:0;transition:opacity .22s
-}
-.lbtn::after{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(180deg,var(--cyan),var(--bluel));
-  opacity:0;transition:opacity .22s;border-radius:0 2px 2px 0
-}
-.lbtn:hover{transform:translateX(4px);
-  background:rgba(255,255,255,.1);
-  border-color:rgba(124,190,255,.4);
-  box-shadow:0 8px 30px rgba(10,50,130,.4)}
-.lbtn:hover::before,.lbtn:hover::after{opacity:1}
+/* PUBLIC LINK BTN */
+.lbtn{display:flex;align-items:center;gap:12px;width:100%;
+  padding:14px 16px;border-radius:13px;
+  background:var(--w08);border:1px solid rgba(255,255,255,.11);
+  color:var(--w);font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;
+  transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent}
+.lbtn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--cy),var(--bl));
+  opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
+.lbtn:hover,.lbtn:active{transform:translateX(3px);background:rgba(255,255,255,.13);
+  border-color:rgba(124,190,255,.35);box-shadow:0 6px 24px rgba(10,45,120,.35)}
+.lbtn:hover::before,.lbtn:active::before{opacity:1}
+.lbtn.pb::before{background:linear-gradient(180deg,var(--gd),var(--gd2))}
+.lbtn.pb:hover,.lbtn.pb:active{border-color:rgba(245,197,24,.32);
+  box-shadow:0 6px 24px rgba(80,55,5,.3)}
+.lic{width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  background:var(--w1);border:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+  transition:all .2s}
 
-/* Photo btn variant */
-.lbtn.photo-btn::after{background:linear-gradient(180deg,var(--gold),var(--gold2))}
-.lbtn.photo-btn:hover{border-color:rgba(245,200,66,.4);box-shadow:0 8px 30px rgba(100,70,10,.3)}
-.lbtn.photo-btn::before{background:linear-gradient(120deg,rgba(245,200,66,.12) 0%,rgba(232,160,32,.06) 100%)}
-
-.lic{width:42px;height:42px;border-radius:12px;flex-shrink:0;
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
-  display:flex;align-items:center;justify-content:center;font-size:.98rem;
-  transition:all .22s}
-.lbtn:hover .lic{background:rgba(91,163,245,.2);border-color:rgba(91,163,245,.4)}
-.photo-btn:hover .lic{background:rgba(245,200,66,.2);border-color:rgba(245,200,66,.4)}
-
-/* ===== MORE BTN & CTX MENU ===== */
+/* MORE MENU */
 .lwrap{position:relative;width:100%}
-.mbtn{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:32px;height:32px;border-radius:8px;
+.mbtn{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:30px;height:30px;border-radius:7px;
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
   display:flex;align-items:center;justify-content:center;
-  color:var(--w5);font-size:.88rem;z-index:2;
-  transition:all .2s;-webkit-tap-highlight-color:transparent}
-.mbtn:hover,.mbtn:active{background:rgba(91,163,245,.25);color:var(--w);border-color:rgba(91,163,245,.4)}
-.cmenu{position:fixed;background:#0a1428;
-  border:1px solid rgba(91,163,245,.3);border-radius:16px;padding:6px;
-  min-width:195px;box-shadow:0 24px 64px rgba(0,0,0,.9);
-  z-index:1200;opacity:0;pointer-events:none;
-  transform:scale(.94) translateY(-6px);transform-origin:top right;
-  transition:opacity .15s,transform .15s}
+  color:var(--w5);font-size:.82rem;z-index:2;transition:all .18s}
+.mbtn:hover{background:rgba(91,163,245,.25);color:var(--w)}
+.cmenu{position:fixed;background:#090f22;
+  border:1px solid rgba(91,163,245,.28);border-radius:13px;padding:5px;
+  min-width:185px;box-shadow:0 20px 56px rgba(0,0,0,.88);
+  z-index:1500;opacity:0;pointer-events:none;
+  transform:scale(.94) translateY(-4px);transform-origin:top right;
+  transition:opacity .14s,transform .14s}
 .cmenu.on{opacity:1;pointer-events:auto;transform:scale(1) translateY(0)}
-.ci{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
-  font-family:'Sora',sans-serif;font-weight:600;font-size:.82rem;
-  color:var(--w9);transition:background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.ci:hover,.ci:active{background:rgba(41,121,212,.22);color:var(--w)}
-.ci i{width:16px;text-align:center;color:var(--bluel);font-size:.8rem;flex-shrink:0}
-.cdv{border:none;border-top:1px solid var(--w06);margin:4px 6px}
+.ci{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.8rem;
+  color:var(--w9);transition:background .14s;white-space:nowrap;cursor:pointer}
+.ci:hover{background:rgba(41,121,212,.2)}
+.ci i{width:15px;text-align:center;color:var(--bl);font-size:.78rem;flex-shrink:0}
+.cdv{border:none;border-top:1px solid var(--w06);margin:3px 5px}
 
-/* ===== LIGHTBOX (foto viewer) ===== */
-#lightbox{
-  display:none;position:fixed;inset:0;z-index:2000;
-  background:rgba(0,0,0,.92);
-  align-items:center;justify-content:center;
-  cursor:pointer;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  animation:lbIn .2s ease both
-}
-#lightbox.on{display:flex}
-@keyframes lbIn{from{opacity:0}to{opacity:1}}
-#lightbox img{
-  max-width:92vw;max-height:88vh;
-  object-fit:contain;border-radius:12px;
-  box-shadow:0 24px 80px rgba(0,0,0,.85);
-  animation:lbImgIn .25s cubic-bezier(.4,0,.2,1) both
-}
-@keyframes lbImgIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
-#lb-caption{
-  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
-  color:var(--w7);font-size:.82rem;font-family:'Sora',sans-serif;font-weight:600;
-  background:rgba(0,0,0,.55);padding:6px 18px;border-radius:99px;pointer-events:none
-}
-#lb-close{
-  position:fixed;top:18px;right:18px;
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
-  color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s
-}
-#lb-close:hover{background:rgba(239,68,68,.3);border-color:rgba(239,68,68,.5)}
+/* LIGHTBOX */
+#lb{display:none;position:fixed;inset:0;z-index:2500;
+  background:rgba(0,0,0,.93);align-items:center;justify-content:center;
+  padding:16px}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:calc(100dvh - 80px);max-height:calc(100vh - 80px);
+  object-fit:contain;border-radius:10px;
+  box-shadow:0 20px 70px rgba(0,0,0,.8);
+  animation:lbi .22s cubic-bezier(.4,0,.2,1) both}
+@keyframes lbi{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+#lb-x{position:fixed;top:14px;right:14px;width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  color:#fff;font-size:.9rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;z-index:1}
+#lb-x:hover{background:rgba(239,68,68,.3)}
+#lb-cap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  color:var(--w7);font-size:.78rem;font-family:'Sora',sans-serif;font-weight:700;
+  background:rgba(0,0,0,.5);padding:5px 16px;border-radius:99px;pointer-events:none;
+  max-width:90vw;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* ===== PUBLIC PAGE ===== */
-#public-view{
-  background:transparent;
-}
+/* SEC LABEL */
+.slbl{display:flex;align-items:center;gap:8px;
+  font-family:'Sora',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--w3);margin:14px 0 8px}
+.slbl::before,.slbl::after{content:'';flex:1;height:1px;background:var(--w06)}
 
-/* ===== SECTION BADGE ===== */
-.sec-label{
-  display:flex;align-items:center;gap:8px;
-  font-family:'Sora',sans-serif;font-size:.68rem;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--w5);
-  margin-bottom:12px;
-}
-.sec-label::before,.sec-label::after{content:'';flex:1;height:1px;background:var(--w1)}
-
-/* ===== ADMIN LAYOUT ===== */
-#admin-view{flex-direction:row !important}
-
-/* Sidebar */
-.sb{
-  width:var(--sb-w);flex-shrink:0;
-  background:rgba(2,5,16,.98);
-  border-right:1px solid rgba(255,255,255,.07);
-  display:flex;flex-direction:column;
-  overflow-y:auto;overflow-x:hidden;
-}
-.ni{display:flex;align-items:center;gap:10px;
-  padding:10px 13px;border-radius:10px;margin:2px 0;
-  font-family:'Sora',sans-serif;font-weight:600;font-size:.83rem;
-  color:var(--w5);transition:all .2s;border-left:2px solid transparent}
-.ni:hover,.ni.on{background:rgba(41,121,212,.15);color:var(--w)}
-.ni.on{color:var(--blueg);border-left-color:var(--blueg);padding-left:11px}
-.ni i{width:18px;text-align:center;font-size:.88rem}
-
-/* Admin main */
+/* ADMIN */
+#av{flex-direction:row !important}
+.sb{width:var(--sb);flex-shrink:0;background:rgba(2,5,16,.99);
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;
+  margin:1px 0;font-family:'Sora',sans-serif;font-weight:700;font-size:.8rem;
+  color:var(--w5);transition:all .18s;border-left:2px solid transparent;cursor:pointer}
+.ni:hover{background:rgba(41,121,212,.14);color:var(--w7)}
+.ni.on{background:rgba(41,121,212,.18);color:var(--bc);border-left-color:var(--bc);padding-left:10px}
+.ni i{width:16px;text-align:center;font-size:.84rem}
 .am{flex:1;min-width:0;display:flex;flex-direction:column}
-.ah{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;background:rgba(2,5,18,.92);border-bottom:1px solid rgba(255,255,255,.06);
+.ah{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;background:rgba(2,5,18,.94);border-bottom:1px solid rgba(255,255,255,.06);
   position:sticky;top:0;z-index:10}
-.ac{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px}
-
-/* Panels */
+.ac{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px}
 .pan{display:none}.pan.on{display:block}
 
-/* Link item admin */
-.lia{display:flex;align-items:center;gap:0;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s;min-width:0}
-.lia:hover{background:var(--w1)}
-
-/* Floater item */
-.fi{display:flex;align-items:center;gap:11px;padding:10px 13px;
-  background:var(--w04);border:1px solid var(--w06);border-radius:12px;margin-bottom:8px}
-.fth{width:44px;height:44px;border-radius:8px;object-fit:cover;
+/* ADMIN LIST ITEMS */
+.lia{display:flex;align-items:center;gap:9px;padding:10px 12px;
+  background:var(--w04);border:1px solid var(--w06);border-radius:11px;transition:background .18s}
+.lia:hover{background:var(--w08)}
+.fi{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:var(--w04);border:1px solid var(--w06);border-radius:11px;margin-bottom:7px}
+.fth{width:42px;height:42px;border-radius:8px;object-fit:cover;
   flex-shrink:0;border:1px solid var(--w1);background:var(--w04)}
+.phi{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:var(--w04);border:1px solid rgba(245,197,24,.1);border-radius:11px;margin-bottom:7px}
+.pht{width:46px;height:46px;border-radius:8px;object-fit:cover;
+  flex-shrink:0;border:1px solid rgba(245,197,24,.2);cursor:pointer;background:var(--w04)}
 
-/* Photo item admin */
-.phi{display:flex;align-items:center;gap:11px;padding:10px 13px;
-  background:var(--w04);border:1px solid rgba(245,200,66,.12);border-radius:12px;margin-bottom:8px}
-.phth{width:48px;height:48px;border-radius:9px;object-fit:cover;
-  flex-shrink:0;border:1px solid rgba(245,200,66,.2);background:var(--w04);cursor:pointer}
+/* UPLOAD */
+.uparea{border:2px dashed rgba(91,163,245,.22);border-radius:12px;
+  padding:22px 16px;text-align:center;cursor:pointer;transition:all .18s;background:var(--w04)}
+.uparea:hover,.uparea.drag{border-color:rgba(91,163,245,.5);background:rgba(41,121,212,.07)}
+.uparea input{display:none}
 
-/* Upload area */
-.upload-area{
-  border:2px dashed rgba(91,163,245,.25);border-radius:14px;
-  padding:24px;text-align:center;cursor:pointer;
-  transition:all .2s;background:var(--w02)
-}
-.upload-area:hover,.upload-area.drag-over{
-  border-color:rgba(91,163,245,.55);background:rgba(41,121,212,.07)
-}
-.upload-area input{display:none}
-
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{display:none;position:fixed;inset:0;z-index:900;
-  align-items:center;justify-content:center;background:rgba(0,0,0,.78);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:16px}
 .modal.on{display:flex}
+.mbox{width:100%;max-width:380px}
 
-/* ===== SIDEBAR OVERLAY ===== */
-#sb-ov{
-  display:none;
-  position:fixed;inset:0;z-index:799;
-  background:rgba(0,0,0,.65);cursor:pointer;
-}
+/* SIDEBAR OVERLAY */
+#sbov{display:none;position:fixed;inset:0;z-index:799;background:rgba(0,0,0,.6);cursor:pointer}
 
-/* ══ BOTTOM NAVIGATION ══ */
-#bottom-nav{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;height:64px;
-  background:rgba(2,5,18,.97);border-top:1px solid rgba(255,255,255,.08);
-  z-index:500;align-items:center;justify-content:space-around;padding:0 8px;
-}
-.bn-item{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;padding:8px 14px;border-radius:12px;
-  font-family:'Sora',sans-serif;font-weight:600;font-size:.62rem;
-  color:var(--w5);cursor:pointer;transition:all .2s;
-  border:none;background:none;-webkit-tap-highlight-color:transparent;min-width:54px;
-}
-.bn-item i{font-size:1.1rem;display:block}
-.bn-item.on{color:var(--blueg);background:rgba(41,121,212,.15);border-radius:12px}
-.bn-item:active{background:rgba(255,255,255,.08)}
+/* BOTTOM NAV */
+#bn{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;
+  background:rgba(2,5,18,.98);border-top:1px solid rgba(255,255,255,.08);
+  z-index:500;align-items:center;justify-content:space-around;padding:0 4px;
+  padding-bottom:env(safe-area-inset-bottom)}
+.bi{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;padding:7px 12px;border-radius:10px;
+  font-family:'Sora',sans-serif;font-weight:700;font-size:.58rem;
+  color:var(--w5);transition:all .18s;border:none;background:none;
+  -webkit-tap-highlight-color:transparent;min-width:50px;cursor:pointer}
+.bi i{font-size:1rem;display:block}
+.bi.on{color:var(--bc);background:rgba(41,121,212,.14)}
+.bi:active{background:rgba(255,255,255,.07)}
 
-/* ===== RESPONSIVE ===== */
+/* PROGRESS BAR */
+.pbar{width:100%;height:6px;background:var(--w06);border-radius:99px;overflow:hidden;margin-top:6px}
+.pbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cy));
+  transition:width .3s ease}
+
+/* RESPONSIVE */
 @media(min-width:769px){
   #hbtn,#closesb{display:none !important}
-  #admin-view{height:100vh;overflow:hidden}
+  #av{height:100vh;overflow:hidden}
   .sb{position:sticky !important;top:0 !important;height:100vh !important}
   .am{height:100vh;overflow:hidden}
-  .ac{overflow-y:auto;overflow-x:hidden}
+  .ac{overflow-y:auto}
 }
 @media(max-width:768px){
-  #admin-view{flex-direction:column !important}
+  #av{flex-direction:column !important}
   .sb{display:none !important}
-  #sb-ov{display:none !important}
+  #sbov{display:none !important}
   #hbtn,#closesb{display:none !important}
   .am{height:auto !important;min-height:100vh}
-  .ac{padding:14px !important;padding-bottom:80px !important;box-sizing:border-box;width:100%}
+  .ac{padding:12px !important;padding-bottom:72px !important;box-sizing:border-box;width:100%}
   .pgrid{grid-template-columns:1fr !important}
+  #srow{grid-template-columns:repeat(2,1fr) !important}
+}
+@media(max-width:400px){
   #srow{grid-template-columns:1fr !important}
+  .lbtn{font-size:.84rem;padding:12px 14px}
 }
 
-/* ── CURSOR FIX ── */
-*,*::before,*::after{cursor:default}
-a,button,[onclick],.lbtn,.mbtn,.bn-item,.ni,.ci,.btn,.phth,.upload-area{cursor:pointer !important}
+/* CURSOR */
+a,button,[onclick],.lbtn,.mbtn,.bi,.ni,.ci,.btn,.pht,.uparea,label[for]{cursor:pointer !important}
 input,textarea,select{cursor:text}
+
+/* SAFE AREA */
+@supports(padding:env(safe-area-inset-bottom)){
+  #bn{padding-bottom:calc(env(safe-area-inset-bottom) + 4px)}
+  .ac{padding-bottom:calc(72px + env(safe-area-inset-bottom)) !important}
+}
 </style>
 </head>
 <body>
 
-<div id="bg-floaters"></div>
+<div id="bgf"></div>
 
 <!-- Lightbox -->
-<div id="lightbox" onclick="closeLB()">
-  <button id="lb-close" onclick="closeLB()"><i class="fas fa-times"></i></button>
-  <img id="lb-img" src="" alt=""/>
-  <div id="lb-caption"></div>
+<div id="lb" onclick="if(event.target===this||event.target===document.getElementById('lb'))cLB()">
+  <button id="lb-x" onclick="cLB()" aria-label="Tutup"><i class="fas fa-times"></i></button>
+  <img id="lb-img" src="" alt="Foto"/>
+  <div id="lb-cap"></div>
 </div>
 
-<div id="ls">
+<div id="ls" role="status" aria-live="polite">
   <div class="ll">Lak3saLink</div>
   <div class="sp"></div>
-  <p style="font-size:.76rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
+  <p style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
 </div>
 
-<div id="toast"></div>
-<div id="ctoast"></div>
-<div id="sb-ov" onclick="sbClose()"></div>
+<div id="toast" role="alert" aria-live="assertive"></div>
+<div id="ctoast" aria-live="polite"></div>
+<div id="sbov" onclick="sbC()"></div>
 
-<!-- ════════ PUBLIC ════════ -->
-<div id="public-view" class="view">
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:52px 20px">
-    <div style="width:100%;max-width:420px">
-
-      <!-- Avatar + name -->
-      <div class="fu" style="text-align:center;margin-bottom:36px">
-        <div class="aring" style="display:inline-block;margin-bottom:18px">
-          <img id="pub-av" src="" alt="" style="width:108px;height:108px"
-            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 108 108%22><rect width=%22108%22 height=%22108%22 rx=%2254%22 fill=%22%230a1a30%22/><text x=%2254%22 y=%2272%22 text-anchor=%22middle%22 font-size=%2250%22>🏛️</text></svg>'"/>
+<!-- ════ PUBLIC ════ -->
+<div id="pv" class="view">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 18px 40px">
+    <div style="width:100%;max-width:400px">
+      <div class="fu" style="text-align:center;margin-bottom:30px">
+        <div class="aring" style="display:inline-block;margin-bottom:14px">
+          <img id="pub-av" src="" alt="Foto Profil" style="width:96px;height:96px"
+            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width=%2296%22 height=%2296%22 rx=%2248%22 fill=%22%230a1a30%22/><text x=%2248%22 y=%2265%22 text-anchor=%22middle%22 font-size=%2246%22>🏛️</text></svg>'"/>
         </div>
-        <h1 id="pub-name" class="fd" style="font-size:1.8rem;font-weight:800;margin-bottom:7px;
-          background:linear-gradient(140deg,#fff 20%,rgba(150,210,255,.9) 100%);
-          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-          letter-spacing:-0.02em">—</h1>
-        <p id="pub-tag" style="font-size:.9rem;color:var(--w5);line-height:1.5">—</p>
+        <h1 id="pub-nm" class="fd" style="font-size:1.65rem;font-weight:800;margin-bottom:6px;
+          background:linear-gradient(140deg,#fff 20%,rgba(148,208,255,.9) 100%);
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+          background-clip:text;letter-spacing:-.025em">—</h1>
+        <p id="pub-tg" style="font-size:.86rem;color:var(--w5);line-height:1.55">—</p>
       </div>
-
-      <!-- Links -->
-      <div id="pub-links" class="fu d2" style="display:flex;flex-direction:column;gap:0">
-        <div style="text-align:center;padding:30px;color:var(--w5)">
+      <div id="pub-links" class="fu d2" style="display:flex;flex-direction:column">
+        <div style="text-align:center;padding:28px;color:var(--w5)">
           <div class="sp" style="margin:0 auto 10px"></div>
-          <p style="font-size:.83rem">Memuat tautan...</p>
+          <p style="font-size:.8rem">Memuat...</p>
         </div>
       </div>
-
-      <!-- Footer -->
-      <div class="fu d4" style="text-align:center;margin-top:40px">
-        <div class="badge"><i class="fas fa-link" style="font-size:.58rem"></i> Lak3saLink</div>
-        <p style="margin-top:11px;font-size:.66rem;color:var(--w3)">
+      <div class="fu d4" style="text-align:center;margin-top:34px">
+        <span class="badge"><i class="fas fa-link" style="font-size:.56rem"></i> Lak3saLink</span>
+        <p style="margin-top:10px;font-size:.63rem;color:var(--w3)">
           <a href="#admin" style="color:var(--w3)">Admin</a>
         </p>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ════════ LOGIN ════════ -->
-<div id="login-view" class="view">
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px">
-    <div style="width:100%;max-width:380px" class="fu">
-      <div style="text-align:center;margin-bottom:28px">
-        <div style="width:56px;height:56px;border-radius:16px;
-          background:linear-gradient(135deg,rgba(41,121,212,.3),rgba(56,200,232,.15));
-          border:1px solid rgba(91,163,245,.25);
-          display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
-          <i class="fas fa-link" style="color:var(--blueg);font-size:1.3rem"></i>
+<!-- ════ LOGIN ════ -->
+<div id="lv" class="view">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:36px 18px">
+    <div style="width:100%;max-width:360px" class="fu">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="width:52px;height:52px;border-radius:14px;margin:0 auto 12px;
+          background:linear-gradient(135deg,rgba(41,121,212,.28),rgba(56,200,232,.14));
+          border:1px solid rgba(91,163,245,.22);
+          display:flex;align-items:center;justify-content:center">
+          <i class="fas fa-link" style="color:var(--bc);font-size:1.25rem"></i>
         </div>
-        <h1 class="fd" style="font-size:1.85rem;font-weight:800;margin-bottom:7px;letter-spacing:-0.02em">Masuk Admin</h1>
-        <p style="color:var(--w5);font-size:.86rem">Lapas Kelas III Saparua</p>
+        <h1 class="fd" style="font-size:1.7rem;font-weight:800;margin-bottom:6px;letter-spacing:-.02em">Masuk Admin</h1>
+        <p style="color:var(--w5);font-size:.84rem">Lapas Kelas III Saparua</p>
       </div>
-      <div class="glass" style="padding:28px;display:flex;flex-direction:column;gap:16px">
+      <div class="glass" style="padding:24px;display:flex;flex-direction:column;gap:14px">
+        <div id="lock-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);
+          border-radius:9px;padding:10px 12px;font-size:.78rem;color:var(--red);text-align:center"></div>
         <div>
-          <label class="lbl">Password</label>
+          <label class="lbl" for="l-pwd">Password</label>
           <div style="position:relative">
-            <input type="password" id="l-pwd" class="inp" placeholder="Masukkan password" style="padding-right:44px"/>
-            <button onclick="tpwd('l-pwd',this)" style="position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--w5);font-size:.85rem;padding:5px"><i class="fas fa-eye"></i></button>
+            <input type="password" id="l-pwd" class="inp" placeholder="Masukkan password"
+              style="padding-right:42px" autocomplete="current-password" maxlength="64"/>
+            <button onclick="tpwd('l-pwd',this)" type="button"
+              style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
+              background:none;border:none;color:var(--w5);font-size:.82rem;padding:5px"
+              aria-label="Tampilkan password">
+              <i class="fas fa-eye"></i>
+            </button>
           </div>
         </div>
-        <p id="l-err" style="color:var(--red);font-size:.8rem;display:none"></p>
-        <button id="l-btn" class="btn btn-blue" onclick="doLogin()" style="width:100%">Masuk</button>
+        <p id="l-err" style="color:var(--red);font-size:.78rem;display:none" role="alert"></p>
+        <button id="l-btn" class="btn btn-blue" onclick="doLogin()" style="width:100%">
+          <i class="fas fa-sign-in-alt"></i> Masuk
+        </button>
         <div style="text-align:center">
-          <a href="#reset" style="font-size:.78rem;color:var(--blueg);opacity:.8">Lupa / Ganti password?</a>
+          <a href="#reset" style="font-size:.76rem;color:var(--bc);opacity:.8">Lupa / Ganti password?</a>
         </div>
       </div>
-      <p style="text-align:center;margin-top:16px;font-size:.8rem;color:var(--w3)">
-        <a onclick="nav('public-view')" href="#" style="color:inherit"><i class="fas fa-arrow-left" style="font-size:.7rem;margin-right:4px"></i>Kembali ke halaman utama</a>
+      <p style="text-align:center;margin-top:14px;font-size:.78rem;color:var(--w3)">
+        <a onclick="nav('pv')" href="#" style="color:inherit">
+          <i class="fas fa-arrow-left" style="font-size:.68rem;margin-right:3px"></i>Kembali ke halaman utama
+        </a>
       </p>
     </div>
   </div>
 </div>
 
-<!-- ════════ RESET ════════ -->
-<div id="reset-view" class="view">
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px">
-    <div style="width:100%;max-width:380px" class="fu">
-      <div style="text-align:center;margin-bottom:22px">
-        <div style="width:52px;height:52px;border-radius:50%;background:rgba(41,121,212,.15);border:1px solid rgba(91,163,245,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 13px"><i class="fas fa-key" style="color:var(--bluel);font-size:1.1rem"></i></div>
-        <h1 class="fd" style="font-size:1.6rem;font-weight:800;margin-bottom:5px">Ganti Password</h1>
-        <p style="color:var(--w5);font-size:.85rem">Tersimpan di spreadsheet, berlaku di semua perangkat</p>
+<!-- ════ RESET ════ -->
+<div id="rv" class="view">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:36px 18px">
+    <div style="width:100%;max-width:360px" class="fu">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:48px;height:48px;border-radius:50%;background:rgba(41,121,212,.16);
+          border:1px solid rgba(91,163,245,.22);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+          <i class="fas fa-key" style="color:var(--bl);font-size:1rem"></i>
+        </div>
+        <h1 class="fd" style="font-size:1.5rem;font-weight:800;margin-bottom:5px">Ganti Password</h1>
+        <p style="color:var(--w5);font-size:.83rem">Berlaku di semua perangkat</p>
       </div>
-      <div class="glass" style="padding:24px;display:flex;flex-direction:column;gap:14px">
-        <div><label class="lbl">Password Lama</label><input type="password" id="r-old" class="inp" placeholder="Password saat ini"/></div>
-        <div><label class="lbl">Password Baru</label><input type="password" id="r-new" class="inp" placeholder="Min. 8 karakter"/></div>
-        <div><label class="lbl">Konfirmasi</label><input type="password" id="r-con" class="inp" placeholder="Ulangi password baru"/></div>
-        <p id="r-msg" style="font-size:.8rem;display:none"></p>
-        <button class="btn btn-blue" onclick="doReset()" style="width:100%"><span id="r-btxt">Simpan Password Baru</span></button>
-        <div style="text-align:center"><a href="#login" style="font-size:.78rem;color:var(--w5)"><i class="fas fa-arrow-left" style="margin-right:3px"></i>Kembali ke Login</a></div>
+      <div class="glass" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div><label class="lbl" for="r-old">Password Lama</label>
+          <input type="password" id="r-old" class="inp" placeholder="Password saat ini" autocomplete="current-password" maxlength="64"/></div>
+        <div><label class="lbl" for="r-new">Password Baru</label>
+          <input type="password" id="r-new" class="inp" placeholder="Min. 8 karakter" autocomplete="new-password" maxlength="64"/></div>
+        <div><label class="lbl" for="r-con">Konfirmasi</label>
+          <input type="password" id="r-con" class="inp" placeholder="Ulangi password baru" autocomplete="new-password" maxlength="64"/></div>
+        <p id="r-msg" style="font-size:.78rem;display:none" role="alert"></p>
+        <button class="btn btn-blue" onclick="doReset()" style="width:100%">
+          <span id="r-bt">Simpan Password Baru</span>
+        </button>
+        <div style="text-align:center">
+          <a href="#login" style="font-size:.76rem;color:var(--w5)">
+            <i class="fas fa-arrow-left" style="margin-right:3px"></i>Kembali ke Login
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════ ADMIN ════════ -->
-<div id="admin-view" class="view">
+<!-- ════ ADMIN ════ -->
+<div id="av" class="view">
 
-  <!-- SIDEBAR -->
-  <aside class="sb" id="sb">
-    <div style="padding:14px 13px;border-bottom:1px solid var(--w06);flex-shrink:0">
+  <!-- Sidebar -->
+  <aside class="sb" id="sb" role="navigation" aria-label="Menu Admin">
+    <div style="padding:14px 12px;border-bottom:1px solid var(--w06);flex-shrink:0">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <span class="badge"><i class="fas fa-link" style="font-size:.58rem"></i> Lak3saLink</span>
-        <button id="closesb" onclick="sbClose()" style="display:none;background:var(--w06);border:1px solid var(--w1);border-radius:7px;width:30px;height:30px;align-items:center;justify-content:center;color:var(--w5);font-size:.84rem"><i class="fas fa-times"></i></button>
+        <span class="badge"><i class="fas fa-link" style="font-size:.56rem"></i> Lak3saLink</span>
+        <button id="closesb" onclick="sbC()" style="display:none;background:var(--w06);
+          border:1px solid var(--w1);border-radius:7px;width:28px;height:28px;
+          align-items:center;justify-content:center;color:var(--w5);font-size:.8rem"
+          aria-label="Tutup sidebar"><i class="fas fa-times"></i></button>
       </div>
-      <p style="margin-top:6px;font-size:.7rem;color:var(--w3)">Panel Admin</p>
+      <p style="margin-top:5px;font-size:.68rem;color:var(--w3)">Panel Admin</p>
     </div>
-    <nav style="flex:1;padding:10px 9px;display:flex;flex-direction:column;gap:1px">
-      <a class="ni on" onclick="swPanel('p-links',this)"><i class="fas fa-link"></i> Tautan</a>
-      <a class="ni" onclick="swPanel('p-photos',this)"><i class="fas fa-image"></i> Foto</a>
-      <a class="ni" onclick="swPanel('p-profile',this)"><i class="fas fa-user-circle"></i> Profil</a>
-      <a class="ni" onclick="swPanel('p-floaters',this)"><i class="fas fa-images"></i> Gambar BG</a>
-      <a class="ni" onclick="swPanel('p-preview',this)"><i class="fas fa-eye"></i> Preview</a>
+    <nav style="flex:1;padding:8px;display:flex;flex-direction:column;gap:1px">
+      <a class="ni on" onclick="swP('p-lnk',this)" role="menuitem"><i class="fas fa-link"></i> Tautan</a>
+      <a class="ni" onclick="swP('p-pht',this)" role="menuitem"><i class="fas fa-image"></i> Foto</a>
+      <a class="ni" onclick="swP('p-prof',this)" role="menuitem"><i class="fas fa-user-circle"></i> Profil</a>
+      <a class="ni" onclick="swP('p-flt',this)" role="menuitem"><i class="fas fa-images"></i> Gambar BG</a>
+      <a class="ni" onclick="swP('p-prev',this)" role="menuitem"><i class="fas fa-eye"></i> Preview</a>
       <hr class="dv"/>
-      <a class="ni" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-      <a class="ni" href="#" onclick="nav('public-view')"><i class="fas fa-external-link-alt"></i> Lihat Halaman</a>
+      <a class="ni" onclick="doLogout()" role="menuitem"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+      <a class="ni" href="#" onclick="nav('pv')" role="menuitem"><i class="fas fa-external-link-alt"></i> Lihat Halaman</a>
     </nav>
-    <div style="padding:10px 14px;border-top:1px solid var(--w04);font-size:.6rem;color:var(--w3);text-align:center;flex-shrink:0">Google Sheets Backend</div>
+    <div style="padding:9px 13px;border-top:1px solid var(--w04);font-size:.58rem;color:var(--w3);text-align:center;flex-shrink:0">
+      Google Sheets Backend
+    </div>
   </aside>
 
-  <!-- MAIN -->
+  <!-- Main -->
   <div class="am">
     <div class="ah">
-      <div style="display:flex;align-items:center;gap:10px">
-        <button id="hbtn" onclick="sbToggle()" style="display:none;background:var(--w06);border:1px solid var(--w1);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;color:var(--w5);font-size:.98rem"><i class="fas fa-bars"></i></button>
-        <h2 id="ptitle" class="fd" style="font-size:1rem;font-weight:700">Kelola Tautan</h2>
+      <div style="display:flex;align-items:center;gap:9px">
+        <button id="hbtn" onclick="sbT()" style="display:none;background:var(--w06);border:1px solid var(--w1);
+          border-radius:8px;width:32px;height:32px;align-items:center;justify-content:center;
+          color:var(--w5);font-size:.9rem" aria-label="Buka menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 id="ptitle" class="fd" style="font-size:.95rem;font-weight:700">Kelola Tautan</h2>
       </div>
-      <button onclick="doLogout()" class="btn btn-red btn-sm"><i class="fas fa-sign-out-alt" style="margin-right:3px"></i>Keluar</button>
+      <button onclick="doLogout()" class="btn btn-red btn-sm">
+        <i class="fas fa-sign-out-alt"></i> Keluar
+      </button>
     </div>
 
     <div class="ac">
 
-      <!-- PANEL: LINKS -->
-      <div id="p-links" class="pan on" style="max-width:960px;margin:0 auto;width:100%">
-        <div id="srow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
-          <div class="card"><p style="font-size:.65rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Total Tautan</p><p id="s-tot" class="fd" style="font-size:2rem;font-weight:800;margin-top:3px">—</p></div>
-          <div class="card"><p style="font-size:.65rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Profil</p><p id="s-name" class="fd" style="font-size:.9rem;font-weight:700;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</p></div>
-          <div class="card"><p style="font-size:.65rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Status</p><p class="fd" style="font-size:.86rem;font-weight:700;margin-top:5px;color:var(--green)"><i class="fas fa-circle" style="font-size:.5rem;margin-right:4px"></i>Aktif</p></div>
+      <!-- PANEL: TAUTAN -->
+      <div id="p-lnk" class="pan on" style="max-width:900px;margin:0 auto;width:100%">
+        <div id="srow" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+          <div class="card">
+            <p style="font-size:.62rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Total Tautan</p>
+            <p id="s-tot" class="fd" style="font-size:1.9rem;font-weight:800;margin-top:2px">—</p>
+          </div>
+          <div class="card">
+            <p style="font-size:.62rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Profil</p>
+            <p id="s-nm" class="fd" style="font-size:.88rem;font-weight:700;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</p>
+          </div>
+          <div class="card">
+            <p style="font-size:.62rem;font-weight:700;color:var(--w5);text-transform:uppercase;letter-spacing:.07em;font-family:'Sora',sans-serif">Status</p>
+            <p class="fd" style="font-size:.84rem;font-weight:700;margin-top:4px;color:var(--green)">
+              <i class="fas fa-circle" style="font-size:.48rem;margin-right:4px"></i>Aktif
+            </p>
+          </div>
         </div>
-        <div class="pgrid" style="display:grid;grid-template-columns:290px 1fr;gap:16px;align-items:start;min-width:0">
-          <div class="glass" style="padding:20px">
-            <h3 class="fd" style="font-size:.86rem;font-weight:700;margin-bottom:15px"><i class="fas fa-plus-circle" style="color:var(--bluel);margin-right:6px"></i>Tambah Tautan</h3>
-            <div style="display:flex;flex-direction:column;gap:11px">
-              <div><label class="lbl">Judul</label><input type="text" id="lnk-t" class="inp" placeholder="cth: Website Kami"/></div>
-              <div><label class="lbl">Icon (Font Awesome)</label><input type="text" id="lnk-i" class="inp" placeholder="fas fa-globe"/><p style="font-size:.67rem;margin-top:3px;color:var(--w3)">Lihat <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--bluel)">fontawesome.com</a></p></div>
-              <div><label class="lbl">URL</label><input type="url" id="lnk-u" class="inp" placeholder="https://..."/></div>
-              <div><label class="lbl">Urutan</label><input type="number" id="lnk-o" class="inp" placeholder="1,2,3..." min="1"/></div>
-              <button class="btn btn-blue" onclick="addLink()" style="width:100%"><span id="al-t">Tambah Tautan</span></button>
+        <div class="pgrid" style="display:grid;grid-template-columns:270px 1fr;gap:14px;align-items:start">
+          <div class="glass" style="padding:18px">
+            <h3 class="fd" style="font-size:.84rem;font-weight:700;margin-bottom:13px">
+              <i class="fas fa-plus-circle" style="color:var(--bl);margin-right:6px"></i>Tambah Tautan
+            </h3>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div><label class="lbl" for="lnk-t">Judul</label>
+                <input type="text" id="lnk-t" class="inp" placeholder="cth: Website Kami" maxlength="80"/></div>
+              <div><label class="lbl" for="lnk-i">Icon (Font Awesome)</label>
+                <input type="text" id="lnk-i" class="inp" placeholder="fas fa-globe" maxlength="50"/>
+                <p style="font-size:.65rem;margin-top:3px;color:var(--w3)">
+                  Lihat <a href="https://fontawesome.com/icons" target="_blank" rel="noopener" style="color:var(--bl)">fontawesome.com</a>
+                </p>
+              </div>
+              <div><label class="lbl" for="lnk-u">URL</label>
+                <input type="url" id="lnk-u" class="inp" placeholder="https://..." maxlength="500"/></div>
+              <div><label class="lbl" for="lnk-o">Urutan</label>
+                <input type="number" id="lnk-o" class="inp" placeholder="1, 2, 3…" min="1" max="999"/></div>
+              <button class="btn btn-blue" onclick="addLink()" style="width:100%" id="al-btn">
+                <i class="fas fa-plus"></i> <span id="al-t">Tambah Tautan</span>
+              </button>
             </div>
           </div>
-          <div class="glass" style="padding:20px;overflow:hidden">
-            <h3 class="fd" style="font-size:.86rem;font-weight:700;margin-bottom:14px"><i class="fas fa-list" style="color:var(--bluel);margin-right:6px"></i>Daftar Tautan</h3>
-            <div style="overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch">
-              <div id="llist" style="display:flex;flex-direction:column;gap:9px;min-width:400px">
-                <div style="text-align:center;padding:18px;color:var(--w5)"><div class="sp" style="margin:0 auto 8px"></div><p style="font-size:.82rem">Memuat...</p></div>
+          <div class="glass" style="padding:18px;overflow:hidden">
+            <h3 class="fd" style="font-size:.84rem;font-weight:700;margin-bottom:12px">
+              <i class="fas fa-list" style="color:var(--bl);margin-right:6px"></i>Daftar Tautan
+            </h3>
+            <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+              <div id="llist" style="display:flex;flex-direction:column;gap:8px;min-width:360px">
+                <div style="text-align:center;padding:18px;color:var(--w5)">
+                  <div class="sp" style="margin:0 auto 8px"></div>
+                  <p style="font-size:.8rem">Memuat...</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PANEL: PHOTOS -->
-      <div id="p-photos" class="pan" style="max-width:680px;margin:0 auto">
-        <div class="glass" style="padding:24px;margin-bottom:14px">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
-            <i class="fas fa-image" style="color:var(--gold);font-size:1rem"></i>
-            <h3 class="fd" style="font-size:.9rem;font-weight:700">Upload Foto</h3>
+      <!-- PANEL: FOTO -->
+      <div id="p-pht" class="pan" style="max-width:620px;margin:0 auto">
+        <div class="glass" style="padding:20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px">
+            <i class="fas fa-image" style="color:var(--gd);font-size:.95rem"></i>
+            <h3 class="fd" style="font-size:.88rem;font-weight:700">Upload Foto</h3>
           </div>
-          <p style="font-size:.78rem;color:var(--w5);margin-bottom:18px">Foto akan tampil sebagai tombol di halaman publik. Klik langsung buka foto — tanpa Google Drive.</p>
-
-          <div style="display:flex;flex-direction:column;gap:13px">
-            <div><label class="lbl">Judul Foto</label><input type="text" id="ph-t" class="inp" placeholder="cth: Foto Kegiatan"/></div>
-            <div><label class="lbl">Urutan</label><input type="number" id="ph-o" class="inp" placeholder="1,2,3..." min="1"/></div>
+          <p style="font-size:.75rem;color:var(--w5);margin-bottom:16px;line-height:1.5">
+            Foto tampil sebagai tombol di halaman publik. Klik langsung buka — tanpa Google Drive.
+            <strong style="color:var(--gd);display:block;margin-top:3px">Maks. 300 KB per foto (JPG/PNG/WebP).</strong>
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div><label class="lbl" for="ph-t">Judul Foto</label>
+              <input type="text" id="ph-t" class="inp" placeholder="cth: Foto Kegiatan" maxlength="80"/></div>
+            <div><label class="lbl" for="ph-o">Urutan</label>
+              <input type="number" id="ph-o" class="inp" placeholder="1, 2, 3…" min="1" max="999"/></div>
             <div>
-              <label class="lbl">File Foto (jpg/png/webp, maks 1.5MB)</label>
-              <div class="upload-area" id="photo-drop" onclick="document.getElementById('ph-file').click()">
-                <input type="file" id="ph-file" accept="image/jpeg,image/png,image/webp,image/gif" onchange="onPhotoFile(this)"/>
-                <div id="ph-drop-inner">
-                  <i class="fas fa-cloud-upload-alt" style="font-size:1.8rem;color:var(--bluel);opacity:.6;margin-bottom:8px;display:block"></i>
-                  <p style="font-size:.82rem;color:var(--w5)">Klik atau seret foto ke sini</p>
-                  <p style="font-size:.7rem;color:var(--w3);margin-top:3px">JPG, PNG, WebP — maks 1.5 MB</p>
+              <label class="lbl">File Foto</label>
+              <div class="uparea" id="phdr" onclick="document.getElementById('ph-f').click()" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('ph-f').click()">
+                <input type="file" id="ph-f" accept="image/jpeg,image/png,image/webp" onchange="onPF(this)"/>
+                <div id="ph-di">
+                  <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--bl);opacity:.55;display:block;margin-bottom:7px"></i>
+                  <p style="font-size:.8rem;color:var(--w5)">Klik atau seret foto ke sini</p>
+                  <p style="font-size:.67rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 300 KB</p>
                 </div>
-                <div id="ph-preview-wrap" style="display:none;text-align:center">
-                  <img id="ph-prev" style="max-height:120px;border-radius:10px;margin:0 auto 8px;border:1px solid var(--w1)"/>
-                  <p id="ph-fname" style="font-size:.75rem;color:var(--w7)"></p>
-                  <button onclick="clearPhotoFile(event)" class="btn btn-red btn-sm" style="margin-top:6px"><i class="fas fa-times" style="margin-right:4px"></i>Hapus</button>
+                <div id="ph-pw" style="display:none">
+                  <img id="ph-prev" style="max-height:100px;border-radius:8px;margin:0 auto 7px;border:1px solid var(--w1)" alt="Preview"/>
+                  <p id="ph-fn" style="font-size:.72rem;color:var(--w7)"></p>
+                  <div id="ph-pb" class="pbar" style="margin:6px auto 8px;max-width:180px;display:none">
+                    <div class="pbar-fill" style="width:0%"></div>
+                  </div>
+                  <button onclick="clrPF(event)" class="btn btn-red btn-xs" style="margin-top:4px">
+                    <i class="fas fa-times"></i> Hapus
+                  </button>
                 </div>
               </div>
             </div>
-            <button class="btn btn-gold" onclick="addPhoto()" style="width:100%"><span id="aph-t"><i class="fas fa-upload" style="margin-right:6px"></i>Upload Foto</span></button>
+            <button class="btn btn-gd" onclick="addPhoto()" style="width:100%" id="aph-btn">
+              <i class="fas fa-upload"></i> <span id="aph-t">Upload Foto</span>
+            </button>
           </div>
         </div>
-
-        <div class="glass" style="padding:22px">
-          <h3 class="fd" style="font-size:.86rem;font-weight:700;margin-bottom:14px"><i class="fas fa-images" style="color:var(--gold);margin-right:6px"></i>Daftar Foto</h3>
-          <div id="photo-list">
-            <div style="text-align:center;padding:18px;color:var(--w5)"><div class="sp" style="margin:0 auto 8px"></div><p style="font-size:.82rem">Memuat...</p></div>
+        <div class="glass" style="padding:20px">
+          <h3 class="fd" style="font-size:.84rem;font-weight:700;margin-bottom:12px">
+            <i class="fas fa-images" style="color:var(--gd);margin-right:6px"></i>Daftar Foto
+          </h3>
+          <div id="phlist">
+            <div style="text-align:center;padding:18px;color:var(--w5)">
+              <div class="sp" style="margin:0 auto 8px"></div>
+              <p style="font-size:.8rem">Memuat...</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- PANEL: PROFILE -->
-      <div id="p-profile" class="pan" style="max-width:520px;margin:0 auto">
-        <div class="glass" style="padding:24px">
-          <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:18px"><i class="fas fa-user-edit" style="color:var(--bluel);margin-right:7px"></i>Pengaturan Profil</h3>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(41,121,212,.08);border:1px solid rgba(91,163,245,.15);border-radius:12px;margin-bottom:18px">
-            <img id="av-prev" src="" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:1px solid var(--w1);background:var(--w04);flex-shrink:0" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 50 50%22><rect width=%2250%22 height=%2250%22 rx=%2225%22 fill=%22%230a1a30%22/><text x=%2225%22 y=%2233%22 text-anchor=%22middle%22 font-size=%2222%22>👤</text></svg>'"/>
-            <div><p id="n-prev" class="fd" style="font-weight:700;font-size:.9rem">Nama</p><p id="t-prev" style="font-size:.73rem;color:var(--w5)">Tagline</p></div>
+      <!-- PANEL: PROFIL -->
+      <div id="p-prof" class="pan" style="max-width:500px;margin:0 auto">
+        <div class="glass" style="padding:22px">
+          <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:16px">
+            <i class="fas fa-user-edit" style="color:var(--bl);margin-right:7px"></i>Pengaturan Profil
+          </h3>
+          <div style="display:flex;align-items:center;gap:11px;padding:11px;
+            background:rgba(41,121,212,.07);border:1px solid rgba(91,163,245,.14);
+            border-radius:11px;margin-bottom:16px">
+            <img id="av-pr" src="" style="width:48px;height:48px;border-radius:50%;object-fit:cover;
+              border:1px solid var(--w1);background:var(--w04);flex-shrink:0"
+              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2224%22 fill=%22%230a1a30%22/><text x=%2224%22 y=%2232%22 text-anchor=%22middle%22 font-size=%2220%22>👤</text></svg>'" alt="Preview avatar"/>
+            <div>
+              <p id="n-pr" class="fd" style="font-weight:700;font-size:.88rem">Nama</p>
+              <p id="t-pr" style="font-size:.72rem;color:var(--w5)">Tagline</p>
+            </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div><label class="lbl">Nama Tampilan</label><input type="text" id="adm-n" class="inp" placeholder="Nama" oninput="document.getElementById('n-prev').textContent=this.value||'Nama'"/></div>
-            <div><label class="lbl">Bio / Tagline</label><input type="text" id="adm-t" class="inp" placeholder="Deskripsi" oninput="document.getElementById('t-prev').textContent=this.value||'Tagline'"/></div>
-            <div><label class="lbl">URL Foto Profil</label><input type="url" id="adm-av" class="inp" placeholder="https://..." oninput="document.getElementById('av-prev').src=this.value"/></div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div><label class="lbl" for="adm-n">Nama Tampilan</label>
+              <input type="text" id="adm-n" class="inp" placeholder="Nama" maxlength="60"
+                oninput="document.getElementById('n-pr').textContent=this.value||'Nama'"/></div>
+            <div><label class="lbl" for="adm-t">Bio / Tagline</label>
+              <input type="text" id="adm-t" class="inp" placeholder="Deskripsi singkat" maxlength="120"
+                oninput="document.getElementById('t-pr').textContent=this.value||'Tagline'"/></div>
+            <div><label class="lbl" for="adm-av">URL Foto Profil</label>
+              <input type="url" id="adm-av" class="inp" placeholder="https://..."
+                oninput="document.getElementById('av-pr').src=this.value" maxlength="300"/></div>
             <hr class="dv"/>
             <div><label class="lbl">Warna Tombol (Gradient)</label>
               <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-                <input type="color" id="adm-c1" value="#2979d4" style="width:38px;height:32px;padding:2px;background:transparent;border:1px solid var(--w1);border-radius:7px;cursor:pointer"/>
-                <input type="color" id="adm-c2" value="#1a4a9e" style="width:38px;height:32px;padding:2px;background:transparent;border:1px solid var(--w1);border-radius:7px;cursor:pointer"/>
-                <span style="font-size:.73rem;color:var(--w5)">Warna 1 → Warna 2</span>
+                <input type="color" id="adm-c1" value="#2979d4"
+                  style="width:36px;height:30px;padding:2px;background:transparent;border:1px solid var(--w1);border-radius:6px;cursor:pointer"/>
+                <input type="color" id="adm-c2" value="#1a4a9e"
+                  style="width:36px;height:30px;padding:2px;background:transparent;border:1px solid var(--w1);border-radius:6px;cursor:pointer"/>
+                <span style="font-size:.7rem;color:var(--w5)">Warna 1 → Warna 2</span>
               </div>
             </div>
-            <button class="btn btn-blue" onclick="saveProfile()" style="width:100%"><span id="sp-t">Simpan Profil</span></button>
+            <button class="btn btn-blue" onclick="saveProfile()" style="width:100%">
+              <span id="sp-t"><i class="fas fa-save"></i> Simpan Profil</span>
+            </button>
           </div>
         </div>
-        <div class="glass" style="padding:24px;margin-top:14px">
-          <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:6px"><i class="fas fa-shield-alt" style="color:var(--cyan);margin-right:7px"></i>Ganti Password Admin</h3>
-          <p style="font-size:.76rem;color:var(--w5);margin-bottom:16px">Tersimpan di spreadsheet, berlaku di semua perangkat.</p>
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div><label class="lbl">Password Lama</label><input type="password" id="s-old" class="inp" placeholder="Password saat ini"/></div>
-            <div><label class="lbl">Password Baru</label><input type="password" id="s-new" class="inp" placeholder="Min. 8 karakter"/></div>
-            <div><label class="lbl">Konfirmasi</label><input type="password" id="s-con" class="inp" placeholder="Ulangi"/></div>
-            <button class="btn btn-cyan" onclick="changePwd()" style="width:100%"><span id="cp-t">Ubah Password</span></button>
+        <div class="glass" style="padding:22px;margin-top:12px">
+          <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:5px">
+            <i class="fas fa-shield-alt" style="color:var(--cy);margin-right:7px"></i>Ganti Password Admin
+          </h3>
+          <p style="font-size:.74rem;color:var(--w5);margin-bottom:14px">Berlaku di semua perangkat.</p>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <div><label class="lbl" for="s-old">Password Lama</label>
+              <input type="password" id="s-old" class="inp" placeholder="Password saat ini" maxlength="64"/></div>
+            <div><label class="lbl" for="s-new">Password Baru</label>
+              <input type="password" id="s-new" class="inp" placeholder="Min. 8 karakter" maxlength="64"/></div>
+            <div><label class="lbl" for="s-con">Konfirmasi</label>
+              <input type="password" id="s-con" class="inp" placeholder="Ulangi" maxlength="64"/></div>
+            <button class="btn btn-cy" onclick="changePwd()" style="width:100%">
+              <span id="cp-t"><i class="fas fa-key"></i> Ubah Password</span>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- PANEL: FLOATERS -->
-      <div id="p-floaters" class="pan" style="max-width:620px;margin:0 auto">
-        <div class="glass" style="padding:22px">
-          <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:5px"><i class="fas fa-images" style="color:var(--bluel);margin-right:7px"></i>Gambar Melayang (Background)</h3>
-          <p style="font-size:.77rem;color:var(--w5);margin-bottom:16px">Gambar transparan melayang di belakang halaman publik.</p>
-          <div style="padding:14px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;margin-bottom:16px">
-            <p style="font-size:.77rem;font-weight:700;font-family:'Sora',sans-serif;color:var(--blueg);margin-bottom:11px">+ Tambah Gambar</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
-              <div><label class="lbl">URL Gambar</label><input type="url" id="f-url" class="inp" placeholder="https://..." oninput="fprev(this.value)"/></div>
-              <div><label class="lbl">Ukuran (px)</label><input type="number" id="f-sz" class="inp" value="120" min="60" max="350"/></div>
-              <div><label class="lbl">Posisi Kiri (%)</label><input type="number" id="f-l" class="inp" placeholder="10" min="0" max="90"/></div>
-              <div><label class="lbl">Posisi Atas (%)</label><input type="number" id="f-t" class="inp" placeholder="20" min="0" max="90"/></div>
+      <div id="p-flt" class="pan" style="max-width:600px;margin:0 auto">
+        <div class="glass" style="padding:20px">
+          <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:4px">
+            <i class="fas fa-images" style="color:var(--bl);margin-right:7px"></i>Gambar Melayang (Background)
+          </h3>
+          <p style="font-size:.74rem;color:var(--w5);margin-bottom:14px">Gambar transparan di latar halaman publik.</p>
+          <div style="padding:14px;background:var(--w04);border:1px solid var(--w06);border-radius:11px;margin-bottom:14px">
+            <p style="font-size:.74rem;font-weight:700;font-family:'Sora',sans-serif;color:var(--bc);margin-bottom:10px">+ Tambah Gambar</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="grid-column:1/-1"><label class="lbl" for="f-url">URL Gambar</label>
+                <input type="url" id="f-url" class="inp" placeholder="https://..." oninput="fpv(this.value)" maxlength="300"/></div>
+              <div><label class="lbl" for="f-sz">Ukuran (px)</label>
+                <input type="number" id="f-sz" class="inp" value="120" min="40" max="300"/></div>
+              <div><label class="lbl" for="f-l">Posisi Kiri (%)</label>
+                <input type="number" id="f-l" class="inp" placeholder="10" min="0" max="95"/></div>
+              <div><label class="lbl" for="f-t">Posisi Atas (%)</label>
+                <input type="number" id="f-t" class="inp" placeholder="20" min="0" max="95"/></div>
             </div>
             <div style="display:flex;align-items:center;gap:9px;margin-top:10px">
-              <img id="f-prev" src="" style="width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--w1);display:none"/>
-              <button class="btn btn-blue" onclick="addFlt()" style="flex:1"><span id="af-t">Tambah Gambar</span></button>
+              <img id="f-prev" src="" style="width:44px;height:44px;border-radius:7px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview floater"/>
+              <button class="btn btn-blue" onclick="addFlt()" style="flex:1" id="af-btn">
+                <i class="fas fa-plus"></i> <span id="af-t">Tambah Gambar</span>
+              </button>
             </div>
           </div>
-          <div id="flt-list"><div style="text-align:center;padding:16px;color:var(--w5)"><div class="sp" style="margin:0 auto 8px"></div><p style="font-size:.82rem">Memuat...</p></div></div>
+          <div id="flist">
+            <div style="text-align:center;padding:14px;color:var(--w5)">
+              <div class="sp" style="margin:0 auto 8px"></div>
+              <p style="font-size:.8rem">Memuat...</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- PANEL: PREVIEW -->
-      <div id="p-preview" class="pan" style="max-width:380px;margin:0 auto">
-        <p style="font-size:.8rem;color:var(--w5);margin-bottom:11px">Preview tampilan halaman publik:</p>
-        <div class="glass" style="padding:24px;text-align:center">
-          <div class="aring" style="display:inline-block;margin-bottom:12px">
-            <img id="pv-av" src="" style="width:74px;height:74px" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 74 74%22><rect width=%2274%22 height=%2274%22 rx=%2237%22 fill=%22%230a1a30%22/><text x=%2237%22 y=%2248%22 text-anchor=%22middle%22 font-size=%2232%22>👤</text></svg>'"/>
+      <div id="p-prev" class="pan" style="max-width:360px;margin:0 auto">
+        <p style="font-size:.78rem;color:var(--w5);margin-bottom:10px">Preview halaman publik:</p>
+        <div class="glass" style="padding:22px;text-align:center">
+          <div class="aring" style="display:inline-block;margin-bottom:11px">
+            <img id="pv-av" src="" style="width:68px;height:68px"
+              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 68 68%22><rect width=%2268%22 height=%2268%22 rx=%2234%22 fill=%22%230a1a30%22/><text x=%2234%22 y=%2244%22 text-anchor=%22middle%22 font-size=%2230%22>👤</text></svg>'" alt="Preview avatar"/>
           </div>
-          <h2 id="pv-n" class="fd" style="font-size:1.1rem;font-weight:800;margin-bottom:3px">—</h2>
-          <p id="pv-t" style="font-size:.77rem;color:var(--w5);margin-bottom:16px">—</p>
-          <div id="pv-links" style="display:flex;flex-direction:column;gap:7px;text-align:left"></div>
+          <h2 id="pv-n" class="fd" style="font-size:1.05rem;font-weight:800;margin-bottom:2px">—</h2>
+          <p id="pv-t" style="font-size:.74rem;color:var(--w5);margin-bottom:14px">—</p>
+          <div id="pv-lnk" style="display:flex;flex-direction:column;gap:6px;text-align:left"></div>
         </div>
       </div>
 
-    </div><!-- /ac -->
-  </div><!-- /am -->
-</div><!-- /admin-view -->
-
-<!-- BOTTOM NAV -->
-<div id="bottom-nav">
-  <button class="bn-item on" onclick="bnSwitch('p-links',this)"><i class="fas fa-link"></i><span>Tautan</span></button>
-  <button class="bn-item" onclick="bnSwitch('p-photos',this)"><i class="fas fa-image"></i><span>Foto</span></button>
-  <button class="bn-item" onclick="bnSwitch('p-profile',this)"><i class="fas fa-user-circle"></i><span>Profil</span></button>
-  <button class="bn-item" onclick="bnSwitch('p-floaters',this)"><i class="fas fa-images"></i><span>BG</span></button>
-  <button class="bn-item" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></button>
+    </div>
+  </div>
 </div>
 
-<!-- EDIT MODAL -->
-<div id="edit-modal" class="modal" onclick="if(event.target===this)closeEM()">
-  <div class="glass" style="border-radius:18px;padding:24px;width:100%;max-width:380px;margin:16px">
-    <h3 class="fd" style="font-size:.95rem;font-weight:700;margin-bottom:17px">Edit Tautan</h3>
+<!-- Bottom Nav -->
+<div id="bn" role="navigation" aria-label="Menu bawah">
+  <button class="bi on" onclick="bnSw('p-lnk',this)"><i class="fas fa-link"></i><span>Tautan</span></button>
+  <button class="bi" onclick="bnSw('p-pht',this)"><i class="fas fa-image"></i><span>Foto</span></button>
+  <button class="bi" onclick="bnSw('p-prof',this)"><i class="fas fa-user-circle"></i><span>Profil</span></button>
+  <button class="bi" onclick="bnSw('p-flt',this)"><i class="fas fa-images"></i><span>BG</span></button>
+  <button class="bi" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i><span>Keluar</span></button>
+</div>
+
+<!-- Modal: Edit Tautan -->
+<div id="em" class="modal" onclick="if(event.target===this)cEM()" role="dialog" aria-modal="true" aria-label="Edit Tautan">
+  <div class="glass mbox" style="padding:22px">
+    <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:15px">Edit Tautan</h3>
     <input type="hidden" id="e-idx"/>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div><label class="lbl">Judul</label><input type="text" id="e-t" class="inp"/></div>
-      <div><label class="lbl">Icon</label><input type="text" id="e-i" class="inp" placeholder="fas fa-globe"/></div>
-      <div><label class="lbl">URL</label><input type="url" id="e-u" class="inp"/></div>
-      <div><label class="lbl">Urutan</label><input type="number" id="e-o" class="inp" min="1"/></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
-        <button onclick="closeEM()" class="btn btn-red btn-sm">Batal</button>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div><label class="lbl" for="e-t">Judul</label><input type="text" id="e-t" class="inp" maxlength="80"/></div>
+      <div><label class="lbl" for="e-i">Icon</label><input type="text" id="e-i" class="inp" placeholder="fas fa-globe" maxlength="50"/></div>
+      <div><label class="lbl" for="e-u">URL</label><input type="url" id="e-u" class="inp" maxlength="500"/></div>
+      <div><label class="lbl" for="e-o">Urutan</label><input type="number" id="e-o" class="inp" min="1" max="999"/></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:2px">
+        <button onclick="cEM()" class="btn btn-red btn-sm">Batal</button>
         <button onclick="saveEdit()" class="btn btn-blue btn-sm">Simpan</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- EDIT PHOTO MODAL -->
-<div id="edit-photo-modal" class="modal" onclick="if(event.target===this)closeEPM()">
-  <div class="glass" style="border-radius:18px;padding:24px;width:100%;max-width:360px;margin:16px">
-    <h3 class="fd" style="font-size:.95rem;font-weight:700;margin-bottom:17px">Edit Foto</h3>
+<!-- Modal: Edit Foto -->
+<div id="epm" class="modal" onclick="if(event.target===this)cEPM()" role="dialog" aria-modal="true" aria-label="Edit Foto">
+  <div class="glass mbox" style="padding:22px">
+    <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:15px">Edit Foto</h3>
     <input type="hidden" id="ep-idx"/>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div><label class="lbl">Judul Foto</label><input type="text" id="ep-t" class="inp"/></div>
-      <div><label class="lbl">Urutan</label><input type="number" id="ep-o" class="inp" min="1"/></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
-        <button onclick="closeEPM()" class="btn btn-red btn-sm">Batal</button>
-        <button onclick="saveEditPhoto()" class="btn btn-blue btn-sm">Simpan</button>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div><label class="lbl" for="ep-t">Judul Foto</label><input type="text" id="ep-t" class="inp" maxlength="80"/></div>
+      <div><label class="lbl" for="ep-o">Urutan</label><input type="number" id="ep-o" class="inp" min="1" max="999"/></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:2px">
+        <button onclick="cEPM()" class="btn btn-red btn-sm">Batal</button>
+        <button onclick="svEPM()" class="btn btn-blue btn-sm">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Edit Floater -->
+<div id="efm" class="modal" onclick="if(event.target===this)cEFM()" role="dialog" aria-modal="true" aria-label="Edit Gambar BG">
+  <div class="glass mbox" style="padding:22px">
+    <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:15px">Edit Gambar BG</h3>
+    <input type="hidden" id="ef-idx"/>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div><label class="lbl" for="ef-url">URL Gambar</label>
+        <input type="url" id="ef-url" class="inp" placeholder="https://..." maxlength="300"
+          oninput="const p=document.getElementById('ef-prev');p.src=this.value;p.style.display=this.value?'block':'none'"/>
+      </div>
+      <img id="ef-prev" src="" style="width:60px;height:60px;border-radius:8px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label class="lbl" for="ef-sz">Ukuran (px)</label><input type="number" id="ef-sz" class="inp" min="40" max="300"/></div>
+        <div><label class="lbl" for="ef-l">Kiri (%)</label><input type="number" id="ef-l" class="inp" min="0" max="95"/></div>
+        <div><label class="lbl" for="ef-t">Atas (%)</label><input type="number" id="ef-t" class="inp" min="0" max="95"/></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:2px">
+        <button onclick="cEFM()" class="btn btn-red btn-sm">Batal</button>
+        <button onclick="svEFM()" class="btn btn-blue btn-sm">Simpan</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const AS_URL='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
+'use strict';
+// ── CONFIG ──
+const AS='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
+const MAX_PHOTO_BYTES = 300*1024; // 300 KB
+const TOKEN_TTL = 4*60*60*1000;  // 4 jam
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCK_DURATION = 15*60*1000; // 15 menit
+
+// ── STATE ──
 let ST={links:[],floaters:[],photos:[],profile:{}};
-let pendingPhotoB64='',pendingPhotoName='';
+let pendB64='',pendName='';
+
+// ── RATE LIMITER (client-side) ──
+function getAttempts(){try{return JSON.parse(sessionStorage.getItem('_la')||'{"n":0,"t":0}');}catch{return{n:0,t:0};}}
+function setAttempts(d){sessionStorage.setItem('_la',JSON.stringify(d));}
+function isLocked(){const a=getAttempts();if(a.n>=MAX_LOGIN_ATTEMPTS&&Date.now()-a.t<LOCK_DURATION)return true;if(a.n>=MAX_LOGIN_ATTEMPTS&&Date.now()-a.t>=LOCK_DURATION){setAttempts({n:0,t:0});return false;}return false;}
+function recordFail(){const a=getAttempts();setAttempts({n:a.n+1,t:Date.now()});}
+function clearAttempts(){setAttempts({n:0,t:0});}
+function getLockRemain(){const a=getAttempts();return Math.ceil((LOCK_DURATION-(Date.now()-a.t))/60000);}
 
 // ── API ──
 async function api(action,p={}){
-  const r=await fetch(AS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...p}),redirect:'follow'});
-  const d=await r.json();
-  if(!d.ok)throw new Error(d.error||'Error');
-  return d;
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),15000);
+  try{
+    const r=await fetch(AS,{method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action,...p}),
+      redirect:'follow',signal:ctrl.signal});
+    clearTimeout(tid);
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    if(!d.ok)throw new Error(d.error||'Error tidak diketahui');
+    return d;
+  }catch(e){clearTimeout(tid);throw e;}
 }
 
 // ── AUTH ──
-const tok=()=>sessionStorage.getItem('ls_t')||'';
-const setTok=(t)=>t?sessionStorage.setItem('ls_t',t):sessionStorage.removeItem('ls_t');
-const isIn=()=>!!tok();
+function getTok(){
+  try{
+    const raw=sessionStorage.getItem('_tk');
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(Date.now()-d.ts>TOKEN_TTL){sessionStorage.removeItem('_tk');return null;}
+    return d.v;
+  }catch{return null;}
+}
+function setTok(v){sessionStorage.setItem('_tk',JSON.stringify({v,ts:Date.now()}));}
+function clrTok(){sessionStorage.removeItem('_tk');}
+const isIn=()=>!!getTok();
 
+// ── SANITIZE ──
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
+
+// ── LOGIN ──
 async function doLogin(){
+  if(isLocked()){
+    document.getElementById('lock-warn').textContent=`Terlalu banyak percobaan. Coba lagi dalam ${getLockRemain()} menit.`;
+    document.getElementById('lock-warn').style.display='block';return;
+  }
   const pwd=document.getElementById('l-pwd').value.trim();
   const err=document.getElementById('l-err'),btn=document.getElementById('l-btn');
   if(!pwd){err.textContent='Masukkan password.';err.style.display='block';return;}
+  if(pwd.length>64){err.textContent='Password terlalu panjang.';err.style.display='block';return;}
   err.style.display='none';
-  btn.innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle"></div>';
   btn.disabled=true;
-  try{const r=await api('login',{password:pwd});setTok(r.token);btn.innerHTML='Masuk';btn.disabled=false;window.location.hash='#admin';}
-  catch(e){btn.innerHTML='Masuk';btn.disabled=false;err.textContent='Password salah.';err.style.display='block';}
+  btn.innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle"></div>';
+  try{
+    const r=await api('login',{password:pwd});
+    setTok(r.token);clearAttempts();
+    document.getElementById('l-pwd').value='';
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Masuk';
+    window.location.hash='#admin';
+  }catch(e){
+    recordFail();
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Masuk';
+    const a=getAttempts();
+    const rem=MAX_LOGIN_ATTEMPTS-a.n;
+    if(isLocked()){
+      document.getElementById('lock-warn').textContent=`Terlalu banyak percobaan. Coba lagi dalam ${getLockRemain()} menit.`;
+      document.getElementById('lock-warn').style.display='block';
+      err.style.display='none';
+    }else{
+      err.textContent=rem>0?`Password salah. Sisa ${rem} percobaan.`:'Password salah.';
+      err.style.display='block';
+    }
+  }
 }
 document.getElementById('l-pwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-function doLogout(){setTok('');window.location.hash='#login';}
+
+function doLogout(){clrTok();window.location.hash='#login';}
 
 async function doReset(){
-  const o=document.getElementById('r-old').value.trim(),n=document.getElementById('r-new').value.trim(),c=document.getElementById('r-con').value.trim();
-  const msg=document.getElementById('r-msg'),btn=document.getElementById('r-btxt');
+  const o=V('r-old'),n=V('r-new'),c=V('r-con');
+  const msg=document.getElementById('r-msg'),btn=document.getElementById('r-bt');
   msg.style.display='none';
-  if(!o||!n||!c){msg.style.color='var(--red)';msg.textContent='Semua field wajib diisi.';msg.style.display='block';return;}
-  if(n.length<8){msg.style.color='var(--red)';msg.textContent='Min. 8 karakter.';msg.style.display='block';return;}
-  if(n!==c){msg.style.color='var(--red)';msg.textContent='Password tidak cocok.';msg.style.display='block';return;}
+  if(!o||!n||!c){showMsg(msg,'Semua field wajib diisi.','var(--red)');return;}
+  if(n.length<8){showMsg(msg,'Min. 8 karakter.','var(--red)');return;}
+  if(n!==c){showMsg(msg,'Password tidak cocok.','var(--red)');return;}
   btn.textContent='Menyimpan...';
-  try{await api('changePassword',{oldPassword:o,newPassword:n});msg.style.color='var(--green)';msg.textContent='✓ Password diubah! Silakan login ulang.';msg.style.display='block';setTok('');setTimeout(()=>{window.location.hash='#login';},2000);}
-  catch(e){msg.style.color='var(--red)';msg.textContent='Gagal: '+e.message;msg.style.display='block';}
+  try{
+    await api('changePassword',{oldPassword:o,newPassword:n});
+    showMsg(msg,'✓ Password diubah! Silakan login ulang.','var(--green)');
+    clrTok();setTimeout(()=>{window.location.hash='#login';},1800);
+  }catch(e){showMsg(msg,'Gagal: '+e.message,'var(--red)');}
   btn.textContent='Simpan Password Baru';
 }
 
 async function changePwd(){
-  const o=document.getElementById('s-old').value.trim(),n=document.getElementById('s-new').value.trim(),c=document.getElementById('s-con').value.trim();
+  const o=V('s-old'),n=V('s-new'),c=V('s-con');
   const btn=document.getElementById('cp-t');
   if(!o||!n||!c){toast('Semua field wajib diisi.','err');return;}
   if(n!==c){toast('Password tidak cocok.','err');return;}
   if(n.length<8){toast('Min. 8 karakter.','err');return;}
   btn.textContent='Menyimpan...';
-  try{await api('changePassword',{oldPassword:o,newPassword:n});toast('Password diubah! Silakan login ulang.');setTok('');setTimeout(()=>{window.location.hash='#login';},2000);}
-  catch(e){toast('Gagal: '+e.message,'err');}
-  btn.textContent='Ubah Password';
+  try{
+    await api('changePassword',{oldPassword:o,newPassword:n});
+    toast('Password diubah! Silakan login ulang.');clrTok();
+    setTimeout(()=>{window.location.hash='#login';},1800);
+  }catch(e){toast('Gagal: '+e.message,'err');}
+  btn.innerHTML='<i class="fas fa-key"></i> Ubah Password';
 }
 
 // ── ROUTER ──
-const VIEWS=['public-view','login-view','reset-view','admin-view'];
+const VS=['pv','lv','rv','av'];
 function nav(id){
-  VIEWS.forEach(v=>{const el=document.getElementById(v);el.classList.remove('on');el.style.display='none';});
-  const el=document.getElementById(id);el.style.display='flex';el.classList.add('on');
-  const bn=document.getElementById('bottom-nav');
-  if(bn){const isMobile=window.innerWidth<=768;bn.style.display=(id==='admin-view'&&isMobile)?'flex':'none';}
+  VS.forEach(v=>{const el=document.getElementById(v);if(el){el.classList.remove('on');el.style.display='none';}});
+  const el=document.getElementById(id);if(!el)return;
+  el.style.display='flex';el.classList.add('on');
+  const bn=document.getElementById('bn');
+  if(bn)bn.style.display=(id==='av'&&window.innerWidth<=768)?'flex':'none';
 }
 function route(){
   const h=window.location.hash;
-  if(h==='#admin'){if(isIn()){nav('admin-view');loadAdmin();}else window.location.hash='#login';}
-  else if(h==='#login'){if(isIn())window.location.hash='#admin';else nav('login-view');}
-  else if(h==='#reset'){nav('reset-view');}
-  else{nav('public-view');loadPub();}
+  if(h==='#admin'){isIn()?( nav('av'),loadAdmin()):window.location.hash='#login';}
+  else if(h==='#login'){isIn()?window.location.hash='#admin':nav('lv');}
+  else if(h==='#reset'){nav('rv');}
+  else{nav('pv');loadPub();}
 }
 window.addEventListener('hashchange',route);
 
 // ── LIGHTBOX ──
-function openLB(src,caption){
-  const lb=document.getElementById('lightbox');
+function oLB(src,cap){
   document.getElementById('lb-img').src=src;
-  document.getElementById('lb-caption').textContent=caption||'';
-  lb.classList.add('on');
+  document.getElementById('lb-cap').textContent=cap||'';
+  document.getElementById('lb').classList.add('on');
   document.body.style.overflow='hidden';
 }
-function closeLB(){
-  document.getElementById('lightbox').classList.remove('on');
+function cLB(){
+  document.getElementById('lb').classList.remove('on');
+  document.getElementById('lb-img').src='';
   document.body.style.overflow='';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLB();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cLB();cEM();cEPM();cEFM();}});
 
 // ── PUBLIC ──
 async function loadPub(){
-  try{const d=await api('getAll');pubProfile(d.profile||{});pubLinks(d.links||[],d.photos||[]);renderBG(d.floaters||[]);}
-  catch(e){document.getElementById('pub-links').innerHTML='<p style="text-align:center;color:var(--w5);font-size:.84rem">Gagal memuat. Periksa konfigurasi.</p>';}
+  try{
+    const d=await api('getAll');
+    pubPro(d.profile||{});
+    pubLnk(d.links||[],d.photos||[]);
+    renderBG(d.floaters||[]);
+  }catch(e){
+    document.getElementById('pub-links').innerHTML=
+      '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
+  }
 }
-function pubProfile(p){
-  document.getElementById('pub-name').textContent=p.name||'';
-  document.getElementById('pub-tag').textContent=p.tagline||'';
+function pubPro(p){
+  document.getElementById('pub-nm').textContent=p.name||'';
+  document.getElementById('pub-tg').textContent=p.tagline||'';
   if(p.avatar_url)document.getElementById('pub-av').src=p.avatar_url;
   ST.profile=p;
 }
-function pubLinks(links,photos){
+function pubLnk(links,photos){
   const c=document.getElementById('pub-links');
   c.innerHTML='';
   document.querySelectorAll('.cmenu').forEach(m=>m.remove());
-
-  // Gabungkan links + photos dengan tipe berbeda, sort by order
-  const allItems=[
-    ...links.map(l=>({...l,_type:'link'})),
-    ...photos.map(p=>({...p,_type:'photo'}))
+  const all=[
+    ...links.map(l=>({...l,_t:'link'})),
+    ...photos.map(p=>({...p,_t:'photo'}))
   ].sort((a,b)=>(+a.order||99)-(+b.order||99));
 
-  if(!allItems.length){c.innerHTML='<p style="text-align:center;color:var(--w5);font-size:.84rem;padding:20px">Belum ada tautan.</p>';return;}
+  if(!all.length){c.innerHTML='<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Belum ada tautan.</p>';return;}
 
-  // Group section separator logic — detect if there are both types
-  const hasLinks=links.length>0,hasPhotos=photos.length>0;
+  const hasL=links.length>0,hasP=photos.length>0;
+  let shownLlbl=false,shownPlbl=false;
 
-  allItems.forEach((item,i)=>{
-    // Section label
-    if(hasLinks&&hasPhotos){
-      if(i===0&&item._type==='link'){
-        const sep=document.createElement('div');sep.className='sec-label fu';sep.style.animationDelay=`${0.06+i*0.06}s`;sep.textContent='Tautan';c.appendChild(sep);
+  all.forEach((item,i)=>{
+    const delay=`${0.08+i*0.065}s`;
+    if(hasL&&hasP){
+      if(item._t==='link'&&!shownLlbl){
+        shownLlbl=true;
+        const s=document.createElement('div');s.className='slbl fu';s.style.animationDelay=delay;s.textContent='Tautan';c.appendChild(s);
       }
-      if(i>0&&item._type==='photo'&&allItems[i-1]._type==='link'){
-        const sep=document.createElement('div');sep.className='sec-label fu';sep.style.animationDelay=`${0.06+i*0.06}s`;sep.textContent='Foto';c.appendChild(sep);
+      if(item._t==='photo'&&!shownPlbl){
+        shownPlbl=true;
+        const s=document.createElement('div');s.className='slbl fu';s.style.animationDelay=delay;s.textContent='Foto';c.appendChild(s);
       }
     }
 
-    const wrap=document.createElement('div');wrap.className='lwrap fu';wrap.style.animationDelay=`${0.08+i*0.07}s`;
-    wrap.style.marginBottom='10px';
+    const wrap=document.createElement('div');wrap.className='lwrap fu';wrap.style.animationDelay=delay;wrap.style.marginBottom='9px';
 
-    if(item._type==='link'){
+    if(item._t==='link'){
       const a=document.createElement('a');
-      a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';
-      a.className='lbtn';a.style.paddingRight='56px';
-      a.innerHTML=`<span class="lic"><i class="${item.icon||'fas fa-link'}" style="color:rgba(255,255,255,.88)"></i></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.title}</span>`;
-      const mb=document.createElement('button');mb.className='mbtn';mb.innerHTML='<i class="fas fa-ellipsis-vertical"></i>';
-      const mn=document.createElement('div');mn.className='cmenu';
-      const wa='https://wa.me/?text='+encodeURIComponent(item.title+' - '+item.url);
-      const tg='https://t.me/share/url?url='+encodeURIComponent(item.url)+'&text='+encodeURIComponent(item.title);
-      mn.innerHTML=
-        '<a class="ci" href="'+item.url+'" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i>Buka Tautan</a>'+
-        '<a class="ci" data-cp="'+item.url.replace(/"/g,'&quot;')+'"><i class="fas fa-copy"></i>Salin Tautan</a>'+
-        '<hr class="cdv"/>'+
-        '<a class="ci" data-sh-t="'+item.title.replace(/"/g,'&quot;')+'" data-sh-u="'+item.url.replace(/"/g,'&quot;')+'"><i class="fas fa-share-alt"></i>Bagikan</a>'+
-        '<a class="ci" href="'+wa+'" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:var(--green)"></i>WhatsApp</a>'+
-        '<a class="ci" href="'+tg+'" target="_blank" rel="noopener"><i class="fab fa-telegram" style="color:var(--cyan)"></i>Telegram</a>';
-      mn.querySelector('[data-cp]').onclick=e=>{cpLink(e.currentTarget.dataset.cp);};
-      mn.querySelector('[data-sh-t]').onclick=e=>{shLink(e.currentTarget.dataset.shT,e.currentTarget.dataset.shU);};
+      a.href=esc(item.url);a.target='_blank';a.rel='noopener noreferrer';
+      a.className='lbtn';a.style.paddingRight='50px';
+      a.setAttribute('aria-label',item.title);
+      a.innerHTML=`<span class="lic"><i class="${esc(item.icon)||'fas fa-link'}" aria-hidden="true"></i></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(item.title)}</span>`;
+      const mb=document.createElement('button');
+      mb.className='mbtn';mb.innerHTML='<i class="fas fa-ellipsis-vertical" aria-hidden="true"></i>';
+      mb.setAttribute('aria-label','Opsi '+item.title);
+      const mn=buildCtxMenu(item);
       document.body.appendChild(mn);
-      mb.onclick=e=>{e.preventDefault();e.stopPropagation();const was=mn.classList.contains('on');document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on'));if(!was){const rect=mb.getBoundingClientRect();mn.style.top=(rect.bottom+6)+'px';mn.style.right=(window.innerWidth-rect.right)+'px';mn.style.left='auto';mn.classList.add('on');requestAnimationFrame(()=>{const mr=mn.getBoundingClientRect();if(mr.bottom>window.innerHeight-8)mn.style.top=(rect.top-mr.height-6)+'px';if(mr.left<8){mn.style.right='auto';mn.style.left='8px';}});};};
+      mb.onclick=e=>{e.preventDefault();e.stopPropagation();toggleMenu(mn,mb);};
       wrap.appendChild(a);wrap.appendChild(mb);
-    } else {
-      // PHOTO button
-      const a=document.createElement('button');
-      a.className='lbtn photo-btn';a.style.width='100%';a.style.paddingRight='16px';
-      const thumb=item.data_b64?`<img src="${item.data_b64}" style="width:42px;height:42px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid rgba(245,200,66,.3)"/>`:`<span class="lic" style="background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.25)"><i class="fas fa-image" style="color:var(--gold)"></i></span>`;
-      a.innerHTML=`${thumb}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left">${item.title}</span><i class="fas fa-expand-alt" style="color:var(--gold);opacity:.6;font-size:.75rem;flex-shrink:0"></i>`;
-      a.onclick=()=>{if(item.data_b64)openLB(item.data_b64,item.title);};
-      wrap.appendChild(a);
+    }else{
+      const btn=document.createElement('button');
+      btn.className='lbtn pb';btn.style.width='100%';
+      btn.setAttribute('aria-label','Buka foto: '+item.title);
+      const thumb=item.data_b64
+        ?`<img src="${item.data_b64}" style="width:38px;height:38px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(245,197,24,.25)" alt="" loading="lazy"/>`
+        :`<span class="lic" style="background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.2)"><i class="fas fa-image" style="color:var(--gd)" aria-hidden="true"></i></span>`;
+      btn.innerHTML=`${thumb}<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left">${esc(item.title)}</span><i class="fas fa-expand-alt" style="color:var(--gd);opacity:.55;font-size:.7rem;flex-shrink:0" aria-hidden="true"></i>`;
+      if(item.data_b64)btn.onclick=()=>oLB(item.data_b64,item.title);
+      wrap.appendChild(btn);
     }
-
     c.appendChild(wrap);
   });
 }
 
+function buildCtxMenu(item){
+  const mn=document.createElement('div');mn.className='cmenu';
+  const wa='https://wa.me/?text='+encodeURIComponent(item.title+' - '+item.url);
+  const tg='https://t.me/share/url?url='+encodeURIComponent(item.url)+'&text='+encodeURIComponent(item.title);
+  mn.innerHTML=
+    `<a class="ci" href="${esc(item.url)}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i>Buka Tautan</a>`+
+    `<a class="ci" data-cp="${esc(item.url)}"><i class="fas fa-copy"></i>Salin Tautan</a>`+
+    `<hr class="cdv"/>`+
+    `<a class="ci" href="${esc(wa)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:var(--green)"></i>WhatsApp</a>`+
+    `<a class="ci" href="${esc(tg)}" target="_blank" rel="noopener"><i class="fab fa-telegram" style="color:var(--cy)"></i>Telegram</a>`;
+  mn.querySelector('[data-cp]').onclick=e=>{cpLink(e.currentTarget.dataset.cp);};
+  return mn;
+}
+
+function toggleMenu(mn,mb){
+  const was=mn.classList.contains('on');
+  document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on'));
+  if(!was){
+    const r=mb.getBoundingClientRect();
+    mn.style.top=(r.bottom+5)+'px';
+    mn.style.right=(window.innerWidth-r.right)+'px';
+    mn.style.left='auto';
+    mn.classList.add('on');
+    requestAnimationFrame(()=>{
+      const mr=mn.getBoundingClientRect();
+      if(mr.bottom>window.innerHeight-8)mn.style.top=(r.top-mr.height-5)+'px';
+      if(mr.left<8){mn.style.right='auto';mn.style.left='8px';}
+    });
+  }
+}
 document.addEventListener('click',()=>document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on')));
-function cpLink(url){if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>ctToast()).catch(()=>{fbCp(url);ctToast();});else{fbCp(url);ctToast();}document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on'));}
-function fbCp(t){const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-function ctToast(){const t=document.getElementById('ctoast');t.textContent='✓ Tautan berhasil disalin!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-function shLink(title,url){if(navigator.share)navigator.share({title,url}).catch(()=>{});else cpLink(url);document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on'));}
+function cpLink(url){
+  (navigator.clipboard?navigator.clipboard.writeText(url).catch(()=>fbCp(url)):Promise.resolve(fbCp(url)))
+    .finally(()=>{ctToast();document.querySelectorAll('.cmenu.on').forEach(m=>m.classList.remove('on'));});
+}
+function fbCp(t){const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px;opacity:0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}finally{document.body.removeChild(ta);}}
+function ctToast(){const t=document.getElementById('ctoast');t.textContent='✓ Tautan berhasil disalin!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 function renderBG(fl){
-  const c=document.getElementById('bg-floaters');c.innerHTML='';
-  fl.forEach((f,i)=>{if(!f.url)return;const img=document.createElement('img');img.src=f.url;img.className='bf';img.style.cssText=`width:${f.size||120}px;height:${f.size||120}px;left:${f.left||10}%;top:${f.top||20}%;animation-delay:${i*3}s;animation-duration:${18+i*4}s;`;c.appendChild(img);});
+  const c=document.getElementById('bgf');c.innerHTML='';
+  fl.forEach((f,i)=>{
+    if(!f.url)return;
+    const img=document.createElement('img');
+    img.src=f.url;img.className='bf';img.alt='';img.loading='lazy';
+    img.style.cssText=`width:${f.size||120}px;height:${f.size||120}px;left:${f.left||10}%;top:${f.top||20}%;animation-delay:${i*3.5}s;animation-duration:${18+i*5}s;`;
+    c.appendChild(img);
+  });
 }
 
-// ── PHOTO UPLOAD (Admin) ──
-function onPhotoFile(input){
-  const file=input.files[0];
-  if(!file)return;
-  if(file.size>1.5*1024*1024){toast('Ukuran file melebihi 1.5 MB!','err');input.value='';return;}
+// ── PHOTO UPLOAD ──
+function onPF(inp){
+  const file=inp.files[0];if(!file)return;
+  if(file.size>MAX_PHOTO_BYTES){
+    toast(`Foto terlalu besar! Maksimal ${Math.round(MAX_PHOTO_BYTES/1024)} KB.`,'err');
+    inp.value='';return;
+  }
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
+    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');inp.value='';return;
+  }
+  const pb=document.getElementById('ph-pb');pb.style.display='block';
+  const fill=pb.querySelector('.pbar-fill');fill.style.width='30%';
   const reader=new FileReader();
+  reader.onprogress=e=>{if(e.lengthComputable)fill.style.width=(e.loaded/e.total*80)+'%';};
   reader.onload=e=>{
-    pendingPhotoB64=e.target.result;
-    pendingPhotoName=file.name;
-    document.getElementById('ph-prev').src=pendingPhotoB64;
-    document.getElementById('ph-fname').textContent=file.name+' ('+Math.round(file.size/1024)+' KB)';
-    document.getElementById('ph-drop-inner').style.display='none';
-    document.getElementById('ph-preview-wrap').style.display='block';
+    fill.style.width='100%';setTimeout(()=>{pb.style.display='none';},400);
+    pendB64=e.target.result;pendName=file.name;
+    document.getElementById('ph-prev').src=pendB64;
+    document.getElementById('ph-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    document.getElementById('ph-di').style.display='none';
+    document.getElementById('ph-pw').style.display='block';
   };
+  reader.onerror=()=>{toast('Gagal membaca file.','err');pb.style.display='none';};
   reader.readAsDataURL(file);
 }
-function clearPhotoFile(e){
+function clrPF(e){
   e.stopPropagation();
-  pendingPhotoB64='';pendingPhotoName='';
-  document.getElementById('ph-file').value='';
-  document.getElementById('ph-drop-inner').style.display='block';
-  document.getElementById('ph-preview-wrap').style.display='none';
+  pendB64='';pendName='';
+  document.getElementById('ph-f').value='';
+  document.getElementById('ph-di').style.display='block';
+  document.getElementById('ph-pw').style.display='none';
+  document.getElementById('ph-pb').style.display='none';
 }
 
-// Drag and drop
-const dropArea=document.getElementById('photo-drop');
-['dragenter','dragover'].forEach(ev=>dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.add('drag-over');}));
-['dragleave','drop'].forEach(ev=>dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.remove('drag-over');}));
-dropArea.addEventListener('drop',e=>{
-  const file=e.dataTransfer.files[0];
-  if(file&&file.type.startsWith('image/')){
-    const dt=new DataTransfer();dt.items.add(file);
-    const inp=document.getElementById('ph-file');inp.files=dt.files;
-    onPhotoFile(inp);
+// Drag & drop
+const pda=document.getElementById('phdr');
+['dragenter','dragover'].forEach(ev=>pda.addEventListener(ev,e=>{e.preventDefault();pda.classList.add('drag');}));
+['dragleave','drop'].forEach(ev=>pda.addEventListener(ev,e=>{e.preventDefault();pda.classList.remove('drag');}));
+pda.addEventListener('drop',e=>{
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')){
+    if(f.size>MAX_PHOTO_BYTES){toast(`Foto terlalu besar! Maks ${Math.round(MAX_PHOTO_BYTES/1024)} KB.`,'err');return;}
+    const dt=new DataTransfer();dt.items.add(f);
+    const inp=document.getElementById('ph-f');inp.files=dt.files;onPF(inp);
   }
 });
 
 async function addPhoto(){
-  const t=document.getElementById('ph-t').value.trim(),o=document.getElementById('ph-o').value.trim();
-  const btn=document.getElementById('aph-t');
+  const t=V('ph-t'),o=V('ph-o');
+  const btn=document.getElementById('aph-btn');
   if(!t){toast('Judul foto wajib diisi.','err');return;}
-  if(!pendingPhotoB64){toast('Pilih file foto terlebih dahulu.','err');return;}
-  btn.innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle;margin-right:6px"></div>Mengupload...';
+  if(!pendB64){toast('Pilih file foto terlebih dahulu.','err');return;}
+  btn.disabled=true;
+  document.getElementById('aph-t').textContent='Mengupload...';
   try{
-    await api('addPhoto',{title:t,order:o,data_b64:pendingPhotoB64});
+    await api('addPhoto',{title:t,order:o,data_b64:pendB64});
     ['ph-t','ph-o'].forEach(id=>document.getElementById(id).value='');
-    clearPhotoFile({stopPropagation:()=>{}});
+    clrPF({stopPropagation:()=>{}});
     toast('Foto berhasil diupload!');
     await loadAdmin();
   }catch(e){toast('Gagal: '+e.message,'err');}
-  btn.innerHTML='<i class="fas fa-upload" style="margin-right:6px"></i>Upload Foto';
+  btn.disabled=false;
+  document.getElementById('aph-t').textContent='Upload Foto';
 }
 
 function renderPhotos(){
-  const list=document.getElementById('photo-list'),ph=ST.photos;
-  if(!ph.length){list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w5)">Belum ada foto. Upload foto pertama!</p>';return;}
+  const list=document.getElementById('phlist'),ph=ST.photos;
+  if(!ph.length){list.innerHTML='<p style="text-align:center;padding:16px;font-size:.8rem;color:var(--w5)">Belum ada foto. Upload foto pertama!</p>';return;}
   list.innerHTML='';
-  const s=[...ph].sort((a,b)=>(+a.order||99)-(+b.order||99));
-  s.forEach((p,i)=>{
+  [...ph].sort((a,b)=>(+a.order||99)-(+b.order||99)).forEach(p=>{
     const oi=ST.photos.indexOf(p);
     const d=document.createElement('div');d.className='phi';
-    const thumb=p.data_b64?`<img src="${p.data_b64}" class="phth" onclick="openLB('${p.data_b64}','${p.title.replace(/'/g,"\\'")}')"/>`:'<div class="phth" style="background:rgba(245,200,66,.1);border-radius:9px;display:flex;align-items:center;justify-content:center"><i class="fas fa-image" style="color:var(--gold);opacity:.5"></i></div>';
-    d.innerHTML=`${thumb}<div style="flex:1;min-width:0"><p class="fd" style="font-weight:700;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title||'—'}</p><p style="font-size:.7rem;color:var(--w5)">Urutan: ${p.order||'—'}</p></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn btn-green btn-sm" onclick="openEPM(${oi})"><i class="fas fa-pen"></i></button><button class="btn btn-red btn-sm" onclick="delPhoto(${oi})"><i class="fas fa-trash"></i></button></div>`;
-    list.appendChild(d);
+    const thEl=document.createElement(p.data_b64?'img':'div');
+    thEl.className='pht';
+    if(p.data_b64){thEl.src=p.data_b64;thEl.alt=p.title;thEl.loading='lazy';thEl.onclick=()=>oLB(p.data_b64,p.title);}
+    else{thEl.style.cssText='display:flex;align-items:center;justify-content:center;background:rgba(245,197,24,.08)';thEl.innerHTML='<i class="fas fa-image" style="color:var(--gd);opacity:.4"></i>';}
+    const info=document.createElement('div');info.style.cssText='flex:1;min-width:0';
+    info.innerHTML=`<p class="fd" style="font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.title)}</p><p style="font-size:.68rem;color:var(--w5)">Urutan: ${p.order||'—'}</p>`;
+    const btns=document.createElement('div');btns.style.cssText='display:flex;gap:5px;flex-shrink:0';
+    const eb=document.createElement('button');eb.className='btn btn-green btn-sm';eb.innerHTML='<i class="fas fa-pen"></i>';eb.onclick=()=>oEPM(oi);
+    const db=document.createElement('button');db.className='btn btn-red btn-sm';db.innerHTML='<i class="fas fa-trash"></i>';db.onclick=()=>delPhoto(oi);
+    btns.append(eb,db);d.append(thEl,info,btns);list.appendChild(d);
   });
 }
-
-function openEPM(idx){
-  const p=ST.photos[idx];
-  document.getElementById('ep-idx').value=idx;
-  document.getElementById('ep-t').value=p.title||'';
-  document.getElementById('ep-o').value=p.order||'';
-  document.getElementById('edit-photo-modal').classList.add('on');
-}
-function closeEPM(){document.getElementById('edit-photo-modal').classList.remove('on');}
-async function saveEditPhoto(){
+function oEPM(idx){const p=ST.photos[idx];document.getElementById('ep-idx').value=idx;document.getElementById('ep-t').value=p.title||'';document.getElementById('ep-o').value=p.order||'';document.getElementById('epm').classList.add('on');}
+function cEPM(){document.getElementById('epm').classList.remove('on');}
+async function svEPM(){
   const idx=+document.getElementById('ep-idx').value,p=ST.photos[idx];
-  try{await api('updatePhoto',{rowIndex:p._row,title:document.getElementById('ep-t').value.trim(),order:document.getElementById('ep-o').value.trim()});toast('Foto diperbarui!');closeEPM();await loadAdmin();}
+  try{await api('updatePhoto',{rowIndex:p._row,title:V('ep-t'),order:V('ep-o')});toast('Foto diperbarui!');cEPM();await loadAdmin();}
   catch(e){toast('Gagal: '+e.message,'err');}
 }
 async function delPhoto(idx){if(!confirm('Hapus foto ini?'))return;const p=ST.photos[idx];try{await api('deletePhoto',{rowIndex:p._row});toast('Foto dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
-// ── ADMIN ──
+// ── ADMIN LOAD ──
 async function loadAdmin(){
   try{
     const d=await api('getAll');
     ST.links=d.links||[];ST.floaters=d.floaters||[];ST.photos=d.photos||[];ST.profile=d.profile||{};
     const p=ST.profile;
-    document.getElementById('adm-n').value=p.name||'';document.getElementById('n-prev').textContent=p.name||'Nama';
-    document.getElementById('adm-t').value=p.tagline||'';document.getElementById('t-prev').textContent=p.tagline||'Tagline';
-    document.getElementById('adm-av').value=p.avatar_url||'';if(p.avatar_url)document.getElementById('av-prev').src=p.avatar_url;
-    document.getElementById('adm-c1').value=p.color1||'#2979d4';document.getElementById('adm-c2').value=p.color2||'#1a4a9e';
-    document.getElementById('s-name').textContent=p.name||'—';document.getElementById('s-tot').textContent=ST.links.length;
+    setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
+    setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
+    setV('adm-av',p.avatar_url||'');if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
+    document.getElementById('adm-c1').value=p.color1||'#2979d4';
+    document.getElementById('adm-c2').value=p.color2||'#1a4a9e';
+    document.getElementById('s-nm').textContent=p.name||'—';
+    document.getElementById('s-tot').textContent=ST.links.length;
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){toast('Gagal memuat: '+e.message,'err');}
 }
 
+// ── LINKS ──
 function renderLinks(){
   const list=document.getElementById('llist');
   document.getElementById('s-tot').textContent=ST.links.length;
-  if(!ST.links.length){list.innerHTML='<p style="text-align:center;padding:18px;font-size:.82rem;color:var(--w5)">Belum ada tautan. Tambahkan!</p>';return;}
-  const s=[...ST.links].sort((a,b)=>(+a.order||99)-(+b.order||99));
+  if(!ST.links.length){list.innerHTML='<p style="text-align:center;padding:16px;font-size:.8rem;color:var(--w5)">Belum ada tautan. Tambahkan di kiri!</p>';return;}
   list.innerHTML='';
-  s.forEach(lnk=>{
+  [...ST.links].sort((a,b)=>(+a.order||99)-(+b.order||99)).forEach(lnk=>{
     const oi=ST.links.indexOf(lnk);
-    const d=document.createElement('div');
-    d.style.cssText='display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--w04);border:1px solid var(--w06);border-radius:12px;transition:background .2s';
-    const icon=document.createElement('div');
-    icon.style.cssText='width:36px;height:36px;border-radius:9px;background:rgba(41,121,212,.12);border:1px solid rgba(91,163,245,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0';
-    icon.innerHTML=`<i class="${lnk.icon||'fas fa-link'}" style="color:var(--bluel);font-size:.8rem"></i>`;
-    const txt=document.createElement('div');txt.style.cssText='flex:1;min-width:0;overflow:hidden';
-    const p1=document.createElement('p');p1.className='fd';p1.style.cssText='font-weight:700;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';p1.textContent=lnk.title;
-    const p2=document.createElement('p');p2.style.cssText='font-size:.69rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis';p2.textContent=lnk.url;
-    txt.appendChild(p1);txt.appendChild(p2);
-    const btns=document.createElement('div');btns.style.cssText='display:flex;gap:5px;flex-shrink:0';
-    const eb=document.createElement('button');eb.className='btn btn-green btn-sm';eb.innerHTML='<i class="fas fa-pen"></i>';eb.onclick=()=>openEM(oi);
-    const db=document.createElement('button');db.className='btn btn-red btn-sm';db.innerHTML='<i class="fas fa-trash"></i>';db.onclick=()=>delLink(oi);
-    btns.appendChild(eb);btns.appendChild(db);
-    d.appendChild(icon);d.appendChild(txt);d.appendChild(btns);
-    list.appendChild(d);
+    const d=document.createElement('div');d.className='lia';
+    const ic=document.createElement('div');ic.style.cssText='width:34px;height:34px;border-radius:8px;background:rgba(41,121,212,.1);border:1px solid rgba(91,163,245,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0';
+    ic.innerHTML=`<i class="${esc(lnk.icon)||'fas fa-link'}" style="color:var(--bl);font-size:.78rem" aria-hidden="true"></i>`;
+    const tx=document.createElement('div');tx.style.cssText='flex:1;min-width:0;overflow:hidden;margin:0 8px';
+    const p1=document.createElement('p');p1.className='fd';p1.style.cssText='font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';p1.textContent=lnk.title;
+    const p2=document.createElement('p');p2.style.cssText='font-size:.67rem;color:var(--w5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis';p2.textContent=lnk.url;
+    tx.append(p1,p2);
+    const bt=document.createElement('div');bt.style.cssText='display:flex;gap:4px;flex-shrink:0';
+    const eb=document.createElement('button');eb.className='btn btn-green btn-sm';eb.innerHTML='<i class="fas fa-pen" aria-hidden="true"></i>';eb.setAttribute('aria-label','Edit '+lnk.title);eb.onclick=()=>oEM(oi);
+    const db=document.createElement('button');db.className='btn btn-red btn-sm';db.innerHTML='<i class="fas fa-trash" aria-hidden="true"></i>';db.setAttribute('aria-label','Hapus '+lnk.title);db.onclick=()=>delLink(oi);
+    bt.append(eb,db);d.append(ic,tx,bt);list.appendChild(d);
   });
 }
-
 async function addLink(){
-  const t=document.getElementById('lnk-t').value.trim(),u=document.getElementById('lnk-u').value.trim(),ic=document.getElementById('lnk-i').value.trim(),o=document.getElementById('lnk-o').value.trim();
-  const btn=document.getElementById('al-t');
+  const t=V('lnk-t'),u=V('lnk-u'),ic=V('lnk-i'),o=V('lnk-o');
+  const btn=document.getElementById('al-btn');
   if(!t||!u){toast('Judul dan URL wajib diisi.','err');return;}
-  btn.textContent='Menambahkan...';
-  try{await api('addLink',{title:t,url:u,icon:ic,order:o});['lnk-t','lnk-u','lnk-i','lnk-o'].forEach(id=>document.getElementById(id).value='');toast('Tautan ditambahkan!');await loadAdmin();}
-  catch(e){toast('Gagal: '+e.message,'err');}
-  btn.textContent='Tambah Tautan';
+  if(!u.startsWith('http')){toast('URL harus dimulai dengan http:// atau https://','err');return;}
+  btn.disabled=true;document.getElementById('al-t').textContent='Menambahkan...';
+  try{
+    await api('addLink',{title:t,url:u,icon:ic,order:o});
+    ['lnk-t','lnk-u','lnk-i','lnk-o'].forEach(id=>document.getElementById(id).value='');
+    toast('Tautan ditambahkan!');await loadAdmin();
+  }catch(e){toast('Gagal: '+e.message,'err');}
+  btn.disabled=false;document.getElementById('al-t').textContent='Tambah Tautan';
 }
-function openEM(idx){const lnk=ST.links[idx];document.getElementById('e-idx').value=idx;document.getElementById('e-t').value=lnk.title||'';document.getElementById('e-i').value=lnk.icon||'';document.getElementById('e-u').value=lnk.url||'';document.getElementById('e-o').value=lnk.order||'';document.getElementById('edit-modal').classList.add('on');}
-function closeEM(){document.getElementById('edit-modal').classList.remove('on');}
+function oEM(idx){const l=ST.links[idx];document.getElementById('e-idx').value=idx;setV('e-t',l.title||'');setV('e-i',l.icon||'');setV('e-u',l.url||'');setV('e-o',l.order||'');document.getElementById('em').classList.add('on');}
+function cEM(){document.getElementById('em').classList.remove('on');}
 async function saveEdit(){
-  const idx=+document.getElementById('e-idx').value,lnk=ST.links[idx];
-  try{await api('updateLink',{rowIndex:lnk._row,title:document.getElementById('e-t').value.trim(),url:document.getElementById('e-u').value.trim(),icon:document.getElementById('e-i').value.trim(),order:document.getElementById('e-o').value.trim()});toast('Diperbarui!');closeEM();await loadAdmin();}
+  const idx=+document.getElementById('e-idx').value,l=ST.links[idx];
+  const u=V('e-u');
+  if(!u.startsWith('http')){toast('URL harus dimulai dengan http://','err');return;}
+  try{await api('updateLink',{rowIndex:l._row,title:V('e-t'),url:u,icon:V('e-i'),order:V('e-o')});toast('Diperbarui!');cEM();await loadAdmin();}
   catch(e){toast('Gagal: '+e.message,'err');}
 }
-async function delLink(idx){if(!confirm('Hapus tautan ini?'))return;const lnk=ST.links[idx];try{await api('deleteLink',{rowIndex:lnk._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
+async function delLink(idx){if(!confirm('Hapus tautan ini?'))return;const l=ST.links[idx];try{await api('deleteLink',{rowIndex:l._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
+// ── PROFILE ──
 async function saveProfile(){
   const btn=document.getElementById('sp-t');btn.textContent='Menyimpan...';
-  try{await api('saveProfile',{name:document.getElementById('adm-n').value.trim(),tagline:document.getElementById('adm-t').value.trim(),avatar_url:document.getElementById('adm-av').value.trim(),color1:document.getElementById('adm-c1').value,color2:document.getElementById('adm-c2').value});document.getElementById('s-name').textContent=document.getElementById('adm-n').value.trim()||'—';toast('Profil disimpan!');}
-  catch(e){toast('Gagal: '+e.message,'err');}
-  btn.textContent='Simpan Profil';
+  try{
+    await api('saveProfile',{name:V('adm-n'),tagline:V('adm-t'),avatar_url:V('adm-av'),color1:document.getElementById('adm-c1').value,color2:document.getElementById('adm-c2').value});
+    document.getElementById('s-nm').textContent=V('adm-n')||'—';
+    toast('Profil disimpan!');
+  }catch(e){toast('Gagal: '+e.message,'err');}
+  btn.innerHTML='<i class="fas fa-save"></i> Simpan Profil';
 }
 
+// ── FLOATERS ──
 function renderFlt(){
-  const list=document.getElementById('flt-list'),fl=ST.floaters;
-  if(!fl.length){list.innerHTML='<p style="text-align:center;padding:14px;font-size:.82rem;color:var(--w5)">Belum ada gambar.</p>';return;}
+  const list=document.getElementById('flist'),fl=ST.floaters;
+  if(!fl.length){list.innerHTML='<p style="text-align:center;padding:14px;font-size:.8rem;color:var(--w5)">Belum ada gambar.</p>';return;}
   list.innerHTML='';
   fl.forEach((f,i)=>{
     const d=document.createElement('div');d.className='fi';
-    d.innerHTML=`<img src="${f.url||''}" class="fth" onerror="this.style.opacity='.3'" alt=""/><div style="flex:1;min-width:0"><p style="font-size:.77rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9)">${f.url||'—'}</p><p style="font-size:.69rem;color:var(--w5)">${f.size||120}px · ${f.left||0}% kiri, ${f.top||0}% atas</p></div><button class="btn btn-red btn-sm" onclick="delFlt(${i})"><i class="fas fa-trash"></i></button>`;
-    list.appendChild(d);
+    const img=document.createElement('img');img.src=f.url||'';img.className='fth';img.alt='';img.loading='lazy';img.onerror=function(){this.style.opacity='.3';};
+    const info=document.createElement('div');info.style.cssText='flex:1;min-width:0';
+    info.innerHTML=`<p style="font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9)">${esc(f.url||'—')}</p><p style="font-size:.67rem;color:var(--w5)">${f.size||120}px · Kiri ${f.left||0}%, Atas ${f.top||0}%</p>`;
+    const bt=document.createElement('div');bt.style.cssText='display:flex;gap:4px;flex-shrink:0';
+    const eb=document.createElement('button');eb.className='btn btn-green btn-sm';eb.innerHTML='<i class="fas fa-pen"></i>';eb.setAttribute('aria-label','Edit gambar BG');eb.onclick=()=>oEFM(i);
+    const db=document.createElement('button');db.className='btn btn-red btn-sm';db.innerHTML='<i class="fas fa-trash"></i>';db.setAttribute('aria-label','Hapus gambar BG');db.onclick=()=>delFlt(i);
+    bt.append(eb,db);d.append(img,info,bt);list.appendChild(d);
   });
 }
-function fprev(url){const p=document.getElementById('f-prev');if(url){p.src=url;p.style.display='block';}else p.style.display='none';}
+function fpv(url){const p=document.getElementById('f-prev');if(url){p.src=url;p.style.display='block';}else p.style.display='none';}
 async function addFlt(){
-  const url=document.getElementById('f-url').value.trim(),sz=document.getElementById('f-sz').value,l=document.getElementById('f-l').value,t=document.getElementById('f-t').value;
-  const btn=document.getElementById('af-t');
+  const url=V('f-url'),sz=V('f-sz'),l=V('f-l'),t=V('f-t');
+  const btn=document.getElementById('af-btn');
   if(!url){toast('URL wajib diisi.','err');return;}
-  btn.textContent='Menambahkan...';
-  try{await api('addFloater',{url,size:sz,left:l,top:t});document.getElementById('f-url').value='';document.getElementById('f-prev').style.display='none';toast('Gambar ditambahkan!');await loadAdmin();}
-  catch(e){toast('Gagal: '+e.message,'err');}
-  btn.textContent='Tambah Gambar';
+  if(!url.startsWith('http')){toast('URL tidak valid.','err');return;}
+  btn.disabled=true;document.getElementById('af-t').textContent='Menambahkan...';
+  try{
+    await api('addFloater',{url,size:sz||120,left:l||10,top:t||20});
+    ['f-url','f-l','f-t'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-sz').value='120';
+    document.getElementById('f-prev').style.display='none';
+    toast('Gambar ditambahkan!');await loadAdmin();
+  }catch(e){toast('Gagal: '+e.message,'err');}
+  btn.disabled=false;document.getElementById('af-t').textContent='Tambah Gambar';
 }
-async function delFlt(idx){if(!confirm('Hapus gambar?'))return;const f=ST.floaters[idx];try{await api('deleteFloater',{rowIndex:f._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
+// ── EDIT FLOATER ──
+function oEFM(idx){
+  const f=ST.floaters[idx];
+  document.getElementById('ef-idx').value=idx;
+  setV('ef-url',f.url||'');setV('ef-sz',f.size||120);setV('ef-l',f.left||0);setV('ef-t',f.top||0);
+  const p=document.getElementById('ef-prev');if(f.url){p.src=f.url;p.style.display='block';}else p.style.display='none';
+  document.getElementById('efm').classList.add('on');
+}
+function cEFM(){document.getElementById('efm').classList.remove('on');}
+async function svEFM(){
+  const idx=+document.getElementById('ef-idx').value,f=ST.floaters[idx];
+  const url=V('ef-url');
+  if(!url){toast('URL wajib diisi.','err');return;}
+  try{
+    await api('updateFloater',{rowIndex:f._row,url,size:V('ef-sz')||120,left:V('ef-l')||0,top:V('ef-t')||0});
+    toast('Gambar diperbarui!');cEFM();await loadAdmin();
+  }catch(e){toast('Gagal: '+e.message,'err');}
+}
+async function delFlt(idx){if(!confirm('Hapus gambar ini?'))return;const f=ST.floaters[idx];try{await api('deleteFloater',{rowIndex:f._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
+
+// ── PREVIEW ──
 async function loadPrev(){
-  try{const d=await api('getAll'),p=d.profile||{};
-    document.getElementById('pv-n').textContent=p.name||'—';document.getElementById('pv-t').textContent=p.tagline||'—';
+  try{
+    const d=await api('getAll'),p=d.profile||{};
+    document.getElementById('pv-n').textContent=p.name||'—';
+    document.getElementById('pv-t').textContent=p.tagline||'—';
     if(p.avatar_url)document.getElementById('pv-av').src=p.avatar_url;
-    const allItems=[...(d.links||[]).map(l=>({...l,_type:'link'})),...(d.photos||[]).map(ph=>({...ph,_type:'photo'}))].sort((a,b)=>(+a.order||99)-(+b.order||99));
-    const cnt=document.getElementById('pv-links');cnt.innerHTML='';
-    allItems.forEach(item=>{
-      const el=document.createElement('div');
-      if(item._type==='link'){
-        el.innerHTML=`<a href="${item.url}" target="_blank" class="lbtn" style="font-size:.78rem;padding:9px 12px"><span class="lic" style="width:26px;height:26px;border-radius:7px;font-size:.7rem"><i class="${item.icon||'fas fa-link'}"></i></span><span style="flex:1">${item.title}</span></a>`;
-      } else {
-        el.innerHTML=`<div class="lbtn photo-btn" style="font-size:.78rem;padding:9px 12px"><i class="fas fa-image" style="color:var(--gold);width:26px;text-align:center"></i><span style="flex:1">${item.title}</span></div>`;
+    const all=[...(d.links||[]).map(l=>({...l,_t:'link'})),...(d.photos||[]).map(ph=>({...ph,_t:'photo'}))].sort((a,b)=>(+a.order||99)-(+b.order||99));
+    const cnt=document.getElementById('pv-lnk');cnt.innerHTML='';
+    all.forEach(item=>{
+      const el=document.createElement('div');el.style.marginBottom='6px';
+      if(item._t==='link'){
+        el.innerHTML=`<a href="${esc(item.url)}" target="_blank" class="lbtn" style="font-size:.76rem;padding:9px 12px"><span class="lic" style="width:26px;height:26px;border-radius:6px;font-size:.7rem"><i class="${esc(item.icon)||'fas fa-link'}" aria-hidden="true"></i></span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(item.title)}</span></a>`;
+      }else{
+        el.innerHTML=`<div class="lbtn pb" style="font-size:.76rem;padding:9px 12px"><i class="fas fa-image" style="color:var(--gd);width:26px;text-align:center" aria-hidden="true"></i><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(item.title)}</span></div>`;
       }
       cnt.appendChild(el);
     });
   }catch(e){toast('Gagal preview','err');}
 }
 
-// ── UI ──
-function swPanel(id,el){
+// ── PANEL SWITCH ──
+const PTITLES={'p-lnk':'Kelola Tautan','p-pht':'Kelola Foto','p-prof':'Profil & Keamanan','p-flt':'Gambar Background','p-prev':'Preview'};
+function swP(id,el){
   document.querySelectorAll('.pan').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById(id).classList.add('on');if(el)el.classList.add('on');
-  const titles={'p-links':'Kelola Tautan','p-photos':'Kelola Foto','p-profile':'Profil & Keamanan','p-floaters':'Gambar Background','p-preview':'Preview'};
-  document.getElementById('ptitle').textContent=titles[id]||'Dashboard';
-  if(id==='p-preview')loadPrev();
-  sbClose();
+  document.getElementById('ptitle').textContent=PTITLES[id]||'Dashboard';
+  if(id==='p-prev')loadPrev();
+  sbC();
 }
-function bnSwitch(panelId,el){
+function bnSw(pid,el){
   document.querySelectorAll('.pan').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('on'));
-  document.getElementById(panelId).classList.add('on');
-  if(el)el.classList.add('on');
-  const titles={'p-links':'Kelola Tautan','p-photos':'Kelola Foto','p-profile':'Profil & Keamanan','p-floaters':'Gambar Background','p-preview':'Preview'};
-  const ptitle=document.getElementById('ptitle');
-  if(ptitle)ptitle.textContent=titles[panelId]||'Dashboard';
-  if(panelId==='p-preview')loadPrev();
+  document.getElementById(pid).classList.add('on');if(el)el.classList.add('on');
+  const pt=document.getElementById('ptitle');if(pt)pt.textContent=PTITLES[pid]||'Dashboard';
+  if(pid==='p-prev')loadPrev();
 }
-function sbOpen(){document.getElementById('sb').classList.add('on');document.getElementById('sb-ov').style.display='block';document.getElementById('closesb').style.display='flex';document.body.style.overflow='hidden';}
-function sbClose(){document.getElementById('sb').classList.remove('on');document.getElementById('sb-ov').style.display='none';document.getElementById('closesb').style.display='none';document.body.style.overflow='';}
-function sbToggle(){if(document.getElementById('sb').classList.contains('on'))sbClose();else sbOpen();}
-function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
-let tt;
-function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`show ${type}`;clearTimeout(tt);tt=setTimeout(()=>{t.className='';},3500);}
+function sbO(){document.getElementById('sb').classList.add('on');document.getElementById('sbov').style.display='block';document.getElementById('closesb').style.display='flex';document.body.style.overflow='hidden';}
+function sbC(){document.getElementById('sb').classList.remove('on');document.getElementById('sbov').style.display='none';document.getElementById('closesb').style.display='none';document.body.style.overflow='';}
+function sbT(){document.getElementById('sb').classList.contains('on')?sbC():sbO();}
 
+// ── UTILS ──
+function V(id){return (document.getElementById(id)||{}).value?.trim()||'';}
+function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
+function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
+function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
+
+let _tt;
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  const ico=type==='ok'?'fa-check-circle':type==='err'?'fa-exclamation-circle':'fa-exclamation-triangle';
+  t.innerHTML=`<i class="fas ${ico}" aria-hidden="true"></i>${esc(msg)}`;
+  t.className=`show ${type}`;clearTimeout(_tt);
+  _tt=setTimeout(()=>{t.className='';},3500);
+}
+
+// ── INIT ──
 window.addEventListener('load',()=>{
   const ls=document.getElementById('ls');
-  setTimeout(()=>{ls.classList.add('out');setTimeout(()=>{ls.style.display='none';ls.style.pointerEvents='none';},400);route();},700);
+  setTimeout(()=>{ls.classList.add('out');setTimeout(()=>{ls.style.display='none';},380);route();},600);
 });
 window.addEventListener('resize',()=>{
-  const bn=document.getElementById('bottom-nav');if(!bn)return;
-  const adminActive=document.getElementById('admin-view').classList.contains('on');
-  bn.style.display=(adminActive&&window.innerWidth<=768)?'flex':'none';
+  const bn=document.getElementById('bn');if(!bn)return;
+  const isAdm=document.getElementById('av').classList.contains('on');
+  bn.style.display=(isAdm&&window.innerWidth<=768)?'flex':'none';
 });
+// Session check setiap 5 menit
+setInterval(()=>{if(!isIn()&&document.getElementById('av').classList.contains('on')){toast('Sesi berakhir. Silakan login ulang.','warn');setTimeout(()=>doLogout(),2000);}},5*60*1000);
 </script>
 </body>
 </html>
