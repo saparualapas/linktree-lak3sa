@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="description" content="Lak3saLink — Tautan resmi Lapas Kelas III Saparua"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232979d4'/><text y='24' x='5' font-size='22'>🔗</text></svg>"/>
 <title>Lak3saLink — Lapas Kelas III Saparua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -53,7 +52,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* LOADING — reuse splash screen untuk proses */
 #ls{position:fixed;inset:0;z-index:3000;background:rgba(5,14,30,.88);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transition:opacity .28s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   opacity:1;pointer-events:all}
 #ls-sub{font-family:'Sora',sans-serif;font-size:.76rem;color:var(--w5);
   letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
@@ -1127,7 +1126,7 @@ function route(){
     if(isIn()){nav('av');loadAdmin();}
     else{window.location.hash='#login';}
   } else if(h==='#login'){
-    if(isIn()){window.location.hash='#admin';}
+    if(isIn())window.location.hash='#admin';
     else{nav('lv');hideSplash();}
   } else if(h==='#reset'){
     nav('rv');hideSplash();
@@ -1161,7 +1160,6 @@ async function loadPub(){
   }catch(e){
     document.getElementById('pub-links').innerHTML=
       '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
-    hideLoad(); // pastikan splash hilang walau error
   }
 }
 function pubPro(p){
@@ -1402,7 +1400,6 @@ async function loadAdmin(){
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){
     toast('Gagal memuat: '+e.message,'err');
-    hideLoad(); // pastikan splash hilang walau error
   }
 }
 
@@ -1791,44 +1788,58 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING ──
-// Splash (#ls) = hanya initial load, di-hide SEKALI lewat hideSplash()
-// Mini bar (#_bar) = indikator tipis di atas untuk setiap request API
+// ── LOADING — splash awal TERPISAH dari API indicator ──
+// Splash (#ls) hanya untuk initial load — disembunyikan SEKALI oleh hideSplash().
+// Untuk proses API selanjutnya pakai overlay mini (#apilo) yang terpisah.
 
 function hideSplash(){
   const ls=document.getElementById('ls');
-  if(!ls)return;
+  if(!ls||ls.style.display==='none')return;
   ls.style.opacity='0';
   ls.style.pointerEvents='none';
   setTimeout(()=>{ ls.style.display='none'; },300);
 }
 
-// Progress bar tipis di atas halaman
-let _bar=null;
-function showLoad(msg){
-  // Update sub-text splash kalau masih kelihatan
+// API indicator — overlay kecil di pojok, tidak block seluruh layar
+let _apiCount=0;
+function showLoad(msg='Memuat...'){
+  _apiCount++;
+  // Update teks splash kalau masih tampil (initial load)
   const ls=document.getElementById('ls');
-  if(ls&&ls.style.display!=='none'){
-    const s=document.getElementById('ls-sub');if(s)s.textContent=msg||'Memuat data...';
+  if(ls&&ls.style.display!=='none'&&ls.style.opacity!=='0'){
+    const sub=document.getElementById('ls-sub');
+    if(sub)sub.textContent=msg;
+    return; // splash sudah handle visual, tidak perlu overlay lain
   }
-  // Buat bar tipis di atas
-  if(!_bar){
-    _bar=document.createElement('div');
-    _bar.style.cssText='position:fixed;top:0;left:0;height:3px;z-index:9999;'+
-      'background:linear-gradient(90deg,#2979d4,#38c8e8);'+
-      'transition:width .3s ease;pointer-events:none;border-radius:0 2px 2px 0';
-    document.body.appendChild(_bar);
+  // Tampilkan mini indicator
+  let ind=document.getElementById('_apilo');
+  if(!ind){
+    ind=document.createElement('div');
+    ind.id='_apilo';
+    ind.style.cssText='position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:3500;'+
+      'background:rgba(7,16,40,.92);border:1px solid rgba(91,163,245,.25);'+
+      'border-radius:99px;padding:8px 18px;display:flex;align-items:center;gap:8px;'+
+      'font-family:Sora,sans-serif;font-weight:700;font-size:.76rem;color:rgba(255,255,255,.8);'+
+      'box-shadow:0 8px 32px rgba(0,0,0,.5);transition:opacity .2s;white-space:nowrap';
+    ind.innerHTML='<div style="width:14px;height:14px;border:2px solid rgba(91,163,245,.2);'+
+      'border-top-color:#5ba3f5;border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0"></div>'+
+      '<span id="_apilo_msg">Memuat...</span>';
+    document.body.appendChild(ind);
   }
-  _bar.style.width='30%';_bar.style.opacity='1';
-  // Animasi maju pelan
-  setTimeout(()=>{ if(_bar)_bar.style.width='70%'; },200);
+  const m=ind.querySelector('#_apilo_msg');
+  if(m)m.textContent=msg;
+  ind.style.opacity='1';
+  ind.style.display='flex';
 }
+
 function hideLoad(){
+  _apiCount=Math.max(0,_apiCount-1);
+  if(_apiCount>0)return;
+  // Sembunyikan splash kalau masih ada
   hideSplash();
-  if(_bar){
-    _bar.style.width='100%';
-    setTimeout(()=>{ if(_bar){_bar.style.opacity='0';_bar.style.width='0%';} },250);
-  }
+  // Sembunyikan mini indicator
+  const ind=document.getElementById('_apilo');
+  if(ind){ ind.style.opacity='0'; setTimeout(()=>{if(_apiCount===0)ind.style.display='none';},220); }
 }
 
 // ── TOAST SYSTEM ──
@@ -1897,6 +1908,9 @@ document.getElementById('cfm').addEventListener('click',e=>{
 
 // ── INIT ──
 window.addEventListener('load',()=>{
+  // Splash sudah tampil (display:flex di CSS).
+  // Langsung route() — hideLoad() akan otomatis dipanggil
+  // oleh api() saat getAll selesai, yang akan menyembunyikan splash.
   route();
 });
 window.addEventListener('resize',()=>{
