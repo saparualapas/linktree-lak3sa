@@ -10,9 +10,9 @@ const SHEET_LINKS    = 'Links';
 const SHEET_FLOATERS = 'Floaters';
 const SHEET_PHOTOS   = 'Photos';
 const DEFAULT_PWD    = 'admin123';
-const MAX_PHOTO_B64  = 690000;   // ~500 KB file → ~690 KB base64
-const MAX_AVATAR_B64 = 415000;   // ~300 KB file → ~415 KB base64
-const MAX_FLT_B64    = 4150000;  // ~3 MB file → ~4.1 MB base64
+const MAX_PHOTO_B64  = 120000;   // ~400x400 JPEG q0.82 → maks ~90KB → ~120K chars
+const MAX_AVATAR_B64 =  60000;   // ~200x200 JPEG q0.75 → maks ~35KB → ~46K chars (aman < 50K sel Sheets)
+const MAX_FLT_B64    = 120000;   // ~500x500 JPEG q0.75 → maks ~80KB → ~108K chars
 
 // ═══════════════════════════════════════════════════════════════
 //  ENTRY POINTS

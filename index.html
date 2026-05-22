@@ -952,7 +952,7 @@ input,textarea,select{cursor:text}
 <script>
 'use strict';
 // ── CONFIG ──
-const AS='https://script.google.com/macros/s/AKfycbwDAE7eum4OYDvML_kwwVuck3F7LVYSreN089ZEwdn9RDjPzJSUdLabWTpkp90Qrd6g/exec';
+const AS='https://script.google.com/macros/s/AKfycbxspTqbB1hhDfSfqneso8iJOzpj2ZPeVBLAHlbJ_gVCX3pHV6injS3lIQKLyZTSxHg/exec';
 const MAX_PHOTO_BYTES = 500*1024;   // 500 KB — foto linktree
 const MAX_AVATAR_BYTES = 300*1024;  // 300 KB — foto profil upload
 const MAX_FLT_BYTES = 3*1024*1024;  // 3 MB  — gambar BG upload
@@ -1264,22 +1264,21 @@ function onPF(inp){
     inp.value='';return;
   }
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');inp.value='';return;
+    toast('Format tidak didukung.','err');inp.value='';return;
   }
   const pb=document.getElementById('ph-pb');pb.style.display='block';
-  const fill=pb.querySelector('.pbar-fill');fill.style.width='30%';
-  const reader=new FileReader();
-  reader.onprogress=e=>{if(e.lengthComputable)fill.style.width=(e.loaded/e.total*80)+'%';};
-  reader.onload=e=>{
-    fill.style.width='100%';setTimeout(()=>{pb.style.display='none';},400);
-    pendB64=e.target.result;pendName=file.name;
-    document.getElementById('ph-prev').src=pendB64;
-    document.getElementById('ph-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+  const fill=pb.querySelector('.pbar-fill');fill.style.width='40%';
+  // Compress: max 400x400px, JPEG 0.82 → ~30-60KB → ~40-80K chars
+  compressImage(file, 400, 0.82, function(b64){
+    fill.style.width='100%';setTimeout(()=>{pb.style.display='none';},300);
+    if(!b64){toast('Gagal memproses gambar.','err');return;}
+    pendB64=b64;pendName=file.name;
+    const szKB=Math.round(b64.length*0.75/1024);
+    document.getElementById('ph-prev').src=b64;
+    document.getElementById('ph-fn').textContent=`${file.name} → ~${szKB} KB`;
     document.getElementById('ph-di').style.display='none';
     document.getElementById('ph-pw').style.display='block';
-  };
-  reader.onerror=()=>{toast('Gagal membaca file.','err');pb.style.display='none';};
-  reader.readAsDataURL(file);
+  });
 }
 function clrPF(e){
   e.stopPropagation();
@@ -1608,6 +1607,27 @@ function onAvUrl(val){
   if(el&&val)el.src=val;
 }
 
+// Compress gambar via Canvas — output JPEG max 200x200px, quality 0.75
+// Hasil ~15-30KB = ~20.000-40.000 char base64, aman untuk satu sel Sheets
+function compressImage(file, maxPx, quality, callback){
+  const img=new Image();
+  const url=URL.createObjectURL(file);
+  img.onload=function(){
+    URL.revokeObjectURL(url);
+    let w=img.width,h=img.height;
+    if(w>maxPx||h>maxPx){
+      if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}
+      else{w=Math.round(w*maxPx/h);h=maxPx;}
+    }
+    const c=document.createElement('canvas');
+    c.width=w;c.height=h;
+    c.getContext('2d').drawImage(img,0,0,w,h);
+    callback(c.toDataURL('image/jpeg',quality));
+  };
+  img.onerror=function(){callback(null);};
+  img.src=url;
+}
+
 function onAvFile(inp){
   const file=inp.files[0];
   if(!file)return;
@@ -1619,25 +1639,26 @@ function onAvFile(inp){
     toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');
     inp.value='';return;
   }
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    pendAvB64=ev.target.result;
-    // Clear URL input supaya tidak konflik
+  const fn=document.getElementById('av-fn');
+  if(fn)fn.textContent='Memproses...';
+  // Compress: max 200x200px, JPEG quality 0.75 → ~20-35KB → ~30-48K chars (aman di bawah 50K)
+  compressImage(file, 200, 0.75, function(b64){
+    if(!b64){toast('Gagal memproses gambar.','err');return;}
+    pendAvB64=b64;
+    // Kosongkan URL
     const urlInp=document.getElementById('adm-av');
     if(urlInp)urlInp.value='';
-    // Update preview
+    // Preview
     const prev=document.getElementById('av-fprev');
-    if(prev){prev.src=pendAvB64;prev.style.display='block';}
+    if(prev){prev.src=b64;prev.style.display='block';}
     const pr=document.getElementById('av-pr');
-    if(pr)pr.src=pendAvB64;
-    const fn=document.getElementById('av-fn');
-    if(fn)fn.textContent=file.name+' ('+Math.round(file.size/1024)+' KB)';
+    if(pr)pr.src=b64;
+    const szKB=Math.round(b64.length*0.75/1024);
+    if(fn)fn.textContent=file.name+' → dikompres ~'+szKB+' KB';
     const clr=document.getElementById('av-clr');
     if(clr)clr.style.display='block';
-    toast('Foto dipilih! Klik Simpan Profil untuk menyimpan.','info');
-  };
-  reader.onerror=function(){toast('Gagal membaca file.','err');};
-  reader.readAsDataURL(file);
+    toast('Foto siap! Klik Simpan Profil.','info');
+  });
 }
 
 function clrAvFile(e){
@@ -1701,16 +1722,18 @@ function onFltFile(inp){
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
     toast('Format tidak didukung.','err');inp.value='';return;
   }
-  const reader=new FileReader();
-  reader.onload=e=>{
-    pendFltB64=e.target.result;
-    const prev=document.getElementById('flt-fprev');if(prev)prev.src=pendFltB64;
-    const fn=document.getElementById('flt-fn');if(fn)fn.textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+  const fn=document.getElementById('flt-fn');if(fn)fn.textContent='Memproses...';
+  // Compress: max 600x600px, JPEG 0.75 → ~30-80KB → ~40-110K chars (aman di bawah 50K per kolom Sheets)
+  // Pakai 500px agar tetap aman
+  compressImage(file, 500, 0.75, function(b64){
+    if(!b64){toast('Gagal memproses gambar.','err');return;}
+    pendFltB64=b64;
+    const prev=document.getElementById('flt-fprev');if(prev)prev.src=b64;
+    const szKB=Math.round(b64.length*0.75/1024);
+    if(fn)fn.textContent=`${file.name} → ~${szKB} KB`;
     const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
     if(di)di.style.display='none';if(pw)pw.style.display='block';
-  };
-  reader.onerror=()=>toast('Gagal membaca file.','err');
-  reader.readAsDataURL(file);
+  });
 }
 function clrFltFile(e){
   if(e&&e.stopPropagation)e.stopPropagation();
