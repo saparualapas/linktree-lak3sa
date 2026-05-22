@@ -49,13 +49,11 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   animation:bfl 22s ease-in-out infinite;will-change:transform}
 @keyframes bfl{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-16px) scale(1.04)}}
 
-/* LOADING — reuse splash screen untuk proses */
-#ls{position:fixed;inset:0;z-index:3000;background:rgba(5,14,30,.88);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  opacity:1;pointer-events:all}
-#ls-sub{font-family:'Sora',sans-serif;font-size:.76rem;color:var(--w5);
-  letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
+/* LOADING — progress bar tipis di atas */
+#_pbar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;
+  background:linear-gradient(90deg,var(--blue),var(--cy));
+  transition:width .25s ease,opacity .3s ease;pointer-events:none;opacity:0;
+  border-radius:0 2px 2px 0}
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 .ll{font-family:'Sora',sans-serif;font-weight:800;font-size:2rem;
   background:linear-gradient(135deg,#fff,var(--cy));
@@ -389,18 +387,8 @@ input,textarea,select{cursor:text}
   <div id="lb-cap"></div>
 </div>
 
-<div id="ls" role="status" aria-live="polite">
-  <div class="ll">Lak3saLink</div>
-  <div class="sp"></div>
-  <p style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
-</div>
-
-<!-- Splash / Loading Screen -->
-<div id="ls" role="status" aria-live="polite">
-  <div class="ll">Lak3saLink</div>
-  <div class="sp"></div>
-  <p id="ls-sub" style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
-</div>
+<!-- Progress bar loading -->
+<div id="_pbar"></div>
 
 <div id="toast-wrap" role="alert" aria-live="assertive"></div>
 
@@ -717,49 +705,41 @@ input,textarea,select{cursor:text}
               <input type="text" id="adm-t" class="inp" placeholder="Deskripsi singkat" maxlength="120"
                 oninput="document.getElementById('t-pr').textContent=this.value||'Tagline'"/></div>
 
-            <!-- Foto Profil: Tab URL / Upload -->
+            <!-- Foto Profil: URL + Upload -->
             <div>
               <label class="lbl">Foto Profil</label>
-              <div style="display:flex;gap:0;margin-bottom:8px;border:1px solid var(--w1);border-radius:8px;overflow:hidden">
-                <button id="av-tab-url" onclick="avTab('url')"
-                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
-                  background:rgba(41,121,212,.3);color:var(--w);border:none;transition:all .18s">
-                  <i class="fas fa-link" style="margin-right:4px"></i>URL
-                </button>
-                <button id="av-tab-up" onclick="avTab('up')"
-                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
-                  background:transparent;color:var(--w5);border:none;transition:all .18s">
-                  <i class="fas fa-upload" style="margin-right:4px"></i>Upload
-                </button>
-              </div>
-              <!-- URL mode -->
-              <div id="av-url-panel">
-                <input type="url" id="adm-av" class="inp" placeholder="https://link-foto-profil.com/foto.jpg"
+              <!-- URL -->
+              <div style="position:relative;margin-bottom:8px">
+                <input type="url" id="adm-av" class="inp" placeholder="https://... (atau upload foto di bawah)"
                   oninput="onAvUrl(this.value)" maxlength="300"/>
-                <p style="font-size:.65rem;color:var(--w3);margin-top:4px">
-                  Saran: upload ke <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> lalu paste URL-nya
-                </p>
               </div>
-              <!-- Upload mode -->
-              <div id="av-up-panel" style="display:none">
-                <!-- Input file di luar uparea, trigger via label -->
-                <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp"
-                  style="display:none" onchange="onAvFile(this)"/>
-                <label for="av-f" id="av-drop" class="uparea" style="padding:14px;display:block">
-                  <div id="av-di">
-                    <i class="fas fa-cloud-upload-alt" style="font-size:1.3rem;color:var(--bl);opacity:.55;display:block;margin-bottom:5px"></i>
-                    <p style="font-size:.76rem;color:var(--w5)">Klik atau seret foto profil</p>
-                    <p style="font-size:.64rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 300 KB</p>
+              <!-- Upload langsung -->
+              <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp"
+                style="display:none" onchange="onAvFile(this)"/>
+              <div id="av-drop-area" style="position:relative">
+                <label for="av-f" style="display:flex;align-items:center;gap:10px;padding:10px 12px;
+                  background:rgba(255,255,255,.04);border:1px dashed rgba(91,163,245,.25);
+                  border-radius:10px;cursor:pointer;transition:all .18s"
+                  onmouseover="this.style.borderColor='rgba(91,163,245,.5)'"
+                  onmouseout="this.style.borderColor='rgba(91,163,245,.25)'">
+                  <i class="fas fa-cloud-upload-alt" style="color:var(--bl);opacity:.7;font-size:1.1rem;flex-shrink:0"></i>
+                  <div>
+                    <p id="av-fn" style="font-size:.78rem;color:var(--w7);font-weight:600">Klik untuk upload foto profil</p>
+                    <p style="font-size:.65rem;color:var(--w3);margin-top:1px">JPG · PNG · WebP — maks 300 KB</p>
                   </div>
-                  <div id="av-pw" style="display:none;text-align:center">
-                    <img id="av-fprev" style="max-height:80px;border-radius:8px;margin:0 auto 6px;border:1px solid var(--w1)" alt="Preview"/>
-                    <p id="av-fn" style="font-size:.7rem;color:var(--w7)"></p>
-                    <button type="button" onclick="clrAvFile(event)" class="btn btn-red btn-xs" style="margin-top:5px">
-                      <i class="fas fa-times"></i> Hapus
-                    </button>
-                  </div>
+                  <img id="av-fprev" src="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;
+                    flex-shrink:0;border:1px solid var(--w1);display:none;margin-left:auto" alt="Preview"/>
                 </label>
+                <button type="button" id="av-clr" onclick="clrAvFile(event)"
+                  style="display:none;position:absolute;top:6px;right:6px;
+                  background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
+                  border-radius:6px;padding:3px 7px;font-size:.68rem;color:var(--red);cursor:pointer">
+                  <i class="fas fa-times"></i>
+                </button>
               </div>
+              <p style="font-size:.63rem;color:var(--w3);margin-top:4px">
+                Atau upload ke <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> lalu paste URL di atas
+              </p>
             </div>
 
             <hr class="dv"/>
@@ -985,7 +965,6 @@ let ST={links:[],floaters:[],photos:[],profile:{}};
 let pendB64='',pendName='';
 let pendAvB64='';        // foto profil upload
 let pendFltB64='';       // floater upload
-let avMode='url';        // 'url' | 'up'
 let fltMode='url';       // 'url' | 'up'
 
 // ── RATE LIMITER (client-side) ──
@@ -1122,10 +1101,17 @@ function nav(id){
 }
 function route(){
   const h=window.location.hash;
-  if(h==='#admin'){isIn()?( nav('av'),loadAdmin()):window.location.hash='#login';}
-  else if(h==='#login'){isIn()?window.location.hash='#admin':nav('lv');}
-  else if(h==='#reset'){nav('rv');}
-  else{nav('pv');loadPub();}
+  if(h==='#admin'){
+    if(isIn()){nav('av');loadAdmin();}
+    else{window.location.hash='#login';}
+  } else if(h==='#login'){
+    if(isIn())window.location.hash='#admin';
+    else nav('lv');
+  } else if(h==='#reset'){
+    nav('rv');
+  } else {
+    nav('pv');loadPub();
+  }
 }
 window.addEventListener('hashchange',route);
 
@@ -1153,7 +1139,6 @@ async function loadPub(){
   }catch(e){
     document.getElementById('pub-links').innerHTML=
       '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
-    hideLoad(); // pastikan splash hilang walau error
   }
 }
 function pubPro(p){
@@ -1279,22 +1264,21 @@ function onPF(inp){
     inp.value='';return;
   }
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');inp.value='';return;
+    toast('Format tidak didukung.','err');inp.value='';return;
   }
   const pb=document.getElementById('ph-pb');pb.style.display='block';
-  const fill=pb.querySelector('.pbar-fill');fill.style.width='30%';
-  const reader=new FileReader();
-  reader.onprogress=e=>{if(e.lengthComputable)fill.style.width=(e.loaded/e.total*80)+'%';};
-  reader.onload=e=>{
-    fill.style.width='100%';setTimeout(()=>{pb.style.display='none';},400);
-    pendB64=e.target.result;pendName=file.name;
-    document.getElementById('ph-prev').src=pendB64;
-    document.getElementById('ph-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+  const fill=pb.querySelector('.pbar-fill');fill.style.width='40%';
+  // Compress: max 400x400px, JPEG 0.82 → ~30-60KB → ~40-80K chars
+  compressImage(file, 400, 0.82, function(b64){
+    fill.style.width='100%';setTimeout(()=>{pb.style.display='none';},300);
+    if(!b64){toast('Gagal memproses gambar.','err');return;}
+    pendB64=b64;pendName=file.name;
+    const szKB=Math.round(b64.length*0.75/1024);
+    document.getElementById('ph-prev').src=b64;
+    document.getElementById('ph-fn').textContent=`${file.name} → ~${szKB} KB`;
     document.getElementById('ph-di').style.display='none';
     document.getElementById('ph-pw').style.display='block';
-  };
-  reader.onerror=()=>{toast('Gagal membaca file.','err');pb.style.display='none';};
-  reader.readAsDataURL(file);
+  });
 }
 function clrPF(e){
   e.stopPropagation();
@@ -1379,11 +1363,12 @@ async function loadAdmin(){
     const p=ST.profile;
     setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
     setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
+    // Avatar: simpan ke state, UI di-restore saat panel dibuka
     if(p.avatar_b64){
-      pendAvB64=p.avatar_b64;avMode='up';
+      pendAvB64=p.avatar_b64;
       document.getElementById('av-pr').src=p.avatar_b64;
     } else {
-      pendAvB64='';avMode='url';
+      pendAvB64='';
       setV('adm-av',p.avatar_url||'');
       if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
     }
@@ -1394,26 +1379,24 @@ async function loadAdmin(){
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){
     toast('Gagal memuat: '+e.message,'err');
-    hideLoad(); // pastikan splash hilang walau error
   }
 }
 
-// Dipanggil saat panel Profil dibuka — restore state avatar ke UI
+// Restore avatar UI saat panel profil dibuka
 function restoreAvatarUI(){
-  // Pastikan avTab dipanggil setelah elemen visible
-  avTab(avMode);
-  if(avMode==='up'&&pendAvB64){
+  const p=ST.profile||{};
+  if(pendAvB64){
+    // Ada upload
     const prev=document.getElementById('av-fprev');
-    if(prev)prev.src=pendAvB64;
-    const fn=document.getElementById('av-fn');
-    if(fn)fn.textContent='Foto tersimpan';
-    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-    if(di)di.style.display='none';
-    if(pw)pw.style.display='block';
-  } else if(avMode==='url'){
-    setV('adm-av',ST.profile.avatar_url||'');
+    if(prev){prev.src=pendAvB64;prev.style.display='block';}
+    const clr=document.getElementById('av-clr');if(clr)clr.style.display='block';
+    const fn=document.getElementById('av-fn');if(fn)fn.textContent='Foto tersimpan';
+    const urlInp=document.getElementById('adm-av');if(urlInp)urlInp.value='';
+  } else if(p.avatar_url){
+    const urlInp=document.getElementById('adm-av');if(urlInp)urlInp.value=p.avatar_url;
   }
 }
+
 
 // ── LINKS ──
 function renderLinks(){
@@ -1475,7 +1458,9 @@ async function saveProfile(){
   const btn=document.getElementById('sp-btn');
   btn.disabled=true;
   try{
-    const hasB64=!!(pendAvB64&&pendAvB64.startsWith('data:image/'));
+    // Kalau ada b64 → pakai b64, kosongkan URL
+    // Kalau tidak ada b64 → pakai URL
+    const hasB64=!!pendAvB64;
     const payload={
       name:V('adm-n'),tagline:V('adm-t'),
       color1:document.getElementById('adm-c1').value,
@@ -1483,7 +1468,6 @@ async function saveProfile(){
       avatar_url: hasB64 ? '' : V('adm-av'),
       avatar_b64: hasB64 ? pendAvB64 : '',
     };
-    console.log('[saveProfile] hasB64=',hasB64,'b64len=',payload.avatar_b64.length);
     await api('saveProfile',payload);
     document.getElementById('s-nm').textContent=V('adm-n')||'—';
     toast('Profil berhasil disimpan!');
@@ -1607,52 +1591,25 @@ async function loadPrev(){
   }catch(e){toast('Gagal preview','err');}
 }
 
-// ── AVATAR TAB ──
-// Gunakan data-attribute untuk track mode, bukan variabel global
-// supaya tidak ada masalah saat elemen belum ada di DOM
-function avTab(mode){
-  avMode=mode;
-  const urlBtn=document.getElementById('av-tab-url');
-  const upBtn=document.getElementById('av-tab-up');
-  const urlP=document.getElementById('av-url-panel');
-  const upP=document.getElementById('av-up-panel');
-  if(!urlBtn||!upBtn||!urlP||!upP)return; // elemen belum siap
-  if(mode==='url'){
-    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
-    urlP.style.display='block';upP.style.display='none';
-  } else {
-    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
-    urlP.style.display='none';upP.style.display='block';
-    // Inisialisasi drag-drop avatar (lazy, hanya sekali)
-    initAvDrop();
-  }
-}
-
-let _avDropInited=false;
-function initAvDrop(){
-  if(_avDropInited)return;
-  const da=document.getElementById('av-drop');
-  if(!da)return;
-  _avDropInited=true;
-  ['dragenter','dragover'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.add('drag');}));
-  ['dragleave','drop'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.remove('drag');}));
-  da.addEventListener('drop',e=>{
-    const f=e.dataTransfer.files[0];
-    if(f&&f.type.startsWith('image/')){
-      if(f.size>MAX_AVATAR_BYTES){toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');return;}
-      const dt=new DataTransfer();dt.items.add(f);
-      const inp=document.getElementById('av-f');inp.files=dt.files;onAvFile(inp);
-    }
-  });
-}
-
+// ── AVATAR UPLOAD ──
 function onAvUrl(val){
-  const el=document.getElementById('av-pr');if(el)el.src=val;
+  // Kalau user isi URL, clear upload
+  if(val){
+    pendAvB64='';
+    const prev=document.getElementById('av-fprev');
+    const clr=document.getElementById('av-clr');
+    const fn=document.getElementById('av-fn');
+    if(prev){prev.src='';prev.style.display='none';}
+    if(clr)clr.style.display='none';
+    if(fn)fn.textContent='Klik untuk upload foto profil';
+  }
+  const el=document.getElementById('av-pr');
+  if(el&&val)el.src=val;
 }
-// Compress gambar via Canvas — aman untuk batas 50K chars per sel Google Sheets
-function compressImage(file,maxPx,quality,cb){
+
+// Compress gambar via Canvas — output JPEG max 200x200px, quality 0.75
+// Hasil ~15-30KB = ~20.000-40.000 char base64, aman untuk satu sel Sheets
+function compressImage(file, maxPx, quality, callback){
   const img=new Image();
   const url=URL.createObjectURL(file);
   img.onload=function(){
@@ -1665,16 +1622,17 @@ function compressImage(file,maxPx,quality,cb){
     const c=document.createElement('canvas');
     c.width=w;c.height=h;
     c.getContext('2d').drawImage(img,0,0,w,h);
-    cb(c.toDataURL('image/jpeg',quality));
+    callback(c.toDataURL('image/jpeg',quality));
   };
-  img.onerror=function(){cb(null);};
+  img.onerror=function(){callback(null);};
   img.src=url;
 }
 
 function onAvFile(inp){
-  const file=inp.files[0];if(!file)return;
+  const file=inp.files[0];
+  if(!file)return;
   if(file.size>MAX_AVATAR_BYTES){
-    toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');
+    toast('Foto profil maks '+Math.round(MAX_AVATAR_BYTES/1024)+' KB.','err');
     inp.value='';return;
   }
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
@@ -1682,34 +1640,40 @@ function onAvFile(inp){
     inp.value='';return;
   }
   const fn=document.getElementById('av-fn');
-  if(fn)fn.textContent='Memproses foto...';
-  // Compress ke max 200x200px JPEG quality 0.8
-  // Hasil ~15-30KB = ~20-40K chars — aman di bawah 50K batas sel Sheets
-  compressImage(file,200,0.80,function(b64){
+  if(fn)fn.textContent='Memproses...';
+  // Compress: max 200x200px, JPEG quality 0.75 → ~20-35KB → ~30-48K chars (aman di bawah 50K)
+  compressImage(file, 200, 0.75, function(b64){
     if(!b64){toast('Gagal memproses gambar.','err');return;}
     pendAvB64=b64;
-    avMode='up'; // pastikan avMode ter-set
-    console.log('[onAvFile] pendAvB64 set, len=',b64.length);
+    // Kosongkan URL
+    const urlInp=document.getElementById('adm-av');
+    if(urlInp)urlInp.value='';
     // Preview
     const prev=document.getElementById('av-fprev');
-    if(prev){prev.src=b64;}
+    if(prev){prev.src=b64;prev.style.display='block';}
     const pr=document.getElementById('av-pr');
     if(pr)pr.src=b64;
     const szKB=Math.round(b64.length*0.75/1024);
-    if(fn)fn.textContent=`${file.name} → ~${szKB} KB (dikompres)`;
-    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-    if(di)di.style.display='none';
-    if(pw)pw.style.display='block';
-    toast('Foto siap. Klik Simpan Profil.','info');
+    if(fn)fn.textContent=file.name+' → dikompres ~'+szKB+' KB';
+    const clr=document.getElementById('av-clr');
+    if(clr)clr.style.display='block';
+    toast('Foto siap! Klik Simpan Profil.','info');
   });
 }
+
 function clrAvFile(e){
   if(e&&e.stopPropagation)e.stopPropagation();
+  if(e&&e.preventDefault)e.preventDefault();
   pendAvB64='';
   const inp=document.getElementById('av-f');if(inp)inp.value='';
-  const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-  if(di)di.style.display='block';
-  if(pw)pw.style.display='none';
+  const prev=document.getElementById('av-fprev');
+  if(prev){prev.src='';prev.style.display='none';}
+  const clr=document.getElementById('av-clr');
+  if(clr)clr.style.display='none';
+  const fn=document.getElementById('av-fn');
+  if(fn)fn.textContent='Klik untuk upload foto profil';
+  const pr=document.getElementById('av-pr');
+  if(pr)pr.src='';
 }
 
 // ── FLOATER TAB ──
@@ -1758,16 +1722,18 @@ function onFltFile(inp){
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
     toast('Format tidak didukung.','err');inp.value='';return;
   }
-  const reader=new FileReader();
-  reader.onload=e=>{
-    pendFltB64=e.target.result;
-    const prev=document.getElementById('flt-fprev');if(prev)prev.src=pendFltB64;
-    const fn=document.getElementById('flt-fn');if(fn)fn.textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+  const fn=document.getElementById('flt-fn');if(fn)fn.textContent='Memproses...';
+  // Compress: max 600x600px, JPEG 0.75 → ~30-80KB → ~40-110K chars (aman di bawah 50K per kolom Sheets)
+  // Pakai 500px agar tetap aman
+  compressImage(file, 500, 0.75, function(b64){
+    if(!b64){toast('Gagal memproses gambar.','err');return;}
+    pendFltB64=b64;
+    const prev=document.getElementById('flt-fprev');if(prev)prev.src=b64;
+    const szKB=Math.round(b64.length*0.75/1024);
+    if(fn)fn.textContent=`${file.name} → ~${szKB} KB`;
     const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
     if(di)di.style.display='none';if(pw)pw.style.display='block';
-  };
-  reader.onerror=()=>toast('Gagal membaca file.','err');
-  reader.readAsDataURL(file);
+  });
 }
 function clrFltFile(e){
   if(e&&e.stopPropagation)e.stopPropagation();
@@ -1807,29 +1773,25 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING — pakai splash #ls ──
+// ── LOADING — progress bar tipis ──
 let _apiCount=0;
 
-function showLoad(msg='Memuat...'){
+function showLoad(msg){
   _apiCount++;
-  const sub=document.getElementById('ls-sub');
-  if(sub)sub.textContent=msg;
-  const ls=document.getElementById('ls');
-  ls.style.display='flex';
-  ls.style.opacity='1';
-  ls.style.pointerEvents='all';
-  ls.classList.remove('out');
+  const b=document.getElementById('_pbar');
+  if(!b)return;
+  b.style.opacity='1';
+  b.style.width='30%';
+  setTimeout(()=>{ if(_apiCount>0&&b)b.style.width='75%'; },300);
 }
 
 function hideLoad(){
   _apiCount=Math.max(0,_apiCount-1);
   if(_apiCount>0)return;
-  const ls=document.getElementById('ls');
-  ls.style.opacity='0';
-  ls.style.pointerEvents='none';
-  setTimeout(()=>{
-    if(_apiCount===0)ls.style.display='none';
-  },320);
+  const b=document.getElementById('_pbar');
+  if(!b)return;
+  b.style.width='100%';
+  setTimeout(()=>{ b.style.opacity='0'; setTimeout(()=>{ b.style.width='0%'; },300); },200);
 }
 
 // ── TOAST SYSTEM ──
