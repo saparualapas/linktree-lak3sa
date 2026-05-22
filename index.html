@@ -140,21 +140,27 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* PUBLIC LINK BTN */
 .lbtn{display:flex;align-items:center;gap:12px;width:100%;
   padding:14px 16px;border-radius:13px;
-  background:var(--w08);border:1px solid rgba(255,255,255,.11);
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 4px 18px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.06) inset;
   color:var(--w);font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;
   transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
   -webkit-tap-highlight-color:transparent}
 .lbtn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
   background:linear-gradient(180deg,var(--cy),var(--bl));
   opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
-.lbtn:hover,.lbtn:active{transform:translateX(3px);background:rgba(255,255,255,.13);
-  border-color:rgba(124,190,255,.35);box-shadow:0 6px 24px rgba(10,45,120,.35)}
+.lbtn:hover,.lbtn:active{transform:translateX(3px);
+  background:rgba(255,255,255,.14);
+  border-color:rgba(124,190,255,.4);
+  box-shadow:0 8px 28px rgba(10,45,120,.55),0 1px 0 rgba(255,255,255,.08) inset}
 .lbtn:hover::before,.lbtn:active::before{opacity:1}
 .lbtn.pb::before{background:linear-gradient(180deg,var(--gd),var(--gd2))}
-.lbtn.pb:hover,.lbtn.pb:active{border-color:rgba(245,197,24,.32);
-  box-shadow:0 6px 24px rgba(80,55,5,.3)}
+.lbtn.pb{border-color:rgba(245,197,24,.2);
+  box-shadow:0 4px 18px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.06) inset}
+.lbtn.pb:hover,.lbtn.pb:active{border-color:rgba(245,197,24,.4);
+  box-shadow:0 8px 28px rgba(80,55,5,.45),0 1px 0 rgba(255,255,255,.08) inset}
 .lic{width:38px;height:38px;border-radius:10px;flex-shrink:0;
-  background:var(--w1);border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);
   display:flex;align-items:center;justify-content:center;font-size:.9rem;
   transition:all .2s}
 
@@ -553,7 +559,7 @@ input,textarea,select{cursor:text}
           </div>
           <p style="font-size:.75rem;color:var(--w5);margin-bottom:16px;line-height:1.5">
             Foto tampil sebagai tombol di halaman publik. Klik langsung buka — tanpa Google Drive.
-            <strong style="color:var(--gd);display:block;margin-top:3px">Maks. 300 KB per foto (JPG/PNG/WebP).</strong>
+            <strong style="color:var(--gd);display:block;margin-top:3px">Maks. 500 KB per foto (JPG/PNG/WebP).</strong>
           </p>
           <div style="display:flex;flex-direction:column;gap:10px">
             <div><label class="lbl" for="ph-t">Judul Foto</label>
@@ -568,7 +574,7 @@ input,textarea,select{cursor:text}
                 <div id="ph-di">
                   <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--bl);opacity:.55;display:block;margin-bottom:7px"></i>
                   <p style="font-size:.8rem;color:var(--w5)">Klik atau seret foto ke sini</p>
-                  <p style="font-size:.67rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 300 KB</p>
+                  <p style="font-size:.67rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 500 KB</p>
                 </div>
                 <div id="ph-pw" style="display:none">
                   <img id="ph-prev" style="max-height:100px;border-radius:8px;margin:0 auto 7px;border:1px solid var(--w1)" alt="Preview"/>
@@ -606,6 +612,7 @@ input,textarea,select{cursor:text}
           <h3 class="fd" style="font-size:.88rem;font-weight:700;margin-bottom:16px">
             <i class="fas fa-user-edit" style="color:var(--bl);margin-right:7px"></i>Pengaturan Profil
           </h3>
+          <!-- Preview card -->
           <div style="display:flex;align-items:center;gap:11px;padding:11px;
             background:rgba(41,121,212,.07);border:1px solid rgba(91,163,245,.14);
             border-radius:11px;margin-bottom:16px">
@@ -624,9 +631,51 @@ input,textarea,select{cursor:text}
             <div><label class="lbl" for="adm-t">Bio / Tagline</label>
               <input type="text" id="adm-t" class="inp" placeholder="Deskripsi singkat" maxlength="120"
                 oninput="document.getElementById('t-pr').textContent=this.value||'Tagline'"/></div>
-            <div><label class="lbl" for="adm-av">URL Foto Profil</label>
-              <input type="url" id="adm-av" class="inp" placeholder="https://..."
-                oninput="document.getElementById('av-pr').src=this.value" maxlength="300"/></div>
+
+            <!-- Foto Profil: Tab URL / Upload -->
+            <div>
+              <label class="lbl">Foto Profil</label>
+              <div style="display:flex;gap:0;margin-bottom:8px;border:1px solid var(--w1);border-radius:8px;overflow:hidden">
+                <button id="av-tab-url" onclick="avTab('url')"
+                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+                  background:rgba(41,121,212,.3);color:var(--w);border:none;transition:all .18s">
+                  <i class="fas fa-link" style="margin-right:4px"></i>URL
+                </button>
+                <button id="av-tab-up" onclick="avTab('up')"
+                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+                  background:transparent;color:var(--w5);border:none;transition:all .18s">
+                  <i class="fas fa-upload" style="margin-right:4px"></i>Upload
+                </button>
+              </div>
+              <!-- URL mode -->
+              <div id="av-url-panel">
+                <input type="url" id="adm-av" class="inp" placeholder="https://link-foto-profil.com/foto.jpg"
+                  oninput="onAvUrl(this.value)" maxlength="300"/>
+                <p style="font-size:.65rem;color:var(--w3);margin-top:4px">
+                  Saran: upload ke <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> lalu paste URL-nya
+                </p>
+              </div>
+              <!-- Upload mode -->
+              <div id="av-up-panel" style="display:none">
+                <div class="uparea" id="av-drop" onclick="document.getElementById('av-f').click()"
+                  style="padding:14px">
+                  <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp" onchange="onAvFile(this)"/>
+                  <div id="av-di">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:1.3rem;color:var(--bl);opacity:.55;display:block;margin-bottom:5px"></i>
+                    <p style="font-size:.76rem;color:var(--w5)">Klik atau seret foto profil</p>
+                    <p style="font-size:.64rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 300 KB</p>
+                  </div>
+                  <div id="av-pw" style="display:none;text-align:center">
+                    <img id="av-fprev" style="max-height:80px;border-radius:8px;margin:0 auto 6px;border:1px solid var(--w1)" alt="Preview"/>
+                    <p id="av-fn" style="font-size:.7rem;color:var(--w7)"></p>
+                    <button onclick="clrAvFile(event)" class="btn btn-red btn-xs" style="margin-top:5px">
+                      <i class="fas fa-times"></i> Hapus
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <hr class="dv"/>
             <div><label class="lbl">Warna Tombol (Gradient)</label>
               <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
@@ -637,7 +686,7 @@ input,textarea,select{cursor:text}
                 <span style="font-size:.7rem;color:var(--w5)">Warna 1 → Warna 2</span>
               </div>
             </div>
-            <button class="btn btn-blue" onclick="saveProfile()" style="width:100%">
+            <button class="btn btn-blue" onclick="saveProfile()" style="width:100%" id="sp-btn">
               <span id="sp-t"><i class="fas fa-save"></i> Simpan Profil</span>
             </button>
           </div>
@@ -670,22 +719,66 @@ input,textarea,select{cursor:text}
           <p style="font-size:.74rem;color:var(--w5);margin-bottom:14px">Gambar transparan di latar halaman publik.</p>
           <div style="padding:14px;background:var(--w04);border:1px solid var(--w06);border-radius:11px;margin-bottom:14px">
             <p style="font-size:.74rem;font-weight:700;font-family:'Sora',sans-serif;color:var(--bc);margin-bottom:10px">+ Tambah Gambar</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <div style="grid-column:1/-1"><label class="lbl" for="f-url">URL Gambar</label>
-                <input type="url" id="f-url" class="inp" placeholder="https://..." oninput="fpv(this.value)" maxlength="300"/></div>
-              <div><label class="lbl" for="f-sz">Ukuran (px)</label>
-                <input type="number" id="f-sz" class="inp" value="120" min="40" max="300"/></div>
-              <div><label class="lbl" for="f-l">Posisi Kiri (%)</label>
-                <input type="number" id="f-l" class="inp" placeholder="10" min="0" max="95"/></div>
-              <div><label class="lbl" for="f-t">Posisi Atas (%)</label>
-                <input type="number" id="f-t" class="inp" placeholder="20" min="0" max="95"/></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:9px;margin-top:10px">
-              <img id="f-prev" src="" style="width:44px;height:44px;border-radius:7px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview floater"/>
-              <button class="btn btn-blue" onclick="addFlt()" style="flex:1" id="af-btn">
-                <i class="fas fa-plus"></i> <span id="af-t">Tambah Gambar</span>
+
+            <!-- Tab URL / Upload BG -->
+            <div style="display:flex;gap:0;margin-bottom:10px;border:1px solid var(--w1);border-radius:8px;overflow:hidden">
+              <button id="flt-tab-url" onclick="fltTab('url')"
+                style="flex:1;padding:6px;font-family:'Sora',sans-serif;font-size:.7rem;font-weight:700;
+                background:rgba(41,121,212,.3);color:var(--w);border:none;transition:all .18s">
+                <i class="fas fa-link" style="margin-right:4px"></i>URL
+              </button>
+              <button id="flt-tab-up" onclick="fltTab('up')"
+                style="flex:1;padding:6px;font-family:'Sora',sans-serif;font-size:.7rem;font-weight:700;
+                background:transparent;color:var(--w5);border:none;transition:all .18s">
+                <i class="fas fa-upload" style="margin-right:4px"></i>Upload (maks 3MB)
               </button>
             </div>
+
+            <!-- URL panel -->
+            <div id="flt-url-panel">
+              <label class="lbl" for="f-url">URL Gambar</label>
+              <input type="url" id="f-url" class="inp" placeholder="https://..." oninput="fpv(this.value)" maxlength="300"
+                style="margin-bottom:8px"/>
+              <p style="font-size:.64rem;color:var(--w3);margin-bottom:8px">
+                Saran: <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> (gratis, tanpa login)
+              </p>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <img id="f-prev" src="" style="width:40px;height:40px;border-radius:7px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview"/>
+              </div>
+            </div>
+
+            <!-- Upload panel -->
+            <div id="flt-up-panel" style="display:none">
+              <div class="uparea" id="flt-drop" onclick="document.getElementById('flt-f').click()"
+                style="padding:12px;margin-bottom:8px">
+                <input type="file" id="flt-f" accept="image/jpeg,image/png,image/webp" onchange="onFltFile(this)"/>
+                <div id="flt-di">
+                  <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem;color:var(--bl);opacity:.55;display:block;margin-bottom:4px"></i>
+                  <p style="font-size:.74rem;color:var(--w5)">Klik atau seret gambar BG</p>
+                  <p style="font-size:.63rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 3 MB</p>
+                </div>
+                <div id="flt-pw" style="display:none;text-align:center">
+                  <img id="flt-fprev" style="max-height:70px;border-radius:7px;margin:0 auto 5px;border:1px solid var(--w1)" alt="Preview BG"/>
+                  <p id="flt-fn" style="font-size:.68rem;color:var(--w7)"></p>
+                  <button onclick="clrFltFile(event)" class="btn btn-red btn-xs" style="margin-top:4px">
+                    <i class="fas fa-times"></i> Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Posisi & ukuran -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:2px">
+              <div><label class="lbl" for="f-sz">Ukuran (px)</label>
+                <input type="number" id="f-sz" class="inp" value="120" min="40" max="300"/></div>
+              <div><label class="lbl" for="f-l">Kiri (%)</label>
+                <input type="number" id="f-l" class="inp" placeholder="10" min="0" max="95"/></div>
+              <div><label class="lbl" for="f-t">Atas (%)</label>
+                <input type="number" id="f-t" class="inp" placeholder="20" min="0" max="95"/></div>
+            </div>
+            <button class="btn btn-blue" onclick="addFlt()" style="width:100%;margin-top:10px" id="af-btn">
+              <i class="fas fa-plus"></i> <span id="af-t">Tambah Gambar</span>
+            </button>
           </div>
           <div id="flist">
             <div style="text-align:center;padding:14px;color:var(--w5)">
@@ -785,14 +878,20 @@ input,textarea,select{cursor:text}
 'use strict';
 // ── CONFIG ──
 const AS='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
-const MAX_PHOTO_BYTES = 300*1024; // 300 KB
-const TOKEN_TTL = 4*60*60*1000;  // 4 jam
+const MAX_PHOTO_BYTES = 500*1024;   // 500 KB — foto linktree
+const MAX_AVATAR_BYTES = 300*1024;  // 300 KB — foto profil upload
+const MAX_FLT_BYTES = 3*1024*1024;  // 3 MB  — gambar BG upload
+const TOKEN_TTL = 4*60*60*1000;
 const MAX_LOGIN_ATTEMPTS = 5;
-const LOCK_DURATION = 15*60*1000; // 15 menit
+const LOCK_DURATION = 15*60*1000;
 
 // ── STATE ──
 let ST={links:[],floaters:[],photos:[],profile:{}};
 let pendB64='',pendName='';
+let pendAvB64='';        // foto profil upload
+let pendFltB64='';       // floater upload
+let avMode='url';        // 'url' | 'up'
+let fltMode='url';       // 'url' | 'up'
 
 // ── RATE LIMITER (client-side) ──
 function getAttempts(){try{return JSON.parse(sessionStorage.getItem('_la')||'{"n":0,"t":0}');}catch{return{n:0,t:0};}}
@@ -955,7 +1054,9 @@ async function loadPub(){
 function pubPro(p){
   document.getElementById('pub-nm').textContent=p.name||'';
   document.getElementById('pub-tg').textContent=p.tagline||'';
-  if(p.avatar_url)document.getElementById('pub-av').src=p.avatar_url;
+  // Prioritas: b64 > url
+  const avSrc=p.avatar_b64||p.avatar_url||'';
+  if(avSrc)document.getElementById('pub-av').src=avSrc;
   ST.profile=p;
 }
 function pubLnk(links,photos){
@@ -1056,9 +1157,10 @@ function ctToast(){const t=document.getElementById('ctoast');t.textContent='✓ 
 function renderBG(fl){
   const c=document.getElementById('bgf');c.innerHTML='';
   fl.forEach((f,i)=>{
-    if(!f.url)return;
+    const src=f.data_b64||f.url||'';
+    if(!src)return;
     const img=document.createElement('img');
-    img.src=f.url;img.className='bf';img.alt='';img.loading='lazy';
+    img.src=src;img.className='bf';img.alt='';img.loading='lazy';
     img.style.cssText=`width:${f.size||120}px;height:${f.size||120}px;left:${f.left||10}%;top:${f.top||20}%;animation-delay:${i*3.5}s;animation-duration:${18+i*5}s;`;
     c.appendChild(img);
   });
@@ -1165,7 +1267,21 @@ async function loadAdmin(){
     const p=ST.profile;
     setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
     setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
-    setV('adm-av',p.avatar_url||'');if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
+    // Avatar: prioritas b64 > url
+    if(p.avatar_b64){
+      pendAvB64=p.avatar_b64;
+      document.getElementById('av-pr').src=p.avatar_b64;
+      // Aktifkan tab upload, tunjukkan preview
+      avTab('up');
+      document.getElementById('av-fprev').src=p.avatar_b64;
+      document.getElementById('av-fn').textContent='Foto tersimpan';
+      document.getElementById('av-di').style.display='none';
+      document.getElementById('av-pw').style.display='block';
+    } else {
+      setV('adm-av',p.avatar_url||'');
+      if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
+      avTab('url');
+    }
     document.getElementById('adm-c1').value=p.color1||'#2979d4';
     document.getElementById('adm-c2').value=p.color2||'#1a4a9e';
     document.getElementById('s-nm').textContent=p.name||'—';
@@ -1221,13 +1337,28 @@ async function delLink(idx){if(!confirm('Hapus tautan ini?'))return;const l=ST.l
 
 // ── PROFILE ──
 async function saveProfile(){
-  const btn=document.getElementById('sp-t');btn.textContent='Menyimpan...';
+  const btn=document.getElementById('sp-btn');
+  btn.disabled=true;
+  document.getElementById('sp-t').innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle"></div> Menyimpan...';
   try{
-    await api('saveProfile',{name:V('adm-n'),tagline:V('adm-t'),avatar_url:V('adm-av'),color1:document.getElementById('adm-c1').value,color2:document.getElementById('adm-c2').value});
+    const payload={
+      name:V('adm-n'),tagline:V('adm-t'),
+      color1:document.getElementById('adm-c1').value,
+      color2:document.getElementById('adm-c2').value,
+    };
+    if(avMode==='url'){
+      payload.avatar_url=V('adm-av');
+      payload.avatar_b64='';
+    } else {
+      payload.avatar_url='';
+      payload.avatar_b64=pendAvB64;
+    }
+    await api('saveProfile',payload);
     document.getElementById('s-nm').textContent=V('adm-n')||'—';
     toast('Profil disimpan!');
   }catch(e){toast('Gagal: '+e.message,'err');}
-  btn.innerHTML='<i class="fas fa-save"></i> Simpan Profil';
+  btn.disabled=false;
+  document.getElementById('sp-t').innerHTML='<i class="fas fa-save"></i> Simpan Profil';
 }
 
 // ── FLOATERS ──
@@ -1237,9 +1368,12 @@ function renderFlt(){
   list.innerHTML='';
   fl.forEach((f,i)=>{
     const d=document.createElement('div');d.className='fi';
-    const img=document.createElement('img');img.src=f.url||'';img.className='fth';img.alt='';img.loading='lazy';img.onerror=function(){this.style.opacity='.3';};
+    // thumbnail: bisa URL atau b64
+    const src=f.data_b64||f.url||'';
+    const img=document.createElement('img');img.src=src;img.className='fth';img.alt='';img.loading='lazy';img.onerror=function(){this.style.opacity='.3';};
     const info=document.createElement('div');info.style.cssText='flex:1;min-width:0';
-    info.innerHTML=`<p style="font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9)">${esc(f.url||'—')}</p><p style="font-size:.67rem;color:var(--w5)">${f.size||120}px · Kiri ${f.left||0}%, Atas ${f.top||0}%</p>`;
+    const label=f.data_b64?'[Upload]':esc(f.url||'—');
+    info.innerHTML=`<p style="font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--w9)">${label}</p><p style="font-size:.67rem;color:var(--w5)">${f.size||120}px · Kiri ${f.left||0}%, Atas ${f.top||0}%</p>`;
     const bt=document.createElement('div');bt.style.cssText='display:flex;gap:4px;flex-shrink:0';
     const eb=document.createElement('button');eb.className='btn btn-green btn-sm';eb.innerHTML='<i class="fas fa-pen"></i>';eb.setAttribute('aria-label','Edit gambar BG');eb.onclick=()=>oEFM(i);
     const db=document.createElement('button');db.className='btn btn-red btn-sm';db.innerHTML='<i class="fas fa-trash"></i>';db.setAttribute('aria-label','Hapus gambar BG');db.onclick=()=>delFlt(i);
@@ -1248,16 +1382,26 @@ function renderFlt(){
 }
 function fpv(url){const p=document.getElementById('f-prev');if(url){p.src=url;p.style.display='block';}else p.style.display='none';}
 async function addFlt(){
-  const url=V('f-url'),sz=V('f-sz'),l=V('f-l'),t=V('f-t');
+  const sz=V('f-sz')||'120',l=V('f-l')||'10',t=V('f-t')||'20';
   const btn=document.getElementById('af-btn');
-  if(!url){toast('URL wajib diisi.','err');return;}
-  if(!url.startsWith('http')){toast('URL tidak valid.','err');return;}
+  let url='',b64='';
+  if(fltMode==='url'){
+    url=V('f-url');
+    if(!url){toast('URL wajib diisi.','err');return;}
+    if(!url.startsWith('http')){toast('URL tidak valid.','err');return;}
+  } else {
+    if(!pendFltB64){toast('Pilih file gambar terlebih dahulu.','err');return;}
+    b64=pendFltB64;
+  }
   btn.disabled=true;document.getElementById('af-t').textContent='Menambahkan...';
   try{
-    await api('addFloater',{url,size:sz||120,left:l||10,top:t||20});
-    ['f-url','f-l','f-t'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-sz').value='120';
+    await api('addFloater',{url,data_b64:b64,size:sz,left:l,top:t});
+    // Reset form
+    document.getElementById('f-url').value='';
+    ['f-sz'].forEach(id=>document.getElementById(id).value='120');
+    ['f-l','f-t'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-prev').style.display='none';
+    clrFltFile({stopPropagation:()=>{}});
     toast('Gambar ditambahkan!');await loadAdmin();
   }catch(e){toast('Gagal: '+e.message,'err');}
   btn.disabled=false;document.getElementById('af-t').textContent='Tambah Gambar';
@@ -1303,6 +1447,114 @@ async function loadPrev(){
     });
   }catch(e){toast('Gagal preview','err');}
 }
+
+// ── AVATAR TAB ──
+function avTab(mode){
+  avMode=mode;
+  const urlBtn=document.getElementById('av-tab-url'),upBtn=document.getElementById('av-tab-up');
+  const urlP=document.getElementById('av-url-panel'),upP=document.getElementById('av-up-panel');
+  if(mode==='url'){
+    urlBtn.style.background='rgba(41,121,212,.3)';urlBtn.style.color='var(--w)';
+    upBtn.style.background='transparent';upBtn.style.color='var(--w5)';
+    urlP.style.display='block';upP.style.display='none';
+  } else {
+    upBtn.style.background='rgba(41,121,212,.3)';upBtn.style.color='var(--w)';
+    urlBtn.style.background='transparent';urlBtn.style.color='var(--w5)';
+    urlP.style.display='none';upP.style.display='block';
+  }
+}
+function onAvUrl(val){
+  document.getElementById('av-pr').src=val;
+}
+function onAvFile(inp){
+  const file=inp.files[0];if(!file)return;
+  if(file.size>MAX_AVATAR_BYTES){toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');inp.value='';return;}
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){toast('Format tidak didukung.','err');inp.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendAvB64=e.target.result;
+    document.getElementById('av-fprev').src=pendAvB64;
+    document.getElementById('av-pr').src=pendAvB64;
+    document.getElementById('av-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    document.getElementById('av-di').style.display='none';
+    document.getElementById('av-pw').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function clrAvFile(e){
+  e.stopPropagation();
+  pendAvB64='';
+  document.getElementById('av-f').value='';
+  document.getElementById('av-di').style.display='block';
+  document.getElementById('av-pw').style.display='none';
+}
+// Drag & drop avatar
+(function(){
+  const da=document.getElementById('av-drop');
+  if(!da)return;
+  ['dragenter','dragover'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.remove('drag');}));
+  da.addEventListener('drop',e=>{
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.startsWith('image/')){
+      if(f.size>MAX_AVATAR_BYTES){toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');return;}
+      const dt=new DataTransfer();dt.items.add(f);
+      const inp=document.getElementById('av-f');inp.files=dt.files;onAvFile(inp);
+    }
+  });
+})();
+
+// ── FLOATER TAB ──
+function fltTab(mode){
+  fltMode=mode;
+  const urlBtn=document.getElementById('flt-tab-url'),upBtn=document.getElementById('flt-tab-up');
+  const urlP=document.getElementById('flt-url-panel'),upP=document.getElementById('flt-up-panel');
+  if(mode==='url'){
+    urlBtn.style.background='rgba(41,121,212,.3)';urlBtn.style.color='var(--w)';
+    upBtn.style.background='transparent';upBtn.style.color='var(--w5)';
+    urlP.style.display='block';upP.style.display='none';
+  } else {
+    upBtn.style.background='rgba(41,121,212,.3)';upBtn.style.color='var(--w)';
+    urlBtn.style.background='transparent';urlBtn.style.color='var(--w5)';
+    urlP.style.display='none';upP.style.display='block';
+  }
+}
+function onFltFile(inp){
+  const file=inp.files[0];if(!file)return;
+  if(file.size>MAX_FLT_BYTES){toast(`Gambar BG maks ${Math.round(MAX_FLT_BYTES/1024/1024)} MB.`,'err');inp.value='';return;}
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){toast('Format tidak didukung.','err');inp.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendFltB64=e.target.result;
+    document.getElementById('flt-fprev').src=pendFltB64;
+    document.getElementById('flt-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    document.getElementById('flt-di').style.display='none';
+    document.getElementById('flt-pw').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function clrFltFile(e){
+  e.stopPropagation();
+  pendFltB64='';
+  const inp=document.getElementById('flt-f');if(inp)inp.value='';
+  const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
+  if(di)di.style.display='block';if(pw)pw.style.display='none';
+}
+// Drag & drop floater
+(function(){
+  const df=document.getElementById('flt-drop');
+  if(!df)return;
+  ['dragenter','dragover'].forEach(ev=>df.addEventListener(ev,e=>{e.preventDefault();df.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>df.addEventListener(ev,e=>{e.preventDefault();df.classList.remove('drag');}));
+  df.addEventListener('drop',e=>{
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.startsWith('image/')){
+      if(f.size>MAX_FLT_BYTES){toast(`Gambar BG maks ${Math.round(MAX_FLT_BYTES/1024/1024)} MB.`,'err');return;}
+      const dt=new DataTransfer();dt.items.add(f);
+      const inp=document.getElementById('flt-f');inp.files=dt.files;onFltFile(inp);
+    }
+  });
+})();
 
 // ── PANEL SWITCH ──
 const PTITLES={'p-lnk':'Kelola Tautan','p-pht':'Kelola Foto','p-prof':'Profil & Keamanan','p-flt':'Gambar Background','p-prev':'Preview'};
