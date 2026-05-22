@@ -705,41 +705,49 @@ input,textarea,select{cursor:text}
               <input type="text" id="adm-t" class="inp" placeholder="Deskripsi singkat" maxlength="120"
                 oninput="document.getElementById('t-pr').textContent=this.value||'Tagline'"/></div>
 
-            <!-- Foto Profil: URL + Upload -->
+            <!-- Foto Profil: Tab URL / Upload -->
             <div>
               <label class="lbl">Foto Profil</label>
-              <!-- URL -->
-              <div style="position:relative;margin-bottom:8px">
-                <input type="url" id="adm-av" class="inp" placeholder="https://... (atau upload foto di bawah)"
-                  oninput="onAvUrl(this.value)" maxlength="300"/>
-              </div>
-              <!-- Upload langsung -->
-              <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp"
-                style="display:none" onchange="onAvFile(this)"/>
-              <div id="av-drop-area" style="position:relative">
-                <label for="av-f" style="display:flex;align-items:center;gap:10px;padding:10px 12px;
-                  background:rgba(255,255,255,.04);border:1px dashed rgba(91,163,245,.25);
-                  border-radius:10px;cursor:pointer;transition:all .18s"
-                  onmouseover="this.style.borderColor='rgba(91,163,245,.5)'"
-                  onmouseout="this.style.borderColor='rgba(91,163,245,.25)'">
-                  <i class="fas fa-cloud-upload-alt" style="color:var(--bl);opacity:.7;font-size:1.1rem;flex-shrink:0"></i>
-                  <div>
-                    <p id="av-fn" style="font-size:.78rem;color:var(--w7);font-weight:600">Klik untuk upload foto profil</p>
-                    <p style="font-size:.65rem;color:var(--w3);margin-top:1px">JPG · PNG · WebP — maks 300 KB</p>
-                  </div>
-                  <img id="av-fprev" src="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;
-                    flex-shrink:0;border:1px solid var(--w1);display:none;margin-left:auto" alt="Preview"/>
-                </label>
-                <button type="button" id="av-clr" onclick="clrAvFile(event)"
-                  style="display:none;position:absolute;top:6px;right:6px;
-                  background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
-                  border-radius:6px;padding:3px 7px;font-size:.68rem;color:var(--red);cursor:pointer">
-                  <i class="fas fa-times"></i>
+              <div style="display:flex;gap:0;margin-bottom:8px;border:1px solid var(--w1);border-radius:8px;overflow:hidden">
+                <button id="av-tab-url" onclick="avTab('url')"
+                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+                  background:rgba(41,121,212,.3);color:var(--w);border:none;transition:all .18s">
+                  <i class="fas fa-link" style="margin-right:4px"></i>URL
+                </button>
+                <button id="av-tab-up" onclick="avTab('up')"
+                  style="flex:1;padding:7px;font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+                  background:transparent;color:var(--w5);border:none;transition:all .18s">
+                  <i class="fas fa-upload" style="margin-right:4px"></i>Upload
                 </button>
               </div>
-              <p style="font-size:.63rem;color:var(--w3);margin-top:4px">
-                Atau upload ke <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> lalu paste URL di atas
-              </p>
+              <!-- URL mode -->
+              <div id="av-url-panel">
+                <input type="url" id="adm-av" class="inp" placeholder="https://link-foto-profil.com/foto.jpg"
+                  oninput="onAvUrl(this.value)" maxlength="300"/>
+                <p style="font-size:.65rem;color:var(--w3);margin-top:4px">
+                  Saran: upload ke <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--bl)">imgbb.com</a> lalu paste URL-nya
+                </p>
+              </div>
+              <!-- Upload mode -->
+              <div id="av-up-panel" style="display:none">
+                <!-- Input file di luar uparea, trigger via label -->
+                <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp"
+                  style="display:none" onchange="onAvFile(this)"/>
+                <label for="av-f" id="av-drop" class="uparea" style="padding:14px;display:block">
+                  <div id="av-di">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:1.3rem;color:var(--bl);opacity:.55;display:block;margin-bottom:5px"></i>
+                    <p style="font-size:.76rem;color:var(--w5)">Klik atau seret foto profil</p>
+                    <p style="font-size:.64rem;color:var(--w3);margin-top:2px">JPG · PNG · WebP — maks 300 KB</p>
+                  </div>
+                  <div id="av-pw" style="display:none;text-align:center">
+                    <img id="av-fprev" style="max-height:80px;border-radius:8px;margin:0 auto 6px;border:1px solid var(--w1)" alt="Preview"/>
+                    <p id="av-fn" style="font-size:.7rem;color:var(--w7)"></p>
+                    <button type="button" onclick="clrAvFile(event)" class="btn btn-red btn-xs" style="margin-top:5px">
+                      <i class="fas fa-times"></i> Hapus
+                    </button>
+                  </div>
+                </label>
+              </div>
             </div>
 
             <hr class="dv"/>
@@ -953,6 +961,7 @@ input,textarea,select{cursor:text}
 'use strict';
 // ── CONFIG ──
 const AS='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
+
 const MAX_PHOTO_BYTES = 500*1024;   // 500 KB — foto linktree
 const MAX_AVATAR_BYTES = 300*1024;  // 300 KB — foto profil upload
 const MAX_FLT_BYTES = 3*1024*1024;  // 3 MB  — gambar BG upload
@@ -965,6 +974,7 @@ let ST={links:[],floaters:[],photos:[],profile:{}};
 let pendB64='',pendName='';
 let pendAvB64='';        // foto profil upload
 let pendFltB64='';       // floater upload
+let avMode='url';        // 'url' | 'up'
 let fltMode='url';       // 'url' | 'up'
 
 // ── RATE LIMITER (client-side) ──
@@ -1364,12 +1374,11 @@ async function loadAdmin(){
     const p=ST.profile;
     setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
     setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
-    // Avatar: simpan ke state, UI di-restore saat panel dibuka
     if(p.avatar_b64){
-      pendAvB64=p.avatar_b64;
+      pendAvB64=p.avatar_b64;avMode='up';
       document.getElementById('av-pr').src=p.avatar_b64;
     } else {
-      pendAvB64='';
+      pendAvB64='';avMode='url';
       setV('adm-av',p.avatar_url||'');
       if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
     }
@@ -1383,21 +1392,22 @@ async function loadAdmin(){
   }
 }
 
-// Restore avatar UI saat panel profil dibuka
+// Dipanggil saat panel Profil dibuka — restore state avatar ke UI
 function restoreAvatarUI(){
-  const p=ST.profile||{};
-  if(pendAvB64){
-    // Ada upload
+  // Pastikan avTab dipanggil setelah elemen visible
+  avTab(avMode);
+  if(avMode==='up'&&pendAvB64){
     const prev=document.getElementById('av-fprev');
-    if(prev){prev.src=pendAvB64;prev.style.display='block';}
-    const clr=document.getElementById('av-clr');if(clr)clr.style.display='block';
-    const fn=document.getElementById('av-fn');if(fn)fn.textContent='Foto tersimpan';
-    const urlInp=document.getElementById('adm-av');if(urlInp)urlInp.value='';
-  } else if(p.avatar_url){
-    const urlInp=document.getElementById('adm-av');if(urlInp)urlInp.value=p.avatar_url;
+    if(prev)prev.src=pendAvB64;
+    const fn=document.getElementById('av-fn');
+    if(fn)fn.textContent='Foto tersimpan';
+    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
+    if(di)di.style.display='none';
+    if(pw)pw.style.display='block';
+  } else if(avMode==='url'){
+    setV('adm-av',ST.profile.avatar_url||'');
   }
 }
-
 
 // ── LINKS ──
 function renderLinks(){
@@ -1459,16 +1469,18 @@ async function saveProfile(){
   const btn=document.getElementById('sp-btn');
   btn.disabled=true;
   try{
-    // Kalau ada b64 → pakai b64, kosongkan URL
-    // Kalau tidak ada b64 → pakai URL
-    const hasB64=!!pendAvB64;
     const payload={
       name:V('adm-n'),tagline:V('adm-t'),
       color1:document.getElementById('adm-c1').value,
       color2:document.getElementById('adm-c2').value,
-      avatar_url: hasB64 ? '' : V('adm-av'),
-      avatar_b64: hasB64 ? pendAvB64 : '',
     };
+    if(avMode==='url'){
+      payload.avatar_url=V('adm-av');
+      payload.avatar_b64='';
+    } else {
+      payload.avatar_url='';
+      payload.avatar_b64=pendAvB64;
+    }
     await api('saveProfile',payload);
     document.getElementById('s-nm').textContent=V('adm-n')||'—';
     toast('Profil berhasil disimpan!');
@@ -1592,67 +1604,82 @@ async function loadPrev(){
   }catch(e){toast('Gagal preview','err');}
 }
 
-// ── AVATAR UPLOAD ──
-function onAvUrl(val){
-  // Kalau user isi URL, clear upload
-  if(val){
-    pendAvB64='';
-    const prev=document.getElementById('av-fprev');
-    const clr=document.getElementById('av-clr');
-    const fn=document.getElementById('av-fn');
-    if(prev){prev.src='';prev.style.display='none';}
-    if(clr)clr.style.display='none';
-    if(fn)fn.textContent='Klik untuk upload foto profil';
+// ── AVATAR TAB ──
+// Gunakan data-attribute untuk track mode, bukan variabel global
+// supaya tidak ada masalah saat elemen belum ada di DOM
+function avTab(mode){
+  avMode=mode;
+  const urlBtn=document.getElementById('av-tab-url');
+  const upBtn=document.getElementById('av-tab-up');
+  const urlP=document.getElementById('av-url-panel');
+  const upP=document.getElementById('av-up-panel');
+  if(!urlBtn||!upBtn||!urlP||!upP)return; // elemen belum siap
+  if(mode==='url'){
+    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
+    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    urlP.style.display='block';upP.style.display='none';
+  } else {
+    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
+    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    urlP.style.display='none';upP.style.display='block';
+    // Inisialisasi drag-drop avatar (lazy, hanya sekali)
+    initAvDrop();
   }
-  const el=document.getElementById('av-pr');
-  if(el&&val)el.src=val;
 }
 
+let _avDropInited=false;
+function initAvDrop(){
+  if(_avDropInited)return;
+  const da=document.getElementById('av-drop');
+  if(!da)return;
+  _avDropInited=true;
+  ['dragenter','dragover'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.remove('drag');}));
+  da.addEventListener('drop',e=>{
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.startsWith('image/')){
+      if(f.size>MAX_AVATAR_BYTES){toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');return;}
+      const dt=new DataTransfer();dt.items.add(f);
+      const inp=document.getElementById('av-f');inp.files=dt.files;onAvFile(inp);
+    }
+  });
+}
+
+function onAvUrl(val){
+  const el=document.getElementById('av-pr');if(el)el.src=val;
+}
 function onAvFile(inp){
-  const file=inp.files[0];
-  if(!file)return;
+  const file=inp.files[0];if(!file)return;
   if(file.size>MAX_AVATAR_BYTES){
-    toast('Foto profil maks '+Math.round(MAX_AVATAR_BYTES/1024)+' KB.','err');
+    toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');
     inp.value='';return;
   }
   if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');
-    inp.value='';return;
+    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');inp.value='';return;
   }
   const reader=new FileReader();
-  reader.onload=function(ev){
-    pendAvB64=ev.target.result;
-    // Clear URL input supaya tidak konflik
-    const urlInp=document.getElementById('adm-av');
-    if(urlInp)urlInp.value='';
-    // Update preview
+  reader.onload=e=>{
+    pendAvB64=e.target.result;
     const prev=document.getElementById('av-fprev');
-    if(prev){prev.src=pendAvB64;prev.style.display='block';}
+    if(prev){prev.src=pendAvB64;}
     const pr=document.getElementById('av-pr');
-    if(pr)pr.src=pendAvB64;
+    if(pr){pr.src=pendAvB64;}
     const fn=document.getElementById('av-fn');
-    if(fn)fn.textContent=file.name+' ('+Math.round(file.size/1024)+' KB)';
-    const clr=document.getElementById('av-clr');
-    if(clr)clr.style.display='block';
-    toast('Foto dipilih! Klik Simpan Profil untuk menyimpan.','info');
+    if(fn)fn.textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
+    if(di)di.style.display='none';
+    if(pw)pw.style.display='block';
   };
-  reader.onerror=function(){toast('Gagal membaca file.','err');};
+  reader.onerror=()=>toast('Gagal membaca file.','err');
   reader.readAsDataURL(file);
 }
-
 function clrAvFile(e){
   if(e&&e.stopPropagation)e.stopPropagation();
-  if(e&&e.preventDefault)e.preventDefault();
   pendAvB64='';
   const inp=document.getElementById('av-f');if(inp)inp.value='';
-  const prev=document.getElementById('av-fprev');
-  if(prev){prev.src='';prev.style.display='none';}
-  const clr=document.getElementById('av-clr');
-  if(clr)clr.style.display='none';
-  const fn=document.getElementById('av-fn');
-  if(fn)fn.textContent='Klik untuk upload foto profil';
-  const pr=document.getElementById('av-pr');
-  if(pr)pr.src='';
+  const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
+  if(di)di.style.display='block';
+  if(pw)pw.style.display='none';
 }
 
 // ── FLOATER TAB ──
