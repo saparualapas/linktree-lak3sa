@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="description" content="Lak3saLink — Tautan resmi Lapas Kelas III Saparua"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232979d4'/><text y='24' x='5' font-size='22'>🔗</text></svg>"/>
 <title>Lak3saLink — Lapas Kelas III Saparua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -49,11 +50,13 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   animation:bfl 22s ease-in-out infinite;will-change:transform}
 @keyframes bfl{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-16px) scale(1.04)}}
 
-/* LOADING — progress bar tipis di atas */
-#_pbar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;
-  background:linear-gradient(90deg,var(--blue),var(--cy));
-  transition:width .25s ease,opacity .3s ease;pointer-events:none;opacity:0;
-  border-radius:0 2px 2px 0}
+/* LOADING — reuse splash screen untuk proses */
+#ls{position:fixed;inset:0;z-index:3000;background:rgba(5,14,30,.88);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  opacity:1;pointer-events:all}
+#ls-sub{font-family:'Sora',sans-serif;font-size:.76rem;color:var(--w5);
+  letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 .ll{font-family:'Sora',sans-serif;font-weight:800;font-size:2rem;
   background:linear-gradient(135deg,#fff,var(--cy));
@@ -387,8 +390,18 @@ input,textarea,select{cursor:text}
   <div id="lb-cap"></div>
 </div>
 
-<!-- Progress bar loading -->
-<div id="_pbar"></div>
+<div id="ls" role="status" aria-live="polite">
+  <div class="ll">Lak3saLink</div>
+  <div class="sp"></div>
+  <p style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
+</div>
+
+<!-- Splash / Loading Screen -->
+<div id="ls" role="status" aria-live="polite">
+  <div class="ll">Lak3saLink</div>
+  <div class="sp"></div>
+  <p id="ls-sub" style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
+</div>
 
 <div id="toast-wrap" role="alert" aria-live="assertive"></div>
 
@@ -1114,10 +1127,10 @@ function route(){
     if(isIn()){nav('av');loadAdmin();}
     else{window.location.hash='#login';}
   } else if(h==='#login'){
-    if(isIn())window.location.hash='#admin';
-    else nav('lv');
+    if(isIn()){window.location.hash='#admin';}
+    else{nav('lv');hideSplash();}
   } else if(h==='#reset'){
-    nav('rv');
+    nav('rv');hideSplash();
   } else {
     nav('pv');loadPub();
   }
@@ -1148,6 +1161,7 @@ async function loadPub(){
   }catch(e){
     document.getElementById('pub-links').innerHTML=
       '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
+    hideLoad(); // pastikan splash hilang walau error
   }
 }
 function pubPro(p){
@@ -1388,6 +1402,7 @@ async function loadAdmin(){
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){
     toast('Gagal memuat: '+e.message,'err');
+    hideLoad(); // pastikan splash hilang walau error
   }
 }
 
@@ -1776,25 +1791,44 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING — progress bar tipis ──
-let _apiCount=0;
+// ── LOADING ──
+// Splash (#ls) = hanya initial load, di-hide SEKALI lewat hideSplash()
+// Mini bar (#_bar) = indikator tipis di atas untuk setiap request API
 
-function showLoad(msg){
-  _apiCount++;
-  const b=document.getElementById('_pbar');
-  if(!b)return;
-  b.style.opacity='1';
-  b.style.width='30%';
-  setTimeout(()=>{ if(_apiCount>0&&b)b.style.width='75%'; },300);
+function hideSplash(){
+  const ls=document.getElementById('ls');
+  if(!ls)return;
+  ls.style.opacity='0';
+  ls.style.pointerEvents='none';
+  setTimeout(()=>{ ls.style.display='none'; },300);
 }
 
+// Progress bar tipis di atas halaman
+let _bar=null;
+function showLoad(msg){
+  // Update sub-text splash kalau masih kelihatan
+  const ls=document.getElementById('ls');
+  if(ls&&ls.style.display!=='none'){
+    const s=document.getElementById('ls-sub');if(s)s.textContent=msg||'Memuat data...';
+  }
+  // Buat bar tipis di atas
+  if(!_bar){
+    _bar=document.createElement('div');
+    _bar.style.cssText='position:fixed;top:0;left:0;height:3px;z-index:9999;'+
+      'background:linear-gradient(90deg,#2979d4,#38c8e8);'+
+      'transition:width .3s ease;pointer-events:none;border-radius:0 2px 2px 0';
+    document.body.appendChild(_bar);
+  }
+  _bar.style.width='30%';_bar.style.opacity='1';
+  // Animasi maju pelan
+  setTimeout(()=>{ if(_bar)_bar.style.width='70%'; },200);
+}
 function hideLoad(){
-  _apiCount=Math.max(0,_apiCount-1);
-  if(_apiCount>0)return;
-  const b=document.getElementById('_pbar');
-  if(!b)return;
-  b.style.width='100%';
-  setTimeout(()=>{ b.style.opacity='0'; setTimeout(()=>{ b.style.width='0%'; },300); },200);
+  hideSplash();
+  if(_bar){
+    _bar.style.width='100%';
+    setTimeout(()=>{ if(_bar){_bar.style.opacity='0';_bar.style.width='0%';} },250);
+  }
 }
 
 // ── TOAST SYSTEM ──
@@ -1863,9 +1897,6 @@ document.getElementById('cfm').addEventListener('click',e=>{
 
 // ── INIT ──
 window.addEventListener('load',()=>{
-  // Splash sudah tampil (display:flex di CSS).
-  // Langsung route() — hideLoad() akan otomatis dipanggil
-  // oleh api() saat getAll selesai, yang akan menyembunyikan splash.
   route();
 });
 window.addEventListener('resize',()=>{
