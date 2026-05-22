@@ -52,8 +52,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* LOADING — reuse splash screen untuk proses */
 #ls{position:fixed;inset:0;z-index:3000;background:rgba(5,14,30,.88);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  opacity:1;pointer-events:all}
+  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#ls.out{opacity:0;pointer-events:none}
+#ls.hidden{display:none}
 #ls-sub{font-family:'Sora',sans-serif;font-size:.76rem;color:var(--w5);
   letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
@@ -1783,29 +1784,55 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING — pakai splash #ls ──
-let _apiCount=0;
+// ── LOADING — reuse splash screen #ls ──
+// Dua mode:
+//  1. Splash awal (saat pertama load) — dikelola oleh hideSplash()
+//  2. API loading (saat ada request) — dikelola oleh showLoad/hideLoad dengan counter
+let _loadCount=0;
+let _splashDone=false;
+
+function hideSplash(){
+  if(_splashDone)return;
+  _splashDone=true;
+  const ls=document.getElementById('ls');
+  ls.classList.add('out');
+  setTimeout(()=>{ ls.style.display='none'; },340);
+}
 
 function showLoad(msg='Memuat...'){
-  _apiCount++;
+  // Kalau splash belum selesai, update teksnya saja
+  if(!_splashDone){
+    const sub=document.getElementById('ls-sub');
+    if(sub)sub.textContent=msg;
+    _loadCount++;
+    return;
+  }
+  _loadCount++;
+  const ls=document.getElementById('ls');
   const sub=document.getElementById('ls-sub');
   if(sub)sub.textContent=msg;
-  const ls=document.getElementById('ls');
   ls.style.display='flex';
-  ls.style.opacity='1';
-  ls.style.pointerEvents='all';
-  ls.classList.remove('out');
+  // Sedikit delay supaya tidak flash untuk proses cepat
+  ls._showTid=setTimeout(()=>{
+    if(_loadCount>0)ls.classList.remove('out');
+  },80);
 }
 
 function hideLoad(){
-  _apiCount=Math.max(0,_apiCount-1);
-  if(_apiCount>0)return;
+  _loadCount=Math.max(0,_loadCount-1);
+  if(_loadCount>0)return;
+  // Semua request selesai
+  if(!_splashDone){ hideSplash(); return; }
   const ls=document.getElementById('ls');
-  ls.style.opacity='0';
-  ls.style.pointerEvents='none';
+  clearTimeout(ls._showTid);
+  ls.classList.add('out');
   setTimeout(()=>{
-    if(_apiCount===0)ls.style.display='none';
-  },320);
+    if(_loadCount===0){
+      ls.style.display='none';
+      const sub=document.getElementById('ls-sub');
+      if(sub)sub.textContent='Lapas Kelas III Saparua';
+    }
+  },300);
 }
 
 // ── TOAST SYSTEM ──
