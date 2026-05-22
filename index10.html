@@ -49,21 +49,40 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   animation:bfl 22s ease-in-out infinite;will-change:transform}
 @keyframes bfl{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-16px) scale(1.04)}}
 
-/* LOADING — reuse splash screen untuk proses */
-#ls{position:fixed;inset:0;z-index:3000;background:rgba(5,14,30,.88);
+/* LOADING */
+#ls{position:fixed;inset:0;z-index:3000;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  transition:opacity .3s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  transition:opacity .35s ease}
 #ls.out{opacity:0;pointer-events:none}
-#ls.hidden{display:none}
-#ls-sub{font-family:'Sora',sans-serif;font-size:.76rem;color:var(--w5);
-  letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 .ll{font-family:'Sora',sans-serif;font-weight:800;font-size:2rem;
   background:linear-gradient(135deg,#fff,var(--cy));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
 .sp{width:18px;height:18px;border:2px solid var(--w1);border-top-color:var(--w);
   border-radius:50%;animation:spin .65s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* GLOBAL LOADING OVERLAY */
+#gload{
+  position:fixed;inset:0;z-index:4000;
+  background:rgba(5,14,30,.82);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  pointer-events:all;
+}
+#gload.on{display:flex}
+#gload-ring{
+  width:48px;height:48px;border-radius:50%;
+  border:3px solid rgba(91,163,245,.15);
+  border-top-color:var(--bl);
+  border-right-color:var(--cy);
+  animation:spin .8s cubic-bezier(.4,0,.6,1) infinite;
+}
+#gload-msg{
+  font-family:'Sora',sans-serif;font-weight:700;font-size:.82rem;
+  color:var(--w7);letter-spacing:.04em;
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
 
 /* TOAST — lebih keren */
 #toast-wrap{
@@ -396,13 +415,13 @@ input,textarea,select{cursor:text}
   <p style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
 </div>
 
-<!-- Splash / Loading Screen -->
-<div id="ls" role="status" aria-live="polite">
-  <div class="ll">Lak3saLink</div>
-  <div class="sp"></div>
-  <p id="ls-sub" style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
+<!-- Global Loading Overlay -->
+<div id="gload" role="status" aria-live="polite" aria-label="Memuat">
+  <div id="gload-ring"></div>
+  <div id="gload-msg">Memuat...</div>
 </div>
 
+<!-- Toast Container -->
 <div id="toast-wrap" role="alert" aria-live="assertive"></div>
 
 <!-- Confirm Modal -->
@@ -654,9 +673,9 @@ input,textarea,select{cursor:text}
               <input type="number" id="ph-o" class="inp" placeholder="1, 2, 3…" min="1" max="999"/></div>
             <div>
               <label class="lbl">File Foto</label>
-              <input type="file" id="ph-f" accept="image/jpeg,image/png,image/webp"
-                style="display:none" onchange="onPF(this)"/>
-              <label for="ph-f" id="phdr" class="uparea" style="display:block">
+              <div class="uparea" id="phdr" onclick="document.getElementById('ph-f').click()" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('ph-f').click()">
+                <input type="file" id="ph-f" accept="image/jpeg,image/png,image/webp" onchange="onPF(this)"/>
                 <div id="ph-di">
                   <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--bl);opacity:.55;display:block;margin-bottom:7px"></i>
                   <p style="font-size:.8rem;color:var(--w5)">Klik atau seret foto ke sini</p>
@@ -668,11 +687,11 @@ input,textarea,select{cursor:text}
                   <div id="ph-pb" class="pbar" style="margin:6px auto 8px;max-width:180px;display:none">
                     <div class="pbar-fill" style="width:0%"></div>
                   </div>
-                  <button type="button" onclick="clrPF(event)" class="btn btn-red btn-xs" style="margin-top:4px">
+                  <button onclick="clrPF(event)" class="btn btn-red btn-xs" style="margin-top:4px">
                     <i class="fas fa-times"></i> Hapus
                   </button>
                 </div>
-              </label>
+              </div>
             </div>
             <button class="btn btn-gd" onclick="addPhoto()" style="width:100%" id="aph-btn">
               <i class="fas fa-upload"></i> <span id="aph-t">Upload Foto</span>
@@ -743,10 +762,9 @@ input,textarea,select{cursor:text}
               </div>
               <!-- Upload mode -->
               <div id="av-up-panel" style="display:none">
-                <!-- Input file di luar uparea, trigger via label -->
-                <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp"
-                  style="display:none" onchange="onAvFile(this)"/>
-                <label for="av-f" id="av-drop" class="uparea" style="padding:14px;display:block">
+                <div class="uparea" id="av-drop" onclick="document.getElementById('av-f').click()"
+                  style="padding:14px">
+                  <input type="file" id="av-f" accept="image/jpeg,image/png,image/webp" onchange="onAvFile(this)"/>
                   <div id="av-di">
                     <i class="fas fa-cloud-upload-alt" style="font-size:1.3rem;color:var(--bl);opacity:.55;display:block;margin-bottom:5px"></i>
                     <p style="font-size:.76rem;color:var(--w5)">Klik atau seret foto profil</p>
@@ -755,11 +773,11 @@ input,textarea,select{cursor:text}
                   <div id="av-pw" style="display:none;text-align:center">
                     <img id="av-fprev" style="max-height:80px;border-radius:8px;margin:0 auto 6px;border:1px solid var(--w1)" alt="Preview"/>
                     <p id="av-fn" style="font-size:.7rem;color:var(--w7)"></p>
-                    <button type="button" onclick="clrAvFile(event)" class="btn btn-red btn-xs" style="margin-top:5px">
+                    <button onclick="clrAvFile(event)" class="btn btn-red btn-xs" style="margin-top:5px">
                       <i class="fas fa-times"></i> Hapus
                     </button>
                   </div>
-                </label>
+                </div>
               </div>
             </div>
 
@@ -836,9 +854,9 @@ input,textarea,select{cursor:text}
 
             <!-- Upload panel -->
             <div id="flt-up-panel" style="display:none">
-              <input type="file" id="flt-f" accept="image/jpeg,image/png,image/webp"
-                style="display:none" onchange="onFltFile(this)"/>
-              <label for="flt-f" id="flt-drop" class="uparea" style="padding:12px;margin-bottom:8px;display:block">
+              <div class="uparea" id="flt-drop" onclick="document.getElementById('flt-f').click()"
+                style="padding:12px;margin-bottom:8px">
+                <input type="file" id="flt-f" accept="image/jpeg,image/png,image/webp" onchange="onFltFile(this)"/>
                 <div id="flt-di">
                   <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem;color:var(--bl);opacity:.55;display:block;margin-bottom:4px"></i>
                   <p style="font-size:.74rem;color:var(--w5)">Klik atau seret gambar BG</p>
@@ -847,11 +865,11 @@ input,textarea,select{cursor:text}
                 <div id="flt-pw" style="display:none;text-align:center">
                   <img id="flt-fprev" style="max-height:70px;border-radius:7px;margin:0 auto 5px;border:1px solid var(--w1)" alt="Preview BG"/>
                   <p id="flt-fn" style="font-size:.68rem;color:var(--w7)"></p>
-                  <button type="button" onclick="clrFltFile(event)" class="btn btn-red btn-xs" style="margin-top:4px">
+                  <button onclick="clrFltFile(event)" class="btn btn-red btn-xs" style="margin-top:4px">
                     <i class="fas fa-times"></i> Hapus
                   </button>
                 </div>
-              </label>
+              </div>
             </div>
 
             <!-- Posisi & ukuran -->
@@ -942,22 +960,13 @@ input,textarea,select{cursor:text}
   <div class="glass mbox" style="padding:22px">
     <h3 class="fd" style="font-size:.9rem;font-weight:700;margin-bottom:15px">Edit Gambar BG</h3>
     <input type="hidden" id="ef-idx"/>
-    <input type="hidden" id="ef-origb64"/>
     <div style="display:flex;flex-direction:column;gap:11px">
-      <!-- Preview gambar saat ini -->
-      <div id="ef-cur" style="display:none;background:var(--w04);border:1px solid var(--w06);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px">
-        <img id="ef-cur-img" src="" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid var(--w1)" alt="Gambar saat ini"/>
-        <div>
-          <p style="font-size:.72rem;font-weight:700;color:var(--w7);font-family:'Sora',sans-serif">Gambar Saat Ini</p>
-          <p id="ef-cur-lbl" style="font-size:.66rem;color:var(--w5)">—</p>
-        </div>
+      <div><label class="lbl" for="ef-url">URL Gambar</label>
+        <input type="url" id="ef-url" class="inp" placeholder="https://..." maxlength="300"
+          oninput="const p=document.getElementById('ef-prev');p.src=this.value;p.style.display=this.value?'block':'none'"/>
       </div>
-      <div><label class="lbl" for="ef-url">URL Gambar Baru <span style="color:var(--w3);font-weight:400">(kosongkan jika pakai gambar saat ini)</span></label>
-        <input type="url" id="ef-url" class="inp" placeholder="https://... (opsional)" maxlength="300"
-          oninput="const p=document.getElementById('ef-prev');if(this.value){p.src=this.value;p.style.display='block';}else p.style.display='none'"/>
-      </div>
-      <img id="ef-prev" src="" style="width:52px;height:52px;border-radius:8px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview URL baru"/>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <img id="ef-prev" src="" style="width:60px;height:60px;border-radius:8px;object-fit:cover;border:1px solid var(--w1);display:none" alt="Preview"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div><label class="lbl" for="ef-sz">Ukuran (px)</label><input type="number" id="ef-sz" class="inp" min="40" max="300"/></div>
         <div><label class="lbl" for="ef-l">Kiri (%)</label><input type="number" id="ef-l" class="inp" min="0" max="95"/></div>
         <div><label class="lbl" for="ef-t">Atas (%)</label><input type="number" id="ef-t" class="inp" min="0" max="95"/></div>
@@ -973,7 +982,7 @@ input,textarea,select{cursor:text}
 <script>
 'use strict';
 // ── CONFIG ──
-const AS='https://script.google.com/macros/s/AKfycbzPjDm07Abzafm5QZqjjD9f8O_e65JO5Min-iPO_uaNIm-A6L-Dx3IFj2QU_yeo5VFvtw/exec';
+const AS='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
 const MAX_PHOTO_BYTES = 500*1024;   // 500 KB — foto linktree
 const MAX_AVATAR_BYTES = 300*1024;  // 300 KB — foto profil upload
 const MAX_FLT_BYTES = 3*1024*1024;  // 3 MB  — gambar BG upload
@@ -1166,8 +1175,6 @@ async function loadPub(){
   }catch(e){
     document.getElementById('pub-links').innerHTML=
       '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
-  } finally {
-    hideLoad();
   }
 }
 function pubPro(p){
@@ -1393,11 +1400,15 @@ async function loadAdmin(){
     const p=ST.profile;
     setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
     setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
+    // Simpan data avatar ke variabel, restore ke UI saat panel profil dibuka
     if(p.avatar_b64){
-      pendAvB64=p.avatar_b64;avMode='up';
+      pendAvB64=p.avatar_b64;
+      avMode='up';
+      // Update preview card
       document.getElementById('av-pr').src=p.avatar_b64;
     } else {
-      pendAvB64='';avMode='url';
+      pendAvB64='';
+      avMode='url';
       setV('adm-av',p.avatar_url||'');
       if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
     }
@@ -1407,7 +1418,6 @@ async function loadAdmin(){
     document.getElementById('s-tot').textContent=ST.links.length;
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){toast('Gagal memuat: '+e.message,'err');}
-  finally{ hideLoad(); }
 }
 
 // Dipanggil saat panel Profil dibuka — restore state avatar ke UI
@@ -1556,41 +1566,19 @@ async function addFlt(){
 function oEFM(idx){
   const f=ST.floaters[idx];
   document.getElementById('ef-idx').value=idx;
-  // Simpan b64 original supaya tidak hilang saat edit
-  document.getElementById('ef-origb64').value=f.data_b64||'';
-  setV('ef-sz',f.size||120);setV('ef-l',f.left||0);setV('ef-t',f.top||0);
-  setV('ef-url',''); // kosongkan URL — user isi kalau mau ganti
-  document.getElementById('ef-prev').style.display='none';
-  // Tampilkan gambar saat ini
-  const curDiv=document.getElementById('ef-cur');
-  const curImg=document.getElementById('ef-cur-img');
-  const curLbl=document.getElementById('ef-cur-lbl');
-  const src=f.data_b64||f.url||'';
-  if(src){
-    curImg.src=src;
-    curLbl.textContent=f.data_b64?'Upload (tersimpan di Sheets)':f.url;
-    curDiv.style.display='flex';
-  } else {
-    curDiv.style.display='none';
-  }
+  setV('ef-url',f.url||'');setV('ef-sz',f.size||120);setV('ef-l',f.left||0);setV('ef-t',f.top||0);
+  const p=document.getElementById('ef-prev');if(f.url){p.src=f.url;p.style.display='block';}else p.style.display='none';
   document.getElementById('efm').classList.add('on');
 }
 function cEFM(){document.getElementById('efm').classList.remove('on');}
 async function svEFM(){
-  const idx=+document.getElementById('ef-idx').value;
-  const f=ST.floaters[idx];
-  const newUrl=V('ef-url');
-  const origB64=document.getElementById('ef-origb64').value;
-  // Kalau URL baru diisi → pakai URL baru, hapus b64
-  // Kalau URL kosong → pertahankan data lama (b64 atau url lama)
-  const finalUrl=newUrl||f.url||'';
-  const finalB64=newUrl?'':origB64; // kalau ganti URL, buang b64
-  if(!finalUrl&&!finalB64){toast('Tidak ada gambar — isi URL atau biarkan gambar lama.','warn');return;}
+  const idx=+document.getElementById('ef-idx').value,f=ST.floaters[idx];
+  const url=V('ef-url');
+  if(!url){toast('URL wajib diisi.','err');return;}
   try{
-    await api('updateFloater',{rowIndex:f._row,url:finalUrl,data_b64:finalB64,
-      size:V('ef-sz')||120,left:V('ef-l')||0,top:V('ef-t')||0});
-    toast('Gambar BG diperbarui!');cEFM();await loadAdmin();
-  }catch(e){toast('Gagal memperbarui: '+e.message,'err');}
+    await api('updateFloater',{rowIndex:f._row,url,size:V('ef-sz')||120,left:V('ef-l')||0,top:V('ef-t')||0});
+    toast('Gambar diperbarui!');cEFM();await loadAdmin();
+  }catch(e){toast('Gagal: '+e.message,'err');}
 }
 async function delFlt(idx){
   const ok=await confirm2({title:'Hapus Gambar BG',msg:'Hapus gambar latar ini? Tindakan tidak bisa dibatalkan.',okLabel:'Ya, Hapus'});
@@ -1795,29 +1783,17 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING — reuse splash screen #ls ──
+// ── LOADING OVERLAY ──
 let _loadStack=0;
 function showLoad(msg='Memuat...'){
   _loadStack++;
-  const ls=document.getElementById('ls');
-  const sub=document.getElementById('ls-sub');
-  if(sub)sub.textContent=msg;
-  ls.classList.remove('out','hidden');
-  ls.style.display='flex';
+  const el=document.getElementById('gload');
+  document.getElementById('gload-msg').textContent=msg;
+  el.classList.add('on');
 }
 function hideLoad(){
   _loadStack=Math.max(0,_loadStack-1);
-  if(_loadStack>0)return;
-  const ls=document.getElementById('ls');
-  const sub=document.getElementById('ls-sub');
-  ls.classList.add('out');
-  setTimeout(()=>{
-    // Hanya benar-benar hide kalau stack masih 0
-    if(_loadStack===0){
-      ls.style.display='none';
-      if(sub)sub.textContent='Lapas Kelas III Saparua';
-    }
-  },320);
+  if(_loadStack===0)document.getElementById('gload').classList.remove('on');
 }
 
 // ── TOAST SYSTEM ──
@@ -1886,9 +1862,8 @@ document.getElementById('cfm').addEventListener('click',e=>{
 
 // ── INIT ──
 window.addEventListener('load',()=>{
-  // Splash sudah tampil dari awal (display:flex di CSS)
-  // Tunggu sebentar lalu route — hideLoad akan dipanggil setelah getAll selesai
-  setTimeout(()=>{ route(); },600);
+  const ls=document.getElementById('ls');
+  setTimeout(()=>{ls.classList.add('out');setTimeout(()=>{ls.style.display='none';},380);route();},600);
 });
 window.addEventListener('resize',()=>{
   const bn=document.getElementById('bn');if(!bn)return;
