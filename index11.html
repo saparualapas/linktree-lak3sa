@@ -973,7 +973,7 @@ input,textarea,select{cursor:text}
 <script>
 'use strict';
 // ── CONFIG ──
-const AS='https://script.google.com/macros/s/AKfycbzPjDm07Abzafm5QZqjjD9f8O_e65JO5Min-iPO_uaNIm-A6L-Dx3IFj2QU_yeo5VFvtw/exec';
+const AS='https://script.google.com/macros/s/AKfycbx3GJLCSbzuXRSlJSnBsaNlfDTs-pVcObEI_YvfUFyiWg_ab3ExB66hpfd53UaTODAv/exec';
 const MAX_PHOTO_BYTES = 500*1024;   // 500 KB — foto linktree
 const MAX_AVATAR_BYTES = 300*1024;  // 300 KB — foto profil upload
 const MAX_FLT_BYTES = 3*1024*1024;  // 3 MB  — gambar BG upload
@@ -998,15 +998,16 @@ function clearAttempts(){setAttempts({n:0,t:0});}
 function getLockRemain(){const a=getAttempts();return Math.ceil((LOCK_DURATION-(Date.now()-a.t))/60000);}
 
 // ── API — auto loading overlay ──
-const LOAD_MSGS={
-  getAll:'Memuat data...',login:'Memverifikasi...',changePassword:'Menyimpan password...',
-  saveProfile:'Menyimpan profil...',addLink:'Menambahkan tautan...',updateLink:'Memperbarui tautan...',
-  deleteLink:'Menghapus tautan...',addFloater:'Menambahkan gambar...',updateFloater:'Memperbarui gambar...',
-  deleteFloater:'Menghapus gambar...',addPhoto:'Mengupload foto...',updatePhoto:'Memperbarui foto...',
-  deletePhoto:'Menghapus foto...'
-};
-async function api(action,p={}){
-  showLoad(LOAD_MSGS[action]||'Memproses...');
+async function api(action,p={},loadMsg){
+  const msg=loadMsg||(()=>{
+    const m={getAll:'Memuat data...',login:'Masuk...',changePassword:'Menyimpan password...',
+      saveProfile:'Menyimpan profil...',addLink:'Menambahkan tautan...',updateLink:'Memperbarui tautan...',
+      deleteLink:'Menghapus tautan...',addFloater:'Menambahkan gambar...',updateFloater:'Memperbarui gambar...',
+      deleteFloater:'Menghapus gambar...',addPhoto:'Mengupload foto...',updatePhoto:'Memperbarui foto...',
+      deletePhoto:'Menghapus foto...'};
+    return m[action]||'Memproses...';
+  })();
+  showLoad(msg);
   const ctrl=new AbortController();
   const tid=setTimeout(()=>ctrl.abort(),20000);
   try{
@@ -1021,7 +1022,6 @@ async function api(action,p={}){
     return d;
   }catch(e){
     clearTimeout(tid);
-    if(e.name==='AbortError')throw new Error('Koneksi timeout. Periksa jaringan.');
     throw e;
   }finally{
     hideLoad();
@@ -1058,23 +1058,35 @@ async function doLogin(){
   const err=document.getElementById('l-err'),btn=document.getElementById('l-btn');
   if(!pwd){err.textContent='Masukkan password.';err.style.display='block';return;}
   if(pwd.length>64){err.textContent='Password terlalu panjang.';err.style.display='block';return;}
-  err.style.display='none';btn.disabled=true;
+  err.style.display='none';
+  btn.disabled=true;
+  showLoad('Memverifikasi...');
   try{
-    const r=await api('login',{password:pwd});
-    setTok(r.token);clearAttempts();
+    const r=await fetch(AS,{method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'login',password:pwd}),
+      redirect:'follow'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    if(!d.ok)throw new Error(d.error||'Password salah');
+    setTok(d.token);clearAttempts();
     document.getElementById('l-pwd').value='';
+    hideLoad();btn.disabled=false;
     window.location.hash='#admin';
   }catch(e){
+    hideLoad();btn.disabled=false;
     recordFail();
-    const a=getAttempts();const rem=MAX_LOGIN_ATTEMPTS-a.n;
+    const a=getAttempts();
+    const rem=MAX_LOGIN_ATTEMPTS-a.n;
     if(isLocked()){
       document.getElementById('lock-warn').textContent=`Terlalu banyak percobaan. Coba lagi dalam ${getLockRemain()} menit.`;
-      document.getElementById('lock-warn').style.display='block';err.style.display='none';
+      document.getElementById('lock-warn').style.display='block';
+      err.style.display='none';
     }else{
       err.textContent=rem>0?`Password salah. Sisa ${rem} percobaan.`:'Password salah.';
       err.style.display='block';
     }
-  }finally{btn.disabled=false;}
+  }
 }
 document.getElementById('l-pwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
@@ -1154,7 +1166,8 @@ async function loadPub(){
   }catch(e){
     document.getElementById('pub-links').innerHTML=
       '<p style="text-align:center;color:var(--w5);font-size:.82rem;padding:20px">Gagal memuat. Periksa konfigurasi.</p>';
-    hideLoad(); // pastikan splash hilang walau error
+  } finally {
+    hideLoad();
   }
 }
 function pubPro(p){
@@ -1393,10 +1406,8 @@ async function loadAdmin(){
     document.getElementById('s-nm').textContent=p.name||'—';
     document.getElementById('s-tot').textContent=ST.links.length;
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
-  }catch(e){
-    toast('Gagal memuat: '+e.message,'err');
-    hideLoad(); // pastikan splash hilang walau error
-  }
+  }catch(e){toast('Gagal memuat: '+e.message,'err');}
+  finally{ hideLoad(); }
 }
 
 // Dipanggil saat panel Profil dibuka — restore state avatar ke UI
@@ -1785,54 +1796,28 @@ function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
 // ── LOADING — reuse splash screen #ls ──
-// Dua mode:
-//  1. Splash awal (saat pertama load) — dikelola oleh hideSplash()
-//  2. API loading (saat ada request) — dikelola oleh showLoad/hideLoad dengan counter
-let _loadCount=0;
-let _splashDone=false;
-
-function hideSplash(){
-  if(_splashDone)return;
-  _splashDone=true;
-  const ls=document.getElementById('ls');
-  ls.classList.add('out');
-  setTimeout(()=>{ ls.style.display='none'; },340);
-}
-
+let _loadStack=0;
 function showLoad(msg='Memuat...'){
-  // Kalau splash belum selesai, update teksnya saja
-  if(!_splashDone){
-    const sub=document.getElementById('ls-sub');
-    if(sub)sub.textContent=msg;
-    _loadCount++;
-    return;
-  }
-  _loadCount++;
+  _loadStack++;
   const ls=document.getElementById('ls');
   const sub=document.getElementById('ls-sub');
   if(sub)sub.textContent=msg;
+  ls.classList.remove('out','hidden');
   ls.style.display='flex';
-  // Sedikit delay supaya tidak flash untuk proses cepat
-  ls._showTid=setTimeout(()=>{
-    if(_loadCount>0)ls.classList.remove('out');
-  },80);
 }
-
 function hideLoad(){
-  _loadCount=Math.max(0,_loadCount-1);
-  if(_loadCount>0)return;
-  // Semua request selesai
-  if(!_splashDone){ hideSplash(); return; }
+  _loadStack=Math.max(0,_loadStack-1);
+  if(_loadStack>0)return;
   const ls=document.getElementById('ls');
-  clearTimeout(ls._showTid);
+  const sub=document.getElementById('ls-sub');
   ls.classList.add('out');
   setTimeout(()=>{
-    if(_loadCount===0){
+    // Hanya benar-benar hide kalau stack masih 0
+    if(_loadStack===0){
       ls.style.display='none';
-      const sub=document.getElementById('ls-sub');
       if(sub)sub.textContent='Lapas Kelas III Saparua';
     }
-  },300);
+  },320);
 }
 
 // ── TOAST SYSTEM ──
@@ -1901,10 +1886,9 @@ document.getElementById('cfm').addEventListener('click',e=>{
 
 // ── INIT ──
 window.addEventListener('load',()=>{
-  // Splash sudah tampil (display:flex di CSS).
-  // Langsung route() — hideLoad() akan otomatis dipanggil
-  // oleh api() saat getAll selesai, yang akan menyembunyikan splash.
-  route();
+  // Splash sudah tampil dari awal (display:flex di CSS)
+  // Tunggu sebentar lalu route — hideLoad akan dipanggil setelah getAll selesai
+  setTimeout(()=>{ route(); },600);
 });
 window.addEventListener('resize',()=>{
   const bn=document.getElementById('bn');if(!bn)return;
