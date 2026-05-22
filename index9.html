@@ -61,107 +61,22 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   border-radius:50%;animation:spin .65s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* GLOBAL LOADING OVERLAY */
-#gload{
-  position:fixed;inset:0;z-index:4000;
-  background:rgba(5,14,30,.82);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-  pointer-events:all;
-}
-#gload.on{display:flex}
-#gload-ring{
-  width:48px;height:48px;border-radius:50%;
-  border:3px solid rgba(91,163,245,.15);
-  border-top-color:var(--bl);
-  border-right-color:var(--cy);
-  animation:spin .8s cubic-bezier(.4,0,.6,1) infinite;
-}
-#gload-msg{
-  font-family:'Sora',sans-serif;font-weight:700;font-size:.82rem;
-  color:var(--w7);letter-spacing:.04em;
-  animation:pulse 1.6s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
-
-/* TOAST — lebih keren */
-#toast-wrap{
-  position:fixed;top:18px;right:16px;z-index:3500;
-  display:flex;flex-direction:column;gap:8px;
-  pointer-events:none;width:min(300px,calc(100vw - 32px));
-}
-.tst{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:12px 14px 10px;border-radius:13px;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.82rem;
-  line-height:1.4;pointer-events:auto;cursor:default;
-  transform:translateX(calc(100% + 24px));opacity:0;
-  transition:transform .3s cubic-bezier(.34,1.2,.64,1),opacity .3s ease;
-  position:relative;overflow:hidden;
-}
-.tst.in{transform:translateX(0);opacity:1}
-.tst.out{transform:translateX(calc(100% + 24px));opacity:0;transition:transform .25s ease,opacity .25s ease}
-.tst.ok{background:rgba(15,35,20,.92);border:1px solid rgba(34,197,94,.35);color:#86efac;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(34,197,94,.1) inset}
-.tst.err{background:rgba(35,10,10,.92);border:1px solid rgba(239,68,68,.38);color:#fca5a5;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(239,68,68,.1) inset}
-.tst.warn{background:rgba(32,24,5,.92);border:1px solid rgba(245,197,24,.32);color:#fde68a;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(245,197,24,.1) inset}
-.tst.info{background:rgba(8,22,48,.92);border:1px solid rgba(91,163,245,.32);color:#93c5fd;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(91,163,245,.1) inset}
-.tst-ico{width:18px;height:18px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:.65rem;margin-top:1px}
-.tst.ok .tst-ico{background:rgba(34,197,94,.2);color:#4ade80}
-.tst.err .tst-ico{background:rgba(239,68,68,.2);color:#f87171}
-.tst.warn .tst-ico{background:rgba(245,197,24,.2);color:#facc15}
-.tst.info .tst-ico{background:rgba(91,163,245,.2);color:#60a5fa}
-.tst-txt{flex:1;min-width:0}
-.tst-close{width:18px;height:18px;border-radius:4px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.6rem;color:rgba(255,255,255,.3);cursor:pointer;margin-top:1px;
-  transition:all .15s;background:none;border:none;padding:0}
-.tst-close:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.08)}
-.tst-bar{position:absolute;bottom:0;left:0;height:2px;border-radius:0 0 13px 13px;
-  animation:tbar linear forwards}
-.tst.ok .tst-bar{background:linear-gradient(90deg,#4ade80,#22c55e)}
-.tst.err .tst-bar{background:linear-gradient(90deg,#f87171,#ef4444)}
-.tst.warn .tst-bar{background:linear-gradient(90deg,#facc15,#eab308)}
-.tst.info .tst-bar{background:linear-gradient(90deg,#60a5fa,#3b82f6)}
-@keyframes tbar{from{width:100%}to{width:0%}}
-
-/* COPY TOAST */
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:16px;z-index:2000;
+  padding:10px 16px;border-radius:12px;font-family:'Sora',sans-serif;
+  font-weight:700;font-size:.8rem;pointer-events:none;
+  transform:translateY(56px);opacity:0;transition:all .28s;max-width:260px;
+  display:flex;align-items:center;gap:8px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{background:rgba(34,197,94,.16);border:1px solid rgba(34,197,94,.35);color:var(--green)}
+#toast.err{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.35);color:var(--red)}
+#toast.warn{background:rgba(245,197,24,.14);border:1px solid rgba(245,197,24,.3);color:var(--gd)}
 #ctoast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(16px);
   z-index:2000;opacity:0;pointer-events:none;
   background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.4);color:var(--green);
   font-family:'Sora',sans-serif;font-weight:700;font-size:.78rem;
   padding:7px 18px;border-radius:99px;transition:all .22s;white-space:nowrap}
 #ctoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* CONFIRM MODAL */
-#cfm{
-  display:none;position:fixed;inset:0;z-index:3000;
-  align-items:center;justify-content:center;padding:16px;
-  background:rgba(0,0,0,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#cfm.on{display:flex}
-#cfm-box{
-  background:rgba(7,16,40,.95);border:1px solid rgba(255,255,255,.12);
-  border-radius:18px;padding:26px 22px 20px;width:100%;max-width:340px;
-  box-shadow:0 24px 64px rgba(0,0,0,.8);
-  animation:cfmIn .22s cubic-bezier(.34,1.2,.64,1) both
-}
-@keyframes cfmIn{from{opacity:0;transform:scale(.92) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-#cfm-ico{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.1rem}
-#cfm-ttl{font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;text-align:center;margin-bottom:7px}
-#cfm-msg{font-size:.8rem;color:var(--w5);text-align:center;margin-bottom:20px;line-height:1.5}
-#cfm-acts{display:flex;gap:8px}
-#cfm-cancel{flex:1;padding:9px;border-radius:9px;font-family:'Sora',sans-serif;font-weight:700;
-  font-size:.82rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  color:var(--w7);transition:all .18s;cursor:pointer}
-#cfm-cancel:hover{background:rgba(255,255,255,.1)}
-#cfm-ok{flex:1;padding:9px;border-radius:9px;font-family:'Sora',sans-serif;font-weight:700;
-  font-size:.82rem;border:none;transition:all .18s;cursor:pointer}
-
 
 /* VIEWS */
 .view{display:none;position:relative;z-index:1;min-height:100dvh;min-height:100vh}
@@ -415,28 +330,8 @@ input,textarea,select{cursor:text}
   <p style="font-size:.72rem;color:var(--w3);margin-top:2px">Lapas Kelas III Saparua</p>
 </div>
 
-<!-- Global Loading Overlay -->
-<div id="gload" role="status" aria-live="polite" aria-label="Memuat">
-  <div id="gload-ring"></div>
-  <div id="gload-msg">Memuat...</div>
-</div>
-
-<!-- Toast Container -->
-<div id="toast-wrap" role="alert" aria-live="assertive"></div>
-
-<!-- Confirm Modal -->
-<div id="cfm" role="dialog" aria-modal="true">
-  <div id="cfm-box">
-    <div id="cfm-ico"></div>
-    <div id="cfm-ttl"></div>
-    <div id="cfm-msg"></div>
-    <div id="cfm-acts">
-      <button id="cfm-cancel">Batal</button>
-      <button id="cfm-ok">Ya, Hapus</button>
-    </div>
-  </div>
-</div>
-
+<div id="toast" role="alert" aria-live="assertive"></div>
+<div id="ctoast" aria-live="polite"></div>
 <div id="sbov" onclick="sbC()"></div>
 
 <!-- ════ PUBLIC ════ -->
@@ -1006,19 +901,10 @@ function recordFail(){const a=getAttempts();setAttempts({n:a.n+1,t:Date.now()});
 function clearAttempts(){setAttempts({n:0,t:0});}
 function getLockRemain(){const a=getAttempts();return Math.ceil((LOCK_DURATION-(Date.now()-a.t))/60000);}
 
-// ── API — auto loading overlay ──
-async function api(action,p={},loadMsg){
-  const msg=loadMsg||(()=>{
-    const m={getAll:'Memuat data...',login:'Masuk...',changePassword:'Menyimpan password...',
-      saveProfile:'Menyimpan profil...',addLink:'Menambahkan tautan...',updateLink:'Memperbarui tautan...',
-      deleteLink:'Menghapus tautan...',addFloater:'Menambahkan gambar...',updateFloater:'Memperbarui gambar...',
-      deleteFloater:'Menghapus gambar...',addPhoto:'Mengupload foto...',updatePhoto:'Memperbarui foto...',
-      deletePhoto:'Menghapus foto...'};
-    return m[action]||'Memproses...';
-  })();
-  showLoad(msg);
+// ── API ──
+async function api(action,p={}){
   const ctrl=new AbortController();
-  const tid=setTimeout(()=>ctrl.abort(),20000);
+  const tid=setTimeout(()=>ctrl.abort(),15000);
   try{
     const r=await fetch(AS,{method:'POST',
       headers:{'Content-Type':'text/plain'},
@@ -1029,12 +915,7 @@ async function api(action,p={},loadMsg){
     const d=await r.json();
     if(!d.ok)throw new Error(d.error||'Error tidak diketahui');
     return d;
-  }catch(e){
-    clearTimeout(tid);
-    throw e;
-  }finally{
-    hideLoad();
-  }
+  }catch(e){clearTimeout(tid);throw e;}
 }
 
 // ── AUTH ──
@@ -1069,22 +950,16 @@ async function doLogin(){
   if(pwd.length>64){err.textContent='Password terlalu panjang.';err.style.display='block';return;}
   err.style.display='none';
   btn.disabled=true;
-  showLoad('Memverifikasi...');
+  btn.innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle"></div>';
   try{
-    const r=await fetch(AS,{method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'login',password:pwd}),
-      redirect:'follow'});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const d=await r.json();
-    if(!d.ok)throw new Error(d.error||'Password salah');
-    setTok(d.token);clearAttempts();
+    const r=await api('login',{password:pwd});
+    setTok(r.token);clearAttempts();
     document.getElementById('l-pwd').value='';
-    hideLoad();btn.disabled=false;
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Masuk';
     window.location.hash='#admin';
   }catch(e){
-    hideLoad();btn.disabled=false;
     recordFail();
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Masuk';
     const a=getAttempts();
     const rem=MAX_LOGIN_ATTEMPTS-a.n;
     if(isLocked()){
@@ -1108,13 +983,13 @@ async function doReset(){
   if(!o||!n||!c){showMsg(msg,'Semua field wajib diisi.','var(--red)');return;}
   if(n.length<8){showMsg(msg,'Min. 8 karakter.','var(--red)');return;}
   if(n!==c){showMsg(msg,'Password tidak cocok.','var(--red)');return;}
-  btn.disabled=true;
+  btn.textContent='Menyimpan...';
   try{
     await api('changePassword',{oldPassword:o,newPassword:n});
     showMsg(msg,'✓ Password diubah! Silakan login ulang.','var(--green)');
     clrTok();setTimeout(()=>{window.location.hash='#login';},1800);
   }catch(e){showMsg(msg,'Gagal: '+e.message,'var(--red)');}
-  btn.disabled=false;
+  btn.textContent='Simpan Password Baru';
 }
 
 async function changePwd(){
@@ -1123,14 +998,13 @@ async function changePwd(){
   if(!o||!n||!c){toast('Semua field wajib diisi.','err');return;}
   if(n!==c){toast('Password tidak cocok.','err');return;}
   if(n.length<8){toast('Min. 8 karakter.','err');return;}
-  btn.closest('button').disabled=true;
+  btn.textContent='Menyimpan...';
   try{
     await api('changePassword',{oldPassword:o,newPassword:n});
-    toast('Password berhasil diubah! Silakan login ulang.');
-    ['s-old','s-new','s-con'].forEach(id=>document.getElementById(id).value='');
-    clrTok();setTimeout(()=>{window.location.hash='#login';},1800);
+    toast('Password diubah! Silakan login ulang.');clrTok();
+    setTimeout(()=>{window.location.hash='#login';},1800);
   }catch(e){toast('Gagal: '+e.message,'err');}
-  btn.closest('button').disabled=false;
+  btn.innerHTML='<i class="fas fa-key"></i> Ubah Password';
 }
 
 // ── ROUTER ──
@@ -1345,14 +1219,16 @@ async function addPhoto(){
   if(!t){toast('Judul foto wajib diisi.','err');return;}
   if(!pendB64){toast('Pilih file foto terlebih dahulu.','err');return;}
   btn.disabled=true;
+  document.getElementById('aph-t').textContent='Mengupload...';
   try{
     await api('addPhoto',{title:t,order:o,data_b64:pendB64});
     ['ph-t','ph-o'].forEach(id=>document.getElementById(id).value='');
     clrPF({stopPropagation:()=>{}});
     toast('Foto berhasil diupload!');
     await loadAdmin();
-  }catch(e){toast('Gagal upload: '+e.message,'err');}
+  }catch(e){toast('Gagal: '+e.message,'err');}
   btn.disabled=false;
+  document.getElementById('aph-t').textContent='Upload Foto';
 }
 
 function renderPhotos(){
@@ -1378,19 +1254,10 @@ function oEPM(idx){const p=ST.photos[idx];document.getElementById('ep-idx').valu
 function cEPM(){document.getElementById('epm').classList.remove('on');}
 async function svEPM(){
   const idx=+document.getElementById('ep-idx').value,p=ST.photos[idx];
-  try{
-    await api('updatePhoto',{rowIndex:p._row,title:V('ep-t'),order:V('ep-o')});
-    toast('Foto diperbarui!');cEPM();await loadAdmin();
-  }catch(e){toast('Gagal memperbarui: '+e.message,'err');}
+  try{await api('updatePhoto',{rowIndex:p._row,title:V('ep-t'),order:V('ep-o')});toast('Foto diperbarui!');cEPM();await loadAdmin();}
+  catch(e){toast('Gagal: '+e.message,'err');}
 }
-async function delPhoto(idx){
-  const p=ST.photos[idx];
-  const ok=await confirm2({title:'Hapus Foto',msg:`Hapus foto "${p.title}"? Foto tidak bisa dipulihkan.`,okLabel:'Ya, Hapus'});
-  if(!ok)return;
-  try{await api('deletePhoto',{rowIndex:p._row});toast('Foto dihapus.');}
-  catch(e){toast('Gagal menghapus: '+e.message,'err');}
-  await loadAdmin();
-}
+async function delPhoto(idx){if(!confirm('Hapus foto ini?'))return;const p=ST.photos[idx];try{await api('deletePhoto',{rowIndex:p._row});toast('Foto dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
 // ── ADMIN LOAD ──
 async function loadAdmin(){
@@ -1400,17 +1267,20 @@ async function loadAdmin(){
     const p=ST.profile;
     setV('adm-n',p.name||'');document.getElementById('n-pr').textContent=p.name||'Nama';
     setV('adm-t',p.tagline||'');document.getElementById('t-pr').textContent=p.tagline||'Tagline';
-    // Simpan data avatar ke variabel, restore ke UI saat panel profil dibuka
+    // Avatar: prioritas b64 > url
     if(p.avatar_b64){
       pendAvB64=p.avatar_b64;
-      avMode='up';
-      // Update preview card
       document.getElementById('av-pr').src=p.avatar_b64;
+      // Aktifkan tab upload, tunjukkan preview
+      avTab('up');
+      document.getElementById('av-fprev').src=p.avatar_b64;
+      document.getElementById('av-fn').textContent='Foto tersimpan';
+      document.getElementById('av-di').style.display='none';
+      document.getElementById('av-pw').style.display='block';
     } else {
-      pendAvB64='';
-      avMode='url';
       setV('adm-av',p.avatar_url||'');
       if(p.avatar_url)document.getElementById('av-pr').src=p.avatar_url;
+      avTab('url');
     }
     document.getElementById('adm-c1').value=p.color1||'#2979d4';
     document.getElementById('adm-c2').value=p.color2||'#1a4a9e';
@@ -1418,23 +1288,6 @@ async function loadAdmin(){
     document.getElementById('s-tot').textContent=ST.links.length;
     renderLinks();renderFlt();renderPhotos();renderBG(ST.floaters);
   }catch(e){toast('Gagal memuat: '+e.message,'err');}
-}
-
-// Dipanggil saat panel Profil dibuka — restore state avatar ke UI
-function restoreAvatarUI(){
-  // Pastikan avTab dipanggil setelah elemen visible
-  avTab(avMode);
-  if(avMode==='up'&&pendAvB64){
-    const prev=document.getElementById('av-fprev');
-    if(prev)prev.src=pendAvB64;
-    const fn=document.getElementById('av-fn');
-    if(fn)fn.textContent='Foto tersimpan';
-    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-    if(di)di.style.display='none';
-    if(pw)pw.style.display='block';
-  } else if(avMode==='url'){
-    setV('adm-av',ST.profile.avatar_url||'');
-  }
 }
 
 // ── LINKS ──
@@ -1463,14 +1316,13 @@ async function addLink(){
   const btn=document.getElementById('al-btn');
   if(!t||!u){toast('Judul dan URL wajib diisi.','err');return;}
   if(!u.startsWith('http')){toast('URL harus dimulai dengan http:// atau https://','err');return;}
-  btn.disabled=true;
+  btn.disabled=true;document.getElementById('al-t').textContent='Menambahkan...';
   try{
     await api('addLink',{title:t,url:u,icon:ic,order:o});
     ['lnk-t','lnk-u','lnk-i','lnk-o'].forEach(id=>document.getElementById(id).value='');
-    toast('Tautan berhasil ditambahkan!');
-    await loadAdmin();
-  }catch(e){toast('Gagal menambahkan: '+e.message,'err');}
-  btn.disabled=false;
+    toast('Tautan ditambahkan!');await loadAdmin();
+  }catch(e){toast('Gagal: '+e.message,'err');}
+  btn.disabled=false;document.getElementById('al-t').textContent='Tambah Tautan';
 }
 function oEM(idx){const l=ST.links[idx];document.getElementById('e-idx').value=idx;setV('e-t',l.title||'');setV('e-i',l.icon||'');setV('e-u',l.url||'');setV('e-o',l.order||'');document.getElementById('em').classList.add('on');}
 function cEM(){document.getElementById('em').classList.remove('on');}
@@ -1478,24 +1330,16 @@ async function saveEdit(){
   const idx=+document.getElementById('e-idx').value,l=ST.links[idx];
   const u=V('e-u');
   if(!u.startsWith('http')){toast('URL harus dimulai dengan http://','err');return;}
-  try{
-    await api('updateLink',{rowIndex:l._row,title:V('e-t'),url:u,icon:V('e-i'),order:V('e-o')});
-    toast('Tautan diperbarui!');cEM();await loadAdmin();
-  }catch(e){toast('Gagal memperbarui: '+e.message,'err');}
+  try{await api('updateLink',{rowIndex:l._row,title:V('e-t'),url:u,icon:V('e-i'),order:V('e-o')});toast('Diperbarui!');cEM();await loadAdmin();}
+  catch(e){toast('Gagal: '+e.message,'err');}
 }
-async function delLink(idx){
-  const l=ST.links[idx];
-  const ok=await confirm2({title:'Hapus Tautan',msg:`Hapus "${l.title}"? Tindakan ini tidak bisa dibatalkan.`,okLabel:'Ya, Hapus'});
-  if(!ok)return;
-  try{await api('deleteLink',{rowIndex:l._row});toast('Tautan dihapus.');}
-  catch(e){toast('Gagal menghapus: '+e.message,'err');}
-  await loadAdmin();
-}
+async function delLink(idx){if(!confirm('Hapus tautan ini?'))return;const l=ST.links[idx];try{await api('deleteLink',{rowIndex:l._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
 // ── PROFILE ──
 async function saveProfile(){
   const btn=document.getElementById('sp-btn');
   btn.disabled=true;
+  document.getElementById('sp-t').innerHTML='<div class="sp" style="display:inline-block;vertical-align:middle"></div> Menyimpan...';
   try{
     const payload={
       name:V('adm-n'),tagline:V('adm-t'),
@@ -1511,9 +1355,10 @@ async function saveProfile(){
     }
     await api('saveProfile',payload);
     document.getElementById('s-nm').textContent=V('adm-n')||'—';
-    toast('Profil berhasil disimpan!');
-  }catch(e){toast('Gagal menyimpan: '+e.message,'err');}
+    toast('Profil disimpan!');
+  }catch(e){toast('Gagal: '+e.message,'err');}
   btn.disabled=false;
+  document.getElementById('sp-t').innerHTML='<i class="fas fa-save"></i> Simpan Profil';
 }
 
 // ── FLOATERS ──
@@ -1580,14 +1425,7 @@ async function svEFM(){
     toast('Gambar diperbarui!');cEFM();await loadAdmin();
   }catch(e){toast('Gagal: '+e.message,'err');}
 }
-async function delFlt(idx){
-  const ok=await confirm2({title:'Hapus Gambar BG',msg:'Hapus gambar latar ini? Tindakan tidak bisa dibatalkan.',okLabel:'Ya, Hapus'});
-  if(!ok)return;
-  const f=ST.floaters[idx];
-  try{await api('deleteFloater',{rowIndex:f._row});toast('Gambar dihapus.');}
-  catch(e){toast('Gagal menghapus: '+e.message,'err');}
-  await loadAdmin();
-}
+async function delFlt(idx){if(!confirm('Hapus gambar ini?'))return;const f=ST.floaters[idx];try{await api('deleteFloater',{rowIndex:f._row});toast('Dihapus.');await loadAdmin();}catch(e){toast('Gagal.','err');}}
 
 // ── PREVIEW ──
 async function loadPrev(){
@@ -1611,34 +1449,49 @@ async function loadPrev(){
 }
 
 // ── AVATAR TAB ──
-// Gunakan data-attribute untuk track mode, bukan variabel global
-// supaya tidak ada masalah saat elemen belum ada di DOM
 function avTab(mode){
   avMode=mode;
-  const urlBtn=document.getElementById('av-tab-url');
-  const upBtn=document.getElementById('av-tab-up');
-  const urlP=document.getElementById('av-url-panel');
-  const upP=document.getElementById('av-up-panel');
-  if(!urlBtn||!upBtn||!urlP||!upP)return; // elemen belum siap
+  const urlBtn=document.getElementById('av-tab-url'),upBtn=document.getElementById('av-tab-up');
+  const urlP=document.getElementById('av-url-panel'),upP=document.getElementById('av-up-panel');
   if(mode==='url'){
-    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    urlBtn.style.background='rgba(41,121,212,.3)';urlBtn.style.color='var(--w)';
+    upBtn.style.background='transparent';upBtn.style.color='var(--w5)';
     urlP.style.display='block';upP.style.display='none';
   } else {
-    upBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    urlBtn.style.cssText='flex:1;padding:7px;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    upBtn.style.background='rgba(41,121,212,.3)';upBtn.style.color='var(--w)';
+    urlBtn.style.background='transparent';urlBtn.style.color='var(--w5)';
     urlP.style.display='none';upP.style.display='block';
-    // Inisialisasi drag-drop avatar (lazy, hanya sekali)
-    initAvDrop();
   }
 }
-
-let _avDropInited=false;
-function initAvDrop(){
-  if(_avDropInited)return;
+function onAvUrl(val){
+  document.getElementById('av-pr').src=val;
+}
+function onAvFile(inp){
+  const file=inp.files[0];if(!file)return;
+  if(file.size>MAX_AVATAR_BYTES){toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');inp.value='';return;}
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){toast('Format tidak didukung.','err');inp.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendAvB64=e.target.result;
+    document.getElementById('av-fprev').src=pendAvB64;
+    document.getElementById('av-pr').src=pendAvB64;
+    document.getElementById('av-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    document.getElementById('av-di').style.display='none';
+    document.getElementById('av-pw').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function clrAvFile(e){
+  e.stopPropagation();
+  pendAvB64='';
+  document.getElementById('av-f').value='';
+  document.getElementById('av-di').style.display='block';
+  document.getElementById('av-pw').style.display='none';
+}
+// Drag & drop avatar
+(function(){
   const da=document.getElementById('av-drop');
   if(!da)return;
-  _avDropInited=true;
   ['dragenter','dragover'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.add('drag');}));
   ['dragleave','drop'].forEach(ev=>da.addEventListener(ev,e=>{e.preventDefault();da.classList.remove('drag');}));
   da.addEventListener('drop',e=>{
@@ -1649,71 +1502,48 @@ function initAvDrop(){
       const inp=document.getElementById('av-f');inp.files=dt.files;onAvFile(inp);
     }
   });
-}
-
-function onAvUrl(val){
-  const el=document.getElementById('av-pr');if(el)el.src=val;
-}
-function onAvFile(inp){
-  const file=inp.files[0];if(!file)return;
-  if(file.size>MAX_AVATAR_BYTES){
-    toast(`Foto profil maks ${Math.round(MAX_AVATAR_BYTES/1024)} KB.`,'err');
-    inp.value='';return;
-  }
-  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-    toast('Format tidak didukung. Gunakan JPG, PNG, atau WebP.','err');inp.value='';return;
-  }
-  const reader=new FileReader();
-  reader.onload=e=>{
-    pendAvB64=e.target.result;
-    const prev=document.getElementById('av-fprev');
-    if(prev){prev.src=pendAvB64;}
-    const pr=document.getElementById('av-pr');
-    if(pr){pr.src=pendAvB64;}
-    const fn=document.getElementById('av-fn');
-    if(fn)fn.textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
-    const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-    if(di)di.style.display='none';
-    if(pw)pw.style.display='block';
-  };
-  reader.onerror=()=>toast('Gagal membaca file.','err');
-  reader.readAsDataURL(file);
-}
-function clrAvFile(e){
-  if(e&&e.stopPropagation)e.stopPropagation();
-  pendAvB64='';
-  const inp=document.getElementById('av-f');if(inp)inp.value='';
-  const di=document.getElementById('av-di'),pw=document.getElementById('av-pw');
-  if(di)di.style.display='block';
-  if(pw)pw.style.display='none';
-}
+})();
 
 // ── FLOATER TAB ──
 function fltTab(mode){
   fltMode=mode;
-  const urlBtn=document.getElementById('flt-tab-url');
-  const upBtn=document.getElementById('flt-tab-up');
-  const urlP=document.getElementById('flt-url-panel');
-  const upP=document.getElementById('flt-up-panel');
-  if(!urlBtn||!upBtn||!urlP||!upP)return;
+  const urlBtn=document.getElementById('flt-tab-url'),upBtn=document.getElementById('flt-tab-up');
+  const urlP=document.getElementById('flt-url-panel'),upP=document.getElementById('flt-up-panel');
   if(mode==='url'){
-    urlBtn.style.cssText='flex:1;padding:6px;font-family:Sora,sans-serif;font-size:.7rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    upBtn.style.cssText='flex:1;padding:6px;font-family:Sora,sans-serif;font-size:.7rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    urlBtn.style.background='rgba(41,121,212,.3)';urlBtn.style.color='var(--w)';
+    upBtn.style.background='transparent';upBtn.style.color='var(--w5)';
     urlP.style.display='block';upP.style.display='none';
   } else {
-    upBtn.style.cssText='flex:1;padding:6px;font-family:Sora,sans-serif;font-size:.7rem;font-weight:700;background:rgba(41,121,212,.3);color:#fff;border:none;transition:all .18s';
-    urlBtn.style.cssText='flex:1;padding:6px;font-family:Sora,sans-serif;font-size:.7rem;font-weight:700;background:transparent;color:rgba(255,255,255,.5);border:none;transition:all .18s';
+    upBtn.style.background='rgba(41,121,212,.3)';upBtn.style.color='var(--w)';
+    urlBtn.style.background='transparent';urlBtn.style.color='var(--w5)';
     urlP.style.display='none';upP.style.display='block';
-    initFltDrop();
   }
 }
-
-let _fltDropInited=false;
-function initFltDrop(){
-  if(_fltDropInited)return;
+function onFltFile(inp){
+  const file=inp.files[0];if(!file)return;
+  if(file.size>MAX_FLT_BYTES){toast(`Gambar BG maks ${Math.round(MAX_FLT_BYTES/1024/1024)} MB.`,'err');inp.value='';return;}
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){toast('Format tidak didukung.','err');inp.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendFltB64=e.target.result;
+    document.getElementById('flt-fprev').src=pendFltB64;
+    document.getElementById('flt-fn').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
+    document.getElementById('flt-di').style.display='none';
+    document.getElementById('flt-pw').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function clrFltFile(e){
+  e.stopPropagation();
+  pendFltB64='';
+  const inp=document.getElementById('flt-f');if(inp)inp.value='';
+  const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
+  if(di)di.style.display='block';if(pw)pw.style.display='none';
+}
+// Drag & drop floater
+(function(){
   const df=document.getElementById('flt-drop');
   if(!df)return;
-  _fltDropInited=true;
   ['dragenter','dragover'].forEach(ev=>df.addEventListener(ev,e=>{e.preventDefault();df.classList.add('drag');}));
   ['dragleave','drop'].forEach(ev=>df.addEventListener(ev,e=>{e.preventDefault();df.classList.remove('drag');}));
   df.addEventListener('drop',e=>{
@@ -1724,34 +1554,7 @@ function initFltDrop(){
       const inp=document.getElementById('flt-f');inp.files=dt.files;onFltFile(inp);
     }
   });
-}
-
-function onFltFile(inp){
-  const file=inp.files[0];if(!file)return;
-  if(file.size>MAX_FLT_BYTES){
-    toast(`Gambar BG maks ${Math.round(MAX_FLT_BYTES/1024/1024)} MB.`,'err');inp.value='';return;
-  }
-  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-    toast('Format tidak didukung.','err');inp.value='';return;
-  }
-  const reader=new FileReader();
-  reader.onload=e=>{
-    pendFltB64=e.target.result;
-    const prev=document.getElementById('flt-fprev');if(prev)prev.src=pendFltB64;
-    const fn=document.getElementById('flt-fn');if(fn)fn.textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;
-    const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
-    if(di)di.style.display='none';if(pw)pw.style.display='block';
-  };
-  reader.onerror=()=>toast('Gagal membaca file.','err');
-  reader.readAsDataURL(file);
-}
-function clrFltFile(e){
-  if(e&&e.stopPropagation)e.stopPropagation();
-  pendFltB64='';
-  const inp=document.getElementById('flt-f');if(inp)inp.value='';
-  const di=document.getElementById('flt-di'),pw=document.getElementById('flt-pw');
-  if(di)di.style.display='block';if(pw)pw.style.display='none';
-}
+})();
 
 // ── PANEL SWITCH ──
 const PTITLES={'p-lnk':'Kelola Tautan','p-pht':'Kelola Foto','p-prof':'Profil & Keamanan','p-flt':'Gambar Background','p-prev':'Preview'};
@@ -1761,7 +1564,6 @@ function swP(id,el){
   document.getElementById(id).classList.add('on');if(el)el.classList.add('on');
   document.getElementById('ptitle').textContent=PTITLES[id]||'Dashboard';
   if(id==='p-prev')loadPrev();
-  if(id==='p-prof')restoreAvatarUI();
   sbC();
 }
 function bnSw(pid,el){
@@ -1771,7 +1573,6 @@ function bnSw(pid,el){
   document.getElementById(pid).classList.add('on');if(el)el.classList.add('on');
   const pt=document.getElementById('ptitle');if(pt)pt.textContent=PTITLES[pid]||'Dashboard';
   if(pid==='p-prev')loadPrev();
-  if(pid==='p-prof')restoreAvatarUI();
 }
 function sbO(){document.getElementById('sb').classList.add('on');document.getElementById('sbov').style.display='block';document.getElementById('closesb').style.display='flex';document.body.style.overflow='hidden';}
 function sbC(){document.getElementById('sb').classList.remove('on');document.getElementById('sbov').style.display='none';document.getElementById('closesb').style.display='none';document.body.style.overflow='';}
@@ -1783,82 +1584,14 @@ function setV(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function showMsg(el,msg,color){el.textContent=msg;el.style.color=color;el.style.display='block';}
 function tpwd(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.innerHTML=inp.type==='password'?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>';}
 
-// ── LOADING OVERLAY ──
-let _loadStack=0;
-function showLoad(msg='Memuat...'){
-  _loadStack++;
-  const el=document.getElementById('gload');
-  document.getElementById('gload-msg').textContent=msg;
-  el.classList.add('on');
-}
-function hideLoad(){
-  _loadStack=Math.max(0,_loadStack-1);
-  if(_loadStack===0)document.getElementById('gload').classList.remove('on');
-}
-
-// ── TOAST SYSTEM ──
-const TOAST_DUR=4000;
+let _tt;
 function toast(msg,type='ok'){
-  const wrap=document.getElementById('toast-wrap');
-  const icons={ok:'fa-check',err:'fa-xmark',warn:'fa-triangle-exclamation',info:'fa-circle-info'};
-  const labels={ok:'Berhasil',err:'Error',warn:'Perhatian',info:'Info'};
-  const id='t'+Date.now()+Math.random().toString(36).slice(2,5);
-  const el=document.createElement('div');
-  el.className=`tst ${type}`;el.id=id;
-  el.innerHTML=
-    `<div class="tst-ico"><i class="fas ${icons[type]||icons.ok}"></i></div>`+
-    `<div class="tst-txt"><div style="font-family:'Sora',sans-serif;font-weight:700;font-size:.74rem;margin-bottom:2px;opacity:.7">${labels[type]||labels.ok}</div><div>${esc(msg)}</div></div>`+
-    `<button class="tst-close" onclick="dismissToast('${id}')" aria-label="Tutup"><i class="fas fa-xmark"></i></button>`+
-    `<div class="tst-bar" style="animation-duration:${TOAST_DUR}ms"></div>`;
-  wrap.appendChild(el);
-  // Trigger slide-in
-  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('in')));
-  // Auto dismiss
-  const tid=setTimeout(()=>dismissToast(id),TOAST_DUR);
-  el._tid=tid;
-  // Max 4 toasts visible
-  const all=[...wrap.querySelectorAll('.tst')];
-  if(all.length>4)dismissToast(all[0].id);
+  const t=document.getElementById('toast');
+  const ico=type==='ok'?'fa-check-circle':type==='err'?'fa-exclamation-circle':'fa-exclamation-triangle';
+  t.innerHTML=`<i class="fas ${ico}" aria-hidden="true"></i>${esc(msg)}`;
+  t.className=`show ${type}`;clearTimeout(_tt);
+  _tt=setTimeout(()=>{t.className='';},3500);
 }
-function dismissToast(id){
-  const el=document.getElementById(id);
-  if(!el)return;
-  if(el._tid)clearTimeout(el._tid);
-  el.classList.add('out');
-  setTimeout(()=>el.remove(),280);
-}
-
-// ── CONFIRM DIALOG ──
-let _cfmResolve=null;
-function confirm2(opts={}){
-  return new Promise(resolve=>{
-    _cfmResolve=resolve;
-    const {title='Konfirmasi',msg='Apakah Anda yakin?',okLabel='Ya, Lanjutkan',
-      okClass='background:rgba(239,68,68,.85);color:#fff',
-      icon='fa-circle-exclamation',iconBg='rgba(239,68,68,.15)',iconColor='var(--red)'}=opts;
-    document.getElementById('cfm-ico').innerHTML=`<i class="fas ${icon}"></i>`;
-    document.getElementById('cfm-ico').style.cssText=`width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.1rem;background:${iconBg};color:${iconColor}`;
-    document.getElementById('cfm-ttl').textContent=title;
-    document.getElementById('cfm-msg').textContent=msg;
-    document.getElementById('cfm-ok').textContent=okLabel;
-    document.getElementById('cfm-ok').style.cssText=okClass;
-    document.getElementById('cfm').classList.add('on');
-    document.body.style.overflow='hidden';
-  });
-}
-document.getElementById('cfm-cancel').onclick=()=>{
-  document.getElementById('cfm').classList.remove('on');
-  document.body.style.overflow='';
-  if(_cfmResolve){_cfmResolve(false);_cfmResolve=null;}
-};
-document.getElementById('cfm-ok').onclick=()=>{
-  document.getElementById('cfm').classList.remove('on');
-  document.body.style.overflow='';
-  if(_cfmResolve){_cfmResolve(true);_cfmResolve=null;}
-};
-document.getElementById('cfm').addEventListener('click',e=>{
-  if(e.target===document.getElementById('cfm'))document.getElementById('cfm-cancel').onclick();
-});
 
 // ── INIT ──
 window.addEventListener('load',()=>{
